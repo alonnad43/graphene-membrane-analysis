@@ -46,11 +46,14 @@ SURFACE_ENERGY_RGO = 110
 DENSITY_GO = 1.8
 DENSITY_RGO = 0.30
 
-# Oil Properties
-OIL_DROPLET_SIZE = 5.0  # µm
-OIL_DENSITY = 0.85  # g/cm³
-OIL_VISCOSITY = 25.0  # mPa·s
+# Fluid Properties
+WATER_VISCOSITY = 0.89      # mPa·s (at 25°C)
+OIL_VISCOSITY = 25.0        # mPa·s
 WATER_OIL_SURFACE_TENSION = 25.0  # mN/m
+
+# Oil Properties
+OIL_DROPLET_SIZE = 5.0  # µm (typical oil droplet size in water)
+OIL_DENSITY = 0.85  # g/cm³
 
 # Simulation Parameters
 PRESSURE_MIN = 0.1  # bar
@@ -112,4 +115,40 @@ MEMBRANE_TYPES = {
         "contact_angle": (CONTACT_ANGLE_GO + CONTACT_ANGLE_RGO) / 2,
         "contact_angle_deg": CONTACT_ANGLE_HYBRID
     }
+}
+
+# LAMMPS Simulation Parameters for Phase 3
+LAMMPS_PARAMETERS = {
+    # Atomic masses (amu)
+    "carbon_mass": 12.011,
+    "oxygen_mass": 15.999,
+    "hydrogen_mass": 1.008,
+    
+    # Bond lengths (Angstrom)
+    "cc_bond_length": 1.42,     # C-C bond in graphene
+    "co_bond_length": 1.43,     # C-O bond in GO
+    "oh_bond_length": 0.96,     # O-H bond in GO
+    
+    # LJ parameters for carbon-carbon interactions
+    "lj_epsilon_cc": 0.0703,    # kcal/mol
+    "lj_sigma_cc": 3.4,         # Angstrom
+    
+    # LJ parameters for oxygen-oxygen interactions  
+    "lj_epsilon_oo": 0.2104,    # kcal/mol
+    "lj_sigma_oo": 3.12,        # Angstrom
+    
+    # Simulation settings
+    "simulation_temperature": 300.0,  # Kelvin
+    "timestep": 1.0,                  # femtoseconds
+    "equilibration_steps": 50000,
+    "production_steps": 100000,
+    "dump_frequency": 1000,
+    "thermo_frequency": 1000,
+    
+    # Water model parameters (TIP3P)
+    "water_ow_mass": 15.9994,
+    "water_hw_mass": 1.008,
+    "water_ow_charge": -0.834,
+    "water_hw_charge": 0.417,
+    "water_density": 1.0           # g/cm³
 }

@@ -1,7 +1,14 @@
 """
-Defines the Membrane class and related data structures for GO/rGO membrane simulation.
+Defines the Membrane class for all simulation phases.
 
-The Membrane class stores physical and performance properties for a single membrane type.
+Each Membrane object holds:
+- Phase 1: macroscale traits (thickness, pore_size, pressure)
+- Phase 2: structural layout (GO/rGO stacking, interlayer spacing)
+- Phase 3: atomic structure definition for LAMMPS simulation
+
+# TODO: Add .to_dict() method for export to JSON
+# TODO: Add .to_lammps_data() to export atomic format for Phase 3
+# TODO: Add from_dict() constructor for batch membrane generation
 """
 
 class Membrane:
@@ -15,8 +22,7 @@ class Membrane:
         flux_lmh (float): Water flux in L·m⁻²·h⁻¹
         modulus_GPa (float): Young's modulus in GPa
         tensile_strength_MPa (float): Tensile strength in MPa
-        contact_angle_deg (float): Contact angle in degrees
-        rejection_percent (float, optional): Oil rejection efficiency (%)
+        contact_angle_deg (float): Contact angle in degrees        rejection_percent (float, optional): Oil rejection efficiency (%)
     """
 
     def __init__(self, name, pore_size_nm, thickness_nm, flux_lmh, modulus_GPa,
@@ -29,6 +35,11 @@ class Membrane:
         self.tensile_strength_MPa = tensile_strength_MPa
         self.contact_angle_deg = contact_angle_deg
         self.rejection_percent = rejection_percent
+        
+        # Fluid properties for physics-based calculations
+        self.water_viscosity = 0.89       # mPa·s (at 25°C)
+        self.oil_viscosity = 25.0         # mPa·s
+        self.oil_droplet_size = 5.0       # µm
 
     def __repr__(self):
         """
@@ -60,6 +71,44 @@ class Membrane:
             "contact_angle_deg": self.contact_angle_deg,
             "rejection_percent": self.rejection_percent,
         }
+
+    def to_lammps_data(self):
+        """
+        Export atomic structure definition for Phase 3 LAMMPS simulation.
+        
+        Returns:
+            dict: LAMMPS-compatible structure data
+        """
+        return {
+            "membrane_type": self.name.split()[0] if ' ' in self.name else self.name,
+            "thickness_angstrom": self.thickness_nm * 10,  # Convert nm to Angstrom
+            "pore_size_angstrom": self.pore_size_nm * 10,
+            "contact_angle": self.contact_angle_deg,
+            "modulus_gpa": self.modulus_GPa,
+            "strength_mpa": self.tensile_strength_MPa
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        """
+        Create Membrane object from dictionary (for batch generation).
+        
+        Args:
+            data (dict): Membrane properties dictionary
+        
+        Returns:
+            Membrane: New membrane instance
+        """
+        return cls(
+            name=data.get('name', 'Unknown'),
+            pore_size_nm=data.get('pore_size_nm', 1.0),
+            thickness_nm=data.get('thickness_nm', 100.0),
+            flux_lmh=data.get('flux_lmh', 0.0),
+            modulus_GPa=data.get('modulus_GPa'),
+            tensile_strength_MPa=data.get('tensile_strength_MPa'),
+            contact_angle_deg=data.get('contact_angle_deg'),
+            rejection_percent=data.get('rejection_percent')
+        )
 
     def __eq__(self, other):
         """
