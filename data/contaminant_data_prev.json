@@ -1,0 +1,648 @@
+{
+  "membrane_profiles": {
+    "GO": {
+      "surface_area_m2g": 400,
+      "oxygen_content_percent": 30,
+      "functional_groups": ["COOH", "OH", "C=O"],
+      "regenerable": true,
+      "max_cycles": 10,
+      "efficiency_loss_per_cycle_percent": 5,
+      "optimal_pH_range": {"min": 4, "max": 9},
+      "temperature_dependency": {"T_ref_C": 25, "Q10": 2}
+    },
+    "rGO": {
+      "surface_area_m2g": 600,
+      "oxygen_content_percent": 10,
+      "functional_groups": ["OH", "epoxy"],
+      "regenerable": true,
+      "max_cycles": 15,
+      "efficiency_loss_per_cycle_percent": 4,
+      "optimal_pH_range": {"min": 5, "max": 9},
+      "temperature_dependency": {"T_ref_C": 25, "Q10": 2}
+    },
+    "hybrid": {
+      "surface_area_m2g": 500,
+      "oxygen_content_percent": 20,
+      "functional_groups": ["COOH", "OH", "epoxy"],
+      "regenerable": true,
+      "max_cycles": 12,
+      "efficiency_loss_per_cycle_percent": 4.5,
+      "optimal_pH_range": {"min": 4.5, "max": 9},
+      "temperature_dependency": {"T_ref_C": 25, "Q10": 2}
+    }
+  },
+  "contaminants": {
+    "Pb2+": {
+      "type": "heavy_metal",
+      "competitive_index": 0.85,
+      "pH_range": {"min": 5.5, "max": 6.5},
+      "membranes": {
+        "GO": {"q_max_mgg": 987.3, "k2_gmgmin": 0.245, "rejection_percent": 97},
+        "rGO": {"q_max_mgg": 138.5, "k2_gmgmin": 0.1, "rejection_percent": 94},
+        "hybrid": {"q_max_mgg": 530.5, "k2_gmgmin": 0.18, "rejection_percent": 98}
+      },
+      "regenerable": true,
+      "max_cycles": 5
+    },
+    "Cd2+": {
+      "type": "heavy_metal",
+      "competitive_index": 0.75,
+      "pH_range": {"min": 5, "max": 7},
+      "membranes": {
+        "GO": {"q_max_mgg": 160, "k2_gmgmin": 0.009, "rejection_percent": 90},
+        "rGO": {"q_max_mgg": 145, "k2_gmgmin": 0.007, "rejection_percent": 88},
+        "hybrid": {"q_max_mgg": 201, "k2_gmgmin": 0.012, "rejection_percent": 92}
+      },
+      "regenerable": true,
+      "max_cycles": 6
+    },
+    "As3+": {
+      "type": "heavy_metal",
+      "competitive_index": 0.7,
+      "pH_range": {"min": 6, "max": 8},
+      "membranes": {
+        "GO": {"q_max_mgg": 288, "k2_gmgmin": 0.015, "rejection_percent": 85},
+        "rGO": {"q_max_mgg": 200, "k2_gmgmin": 0.011, "rejection_percent": 82},
+        "hybrid": {"q_max_mgg": 300, "k2_gmgmin": 0.013, "rejection_percent": 89}
+      },
+      "regenerable": true,
+      "max_cycles": 6
+    },
+    "PFOS": {
+      "type": "PFAS",
+      "competitive_index": 0.95,
+      "pH_range": {"min": 2, "max": 12},
+      "membranes": {
+        "GO": {"q_max_mgg": 48.47, "k2_gmgmin": 0.005, "rejection_percent": 94},
+        "rGO": {"q_max_mgg": 617.28, "k2_gmgmin": 0.02, "rejection_percent": 93},
+        "hybrid": {"q_max_mgg": 1250.0, "k2_gmgmin": 0.015, "rejection_percent": 95},
+        "GO_CTAC": {"q_max_mgg": 48.47, "k2_gmgmin": 0.005, "rejection_percent": 94},
+        "AGO_aerogel": {"q_max_mgg": 1574.8, "rejection_percent": 99},
+        "MAGO_nanocomposite": {
+          "q_max_mgg": null,
+          "k2_gmgmin": {"PFOS": 0.31, "PFOA": 0.24},
+          "rejection_percent": 95
+        }
+      },
+      "regenerable": true,
+      "max_cycles": 6
+    },
+    "BPA": {
+      "type": "organic_pollutant",
+      "competitive_index": 0.6,
+      "pH_range": {"min": 6, "max": 8},
+      "membranes": {
+        "GO": {"q_max_mgg": 49.26, "k2_gmgmin": 0.0015, "rejection_percent": 84},
+        "rGO": {"q_max_mgg": 11.75, "k2_gmgmin": 0.00007, "rejection_percent": 80},
+        "hybrid": {"q_max_mgg": 30.5, "k2_gmgmin": 0.0008, "rejection_percent": 87}
+      },
+      "regenerable": true,
+      "max_cycles": 4
+    },
+    "Atrazine": {
+      "type": "pesticide",
+      "competitive_index": 0.5,
+      "pH_range": {"min": 4.5, "max": 7},
+      "membranes": {
+        "GO": {"q_max_mgg": 138.2, "rejection_percent": 82},
+        "rGO": {"q_max_mgg": 105.0, "rejection_percent": 79},
+        "hybrid": {"q_max_mgg": 121.6, "rejection_percent": 85}
+      },
+      "regenerable": true,
+      "max_cycles": 5
+    },
+    "Microplastics": {
+      "type": "microplastic",
+      "competitive_index": 0.4,
+      "membranes": {
+        "GO": {"q_max_mgg": 500.0, "k2_gmgmin": 0.015, "rejection_percent": 90},
+        "rGO": {"q_max_mgg": 617.28, "k2_gmgmin": 0.02, "rejection_percent": 93},
+        "hybrid": {"q_max_mgg": 1250, "k2_gmgmin": 0.02, "rejection_percent": 95},
+        "GO_nanocellulose_aerogel": {"rejection_percent": 90},
+        "Ni_rGO_composite": {"q_max_mgg": 1250, "rejection_percent": 95},
+        "3D_rGO": {"q_max_mgg": 617.28, "k2_gmgmin": 0.02, "rejection_percent": 93}
+      },
+      "regenerable": true,
+      "max_cycles": 3
+    },
+    "E_coli": {
+      "type": "bacteria",
+      "competitive_index": 0.4,
+      "membranes": {
+        "GO": {"kill_log": 6, "exposure_time_min": 20},
+        "rGO": {"kill_log": 5, "exposure_time_min": 30},
+        "hybrid": {"kill_log": 7, "exposure_time_min": 15}
+      }
+    },
+    "Rotavirus": {
+      "type": "virus",
+      "competitive_index": 0.55,
+      "membranes": {
+        "GO": {"kill_log": 4, "exposure_time_min": 25},
+        "rGO": {"kill_log": 3, "exposure_time_min": 35},
+        "hybrid": {"kill_log": 5, "exposure_time_min": 20}
+      }
+    },
+    "NaCl": {
+      "type": "salt",
+      "competitive_index": 0.2,
+      "membranes": {
+        "GO": {"rejection_percent": 52},
+        "rGO": {"rejection_percent": 48},
+        "hybrid": {"rejection_percent": 60}
+      }
+    },
+    "CaCl2": {
+      "type": "salt",
+      "competitive_index": 0.3,
+      "membranes": {
+        "GO": {"rejection_percent": 70},
+        "rGO": {"rejection_percent": 62},
+        "hybrid": {"rejection_percent": 75}
+      }
+    },
+    "NO3": {
+      "type": "inorganic_anion",
+      "competitive_index": 0.25,
+      "pH_range": {"min": 5.5, "max": 7.5},
+      "membranes": {
+        "GO": {"q_max_mgg": 85, "k2_gmgmin": 0.003, "rejection_percent": 80},
+        "rGO": {"q_max_mgg": 78, "k2_gmgmin": 0.0025, "rejection_percent": 75},
+        "hybrid": {"q_max_mgg": 92, "k2_gmgmin": 0.0035, "rejection_percent": 85}
+      },
+      "regenerable": true,
+      "max_cycles": 4,
+      "efficiency_loss_per_cycle_percent": 10
+    },
+    "PO4": {
+      "type": "inorganic_anion",
+      "competitive_index": 0.3,
+      "pH_range": {"min": 5.5, "max": 8},
+      "membranes": {
+        "GO": {"q_max_mgg": 60, "k2_gmgmin": 0.005, "rejection_percent": 80},
+        "rGO": {"q_max_mgg": 55, "k2_gmgmin": 0.004, "rejection_percent": 75},
+        "hybrid": {"q_max_mgg": 68, "k2_gmgmin": 0.006, "rejection_percent": 85}
+      },
+      "regenerable": true,
+      "max_cycles": 5,
+      "efficiency_loss_per_cycle_percent": 8
+    },
+    "F": {
+      "type": "inorganic_anion",
+      "competitive_index": 0.2,
+      "pH_range": {"min": 5, "max": 7},
+      "membranes": {
+        "GO": {"q_max_mgg": 40, "k2_gmgmin": 0.001, "rejection_percent": 63},
+        "rGO": {"q_max_mgg": 62.3, "k2_gmgmin": 0.0017, "rejection_percent": 78},
+        "hybrid": {"q_max_mgg": 50, "k2_gmgmin": 0.0013, "rejection_percent": 70}
+      },
+      "regenerable": true,
+      "max_cycles": 4
+    }
+  }
+}
+    "Pb2+": {
+      "type": "heavy_metal",
+      "q_max": 250.0,
+      "kinetic_model": "pseudo_second_order",
+      "k2": 0.0041,
+      "pH_range": {"min": 5.5, "max": 6.5},
+      "interaction": ["electrostatic", "complexation"],
+      "competitive_index": 0.85,
+      "regenerable": true,
+      "max_cycles": 5,
+      "interaction_notes": "Less affected by Ca2+ in mixture",
+      "membranes": {
+        "GO": {"q_max": 987.3, "q_max_mgg": 987.3, "k2": 0.245, "k2_gmgmin": 0.245, "rejection_percent": 97},
+        "rGO": {"q_max": 138.5, "q_max_mgg": 138.5, "k2": 0.1, "k2_gmgmin": 0.1, "rejection_percent": 94},
+        "hybrid": {"q_max": 530.5, "q_max_mgg": 530.5, "k2": 0.18, "k2_gmgmin": 0.18, "rejection_percent": 98}
+      },
+      "regeneration_efficiency": 0.85,
+      "regeneration_cycles": 3,
+      "reaction_time": 120,
+      "source": "H9w7okUgoCWPFTNkkbfUdf, 2024"
+    },
+
+    "As3+": {
+      "type": "heavy_metal",
+      "q_max": 368.4,
+      "kinetic_model": "pseudo_second_order",
+      "k2": 0.0062,
+      "pH_range": {"min": 6, "max": 8},
+      "interaction": ["electrostatic", "hydrogen_bonding"],
+      "competitive_index": 0.7,
+      "regenerable": true,
+      "max_cycles": 6,
+      "membranes": {
+        "GO": {"q_max": 288, "q_max_mgg": 288, "k2": 0.015, "k2_gmgmin": 0.015, "rejection_percent": 89},
+        "rGO": {"q_max": 200, "q_max_mgg": 200, "k2": 0.011, "k2_gmgmin": 0.011, "rejection_percent": 82},
+        "hybrid": {"q_max": 300, "q_max_mgg": 300, "k2": 0.013, "k2_gmgmin": 0.013, "rejection_percent": 89}
+      },
+      "regeneration_efficiency": 0.82,
+      "regeneration_cycles": 4,
+      "reaction_time": 200,
+      "source": "search4, 2024"
+    },
+
+    "Cd2+": {
+      "type": "heavy_metal",
+      "competitive_index": 0.75,
+      "pH_range": {"min": 5, "max": 7},
+      "regenerable": true,
+      "max_cycles": 6,
+      "membranes": {
+        "GO": {"q_max": 160, "q_max_mgg": 160, "k2": 0.009, "k2_gmgmin": 0.009, "rejection_percent": 90},
+        "rGO": {"q_max": 145, "q_max_mgg": 145, "k2": 0.007, "k2_gmgmin": 0.007, "rejection_percent": 88},
+        "hybrid": {"q_max": 201, "q_max_mgg": 201, "k2": 0.012, "k2_gmgmin": 0.012, "rejection_percent": 92}
+      },
+      "regeneration_efficiency": 0.88,
+      "regeneration_cycles": 6,
+      "reaction_time": 150,
+      "source": "cadmium-removal-studies, 2024"
+    },
+
+    "Hg2+": {
+      "type": "heavy_metal",
+      "q_max": 220.0,
+      "kinetic_model": "pseudo_second_order",
+      "k2": 0.011,
+      "pH_range": [4.0, 7.5],
+      "interaction": ["electrostatic", "complexation"],
+      "competitive_index": 3.8,
+      "regenerable": true,
+      "max_cycles": 4,
+      "membranes": {
+        "GO": {"q_max": 200, "k2": 0.012, "rejection_percent": 98},
+        "rGO": {"q_max": 180, "k2": 0.009, "rejection_percent": 95},
+        "hybrid": {"q_max": 220, "k2": 0.011, "rejection_percent": 99}
+      },
+      "regeneration_efficiency": 0.80,
+      "regeneration_cycles": 3,
+      "reaction_time": 150,
+      "source": "mercury-removal-studies, 2024"
+    },
+
+    "Ni2+": {
+      "type": "heavy_metal",
+      "q_max": 105.0,
+      "kinetic_model": "pseudo_second_order",
+      "k2": 0.009,
+      "pH_range": [5.0, 8.0],
+      "interaction": ["electrostatic", "complexation"],
+      "competitive_index": 2.5,
+      "regenerable": true,
+      "max_cycles": 6,
+      "membranes": {
+        "GO": {"q_max": 100, "k2": 0.008, "rejection_percent": 91},
+        "rGO": {"q_max": 85, "k2": 0.006, "rejection_percent": 89},
+        "hybrid": {"q_max": 105, "k2": 0.009, "rejection_percent": 93}
+      },
+      "regeneration_efficiency": 0.83,
+      "regeneration_cycles": 4,
+      "reaction_time": 100,
+      "source": "nickel-adsorption-studies, 2024"
+    },
+
+    "Zn2+": {
+      "type": "heavy_metal",
+      "q_max": 85.0,
+      "kinetic_model": "pseudo_second_order",
+      "k2": 0.0055,
+      "pH_range": [4.5, 7.5],
+      "interaction": ["electrostatic", "complexation"],
+      "competitive_index": 2.1,
+      "regenerable": true,
+      "max_cycles": 5,
+      "membranes": {
+        "GO": {"q_max": 80, "k2": 0.005, "rejection_percent": 88},
+        "rGO": {"q_max": 72, "k2": 0.004, "rejection_percent": 86},
+        "hybrid": {"q_max": 85, "k2": 0.0055, "rejection_percent": 90}
+      },
+      "regeneration_efficiency": 0.86,
+      "regeneration_cycles": 4,
+      "reaction_time": 90,
+      "source": "zinc-removal-studies, 2024"
+    },
+
+    "E_coli": {
+      "type": "bacteria",
+      "kill_log": 5,
+      "exposure_time": 60,
+      "competitive_index": 0.4,
+      "regenerable": true,
+      "max_cycles": 8,
+      "membranes": {
+        "GO": {"kill_log": 6, "exposure_time": 90, "exposure_time_min": 20},
+        "rGO": {"kill_log": 5, "exposure_time": 60, "exposure_time_min": 30},
+        "hybrid": {"kill_log": 7, "exposure_time": 45, "exposure_time_min": 15}
+      },
+      "mechanism": ["oxidative_stress", "membrane_damage"],
+      "regeneration_efficiency": 0.90,
+      "regeneration_cycles": 5,
+      "source": "schmidt-et-al-2023, 2023"
+    },
+
+    "Rotavirus": {
+      "type": "virus",
+      "kill_log": 4,
+      "exposure_time": 25,
+      "competitive_index": 0.55,
+      "regenerable": true,
+      "max_cycles": 8,
+      "membranes": {
+        "GO": {"kill_log": 4, "exposure_time": 25, "exposure_time_min": 25},
+        "rGO": {"kill_log": 3, "exposure_time": 35, "exposure_time_min": 35},
+        "hybrid": {"kill_log": 5, "exposure_time": 20}
+      },
+      "mechanism": ["oxidative_stress", "membrane_damage"],
+      "regeneration_efficiency": 0.92,
+      "regeneration_cycles": 8,
+      "source": "rotavirus-inactivation-studies, 2024"
+    },
+
+    "NaCl": {
+      "type": "salt",
+      "rejection_percent": 88,
+      "competitive_index": 0.2,
+      "regenerable": false,
+      "max_cycles": 0,
+      "membranes": {
+        "GO": {"rejection_percent": 52},
+        "rGO": {"rejection_percent": 48},
+        "hybrid": {"rejection_percent": 60}
+      },
+      "mechanism": ["donnan_exclusion", "interlayer_spacing"],
+      "source": "search25, 2024"
+    },
+
+    "CaCl2": {
+      "type": "salt",
+      "rejection_percent": 70,
+      "competitive_index": 0.3,
+      "regenerable": false,
+      "max_cycles": 0,
+      "membranes": {
+        "GO": {"rejection_percent": 70},
+        "rGO": {"rejection_percent": 62},
+        "hybrid": {"rejection_percent": 75}
+      },
+      "mechanism": ["donnan_exclusion", "size_exclusion"],
+      "source": "calcium-chloride-rejection-studies, 2024"
+    },
+
+    "MgCl2": {
+      "type": "salt",
+      "rejection_percent": 80,
+      "competitive_index": 1.4,
+      "regenerable": false,
+      "max_cycles": 0,
+      "membranes": {
+        "GO": {"rejection_percent": 76},
+        "rGO": {"rejection_percent": 62},
+        "hybrid": {"rejection_percent": 80}
+      },
+      "mechanism": ["donnan_exclusion", "interlayer_spacing"],
+      "source": "salt-rejection-studies, 2024"
+    },
+
+    "KNO3": {
+      "type": "salt",
+      "rejection_percent": 65,
+      "competitive_index": 1.1,
+      "regenerable": false,
+      "max_cycles": 0,
+      "membranes": {
+        "GO": {"rejection_percent": 58},
+        "rGO": {"rejection_percent": 49},
+        "hybrid": {"rejection_percent": 65}
+      },
+      "mechanism": ["donnan_exclusion", "size_exclusion"],
+      "source": "nitrate-rejection-studies, 2024"
+    },
+
+    "SO4_2-": {
+      "type": "salt",
+      "rejection_percent": 85,
+      "competitive_index": 1.6,
+      "regenerable": false,
+      "max_cycles": 0,
+      "membranes": {
+        "GO": {"rejection_percent": 82},
+        "rGO": {"rejection_percent": 68},
+        "hybrid": {"rejection_percent": 85}
+      },
+      "mechanism": ["donnan_exclusion", "electrostatic_repulsion"],
+      "source": "sulfate-rejection-studies, 2024"
+    },
+
+    "MS2_virus": {
+      "type": "virus",
+      "kill_log": 5,
+      "exposure_time": 15,
+      "competitive_index": 1.8,
+      "regenerable": true,
+      "max_cycles": 12,
+      "membranes": {
+        "GO": {"kill_log": 4, "exposure_time": 20},
+        "rGO": {"kill_log": 3, "exposure_time": 30},
+        "hybrid": {"kill_log": 5, "exposure_time": 15}
+      },
+      "mechanism": ["oxidative_stress", "membrane_damage"],
+      "regeneration_efficiency": 0.95,
+      "regeneration_cycles": 10,
+      "source": "virus-inactivation-studies, 2024"
+    },
+
+    "PFOA": {
+      "type": "PFAS",
+      "q_max": 110.0,
+      "kinetic_model": "pseudo_first_order",
+      "k1": 0.025,
+      "pH_range": [3.0, 11.0],
+      "interaction": ["pi_pi_stacking", "hydrophobic"],
+      "competitive_index": 2.9,
+      "regenerable": true,
+      "max_cycles": 3,
+      "membranes": {
+        "GO": {"q_max": 95, "rejection_percent": 84},
+        "rGO": {"q_max": 105, "rejection_percent": 90},
+        "hybrid": {"q_max": 110, "rejection_percent": 93}
+      },
+      "regeneration_efficiency": 0.75,
+      "regeneration_cycles": 2,
+      "reaction_time": 240,
+      "source": "PFOA-adsorption-studies, 2024"
+    },    "PFOS": {
+      "type": "PFAS",
+      "competitive_index": 0.95,
+      "pH_range": {"min": 2, "max": 12},
+      "regenerable": true,
+      "max_cycles": 6,
+      "temperature_dependency": {"T_ref_C": 25, "Q10": 1.5},
+      "membranes": {
+        "GO": {
+          "q_max_mgg": 48.47,
+          "k2_gmgmin": 0.005,
+          "rejection_percent": 94,
+          "isotherm": "Toth"
+        },
+        "rGO": {
+          "q_max_mgg": 617.28,
+          "k2_gmgmin": 0.02,
+          "rejection_percent": 93,
+          "isotherm": "Langmuir"
+        },
+        "hybrid": {
+          "q_max_mgg": 1250.0,
+          "k2_gmgmin": 0.015,
+          "rejection_percent": 95,
+          "isotherm": "Langmuir"
+        },
+        "specialized_membranes": {
+          "GO_CTAC": {
+            "q_max_mgg": 48.47,
+            "k2_gmgmin": 0.005,
+            "rejection_percent": 94,
+            "isotherm": "Toth"
+          },
+          "AGO_aerogel": {
+            "q_max_mgg": 1574.8,
+            "k2_gmgmin": null,
+            "rejection_percent": 99,
+            "isotherm": "Freundlich"
+          },
+          "MAGO_nanocomposite": {
+            "q_max_mgg": null,
+            "k2_gmgmin": {"PFOS": 0.31, "PFOA": 0.24, "PFHxS": 0.12, "PFBS": 0.056},
+            "rejection_percent": 95,
+            "isotherm": "PSO"
+          }
+        }
+      },
+      "regeneration_efficiency": 0.85,
+      "regeneration_cycles": 6,
+      "reaction_time": 180,
+      "source": "PFOS-removal-studies, 2024"
+    },
+
+    "BPA": {
+      "type": "organic_pollutant",
+      "competitive_index": 0.6,
+      "pH_range": {"min": 6, "max": 8},
+      "regenerable": true,
+      "max_cycles": 4,
+      "membranes": {
+        "GO": {
+          "q_max_mgg": 49.26,
+          "k2_gmgmin": 0.0015,
+          "rejection_percent": 84,
+          "isotherm": "Langmuir"
+        },
+        "rGO": {
+          "q_max_mgg": 11.75,
+          "k2_gmgmin": 0.00007,
+          "rejection_percent": 80,
+          "isotherm": "Langmuir"
+        },
+        "hybrid": {
+          "q_max_mgg": 30.5,
+          "k2_gmgmin": 0.0008,
+          "rejection_percent": 87,
+          "isotherm": "Langmuir"
+        }
+      },
+      "regeneration_efficiency": 0.80,
+      "regeneration_cycles": 4,
+      "reaction_time": 120,
+      "source": "BPA-removal-studies, 2024"
+    },
+
+    "Atrazine": {
+      "type": "pesticide",
+      "competitive_index": 0.5,
+      "pH_range": {"min": 4.5, "max": 7},
+      "regenerable": true,
+      "max_cycles": 5,
+      "membranes": {
+        "GO": {"q_max_mgg": 138.2, "k2_gmgmin": null, "rejection_percent": 82},
+        "rGO": {"q_max_mgg": 105.0, "k2_gmgmin": null, "rejection_percent": 79},
+        "hybrid": {"q_max_mgg": 121.6, "k2_gmgmin": null, "rejection_percent": 85}
+      },
+      "regeneration_efficiency": 0.75,
+      "regeneration_cycles": 5,
+      "reaction_time": 180,
+      "source": "atrazine-removal-studies, 2024"
+    },    "Microplastics": {
+      "type": "microplastic",
+      "competitive_index": 0.4,
+      "pH_range": {"min": 5.5, "max": 7},
+      "regenerable": true,
+      "max_cycles": 3,
+      "membranes": {
+        "GO": {
+          "q_max_mgg": 500.0,
+          "k2_gmgmin": 0.015,
+          "rejection_percent": 90,
+          "isotherm": "Langmuir"
+        },
+        "rGO": {
+          "q_max_mgg": 617.28,
+          "k2_gmgmin": 0.02,
+          "rejection_percent": 93,
+          "isotherm": "Langmuir"
+        },
+        "hybrid": {
+          "q_max_mgg": 1250,
+          "k2_gmgmin": 0.02,
+          "rejection_percent": 95,
+          "isotherm": "Langmuir"
+        },
+        "specialized_membranes": {
+          "GO_nanocellulose_aerogel": {
+            "q_max_mgg": null,
+            "k2_gmgmin": null,
+            "rejection_percent": 90,
+            "isotherm": null
+          },
+          "3D_rGO": {
+            "q_max_mgg": 617.28,
+            "k2_gmgmin": 0.02,
+            "rejection_percent": 93,
+            "isotherm": "Langmuir"
+          },
+          "Ni_rGO_composite": {
+            "q_max_mgg": 1250,
+            "k2_gmgmin": 0.02,
+            "rejection_percent": 95,
+            "isotherm": "Langmuir"
+          }
+        }
+      },
+      "regeneration_efficiency": 0.70,
+      "regeneration_cycles": 3,
+      "reaction_time": 240,
+      "source": "microplastics-removal-studies, 2024"
+    },
+
+    "phenol": {
+      "type": "organic pollutant",
+      "q_max": 92.0,
+      "kinetic_model": "pseudo_second_order",
+      "k2": 0.015,
+      "pH_range": [3.0, 9.0],
+      "interaction": ["pi_pi_stacking", "hydrogen_bonding"],
+      "competitive_index": 1.7,
+      "regenerable": true,
+      "max_cycles": 4,
+      "membranes": {
+        "GO": {"q_max": 88, "rejection_percent": 89},
+        "rGO": {"q_max": 76, "rejection_percent": 86},
+        "hybrid": {"q_max": 92, "rejection_percent": 97}
+      },
+      "regeneration_efficiency": 0.78,
+      "regeneration_cycles": 3,
+      "reaction_time": 180,
+      "source": "phenol-removal-studies, 2024"
+    }
+  }
+}

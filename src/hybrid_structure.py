@@ -260,15 +260,35 @@ def predict_hybrid_properties(structure):
     Scientific basis:
         - Uses Hagen-Poiseuille flux model from flux_simulator.py
         - Uses size exclusion + wettability rejection model from oil_rejection.py
-        - Incorporates dynamic thickness from interlayer spacing calculations
-    """
+        - Incorporates dynamic thickness from interlayer spacing calculations    """
+    
     from flux_simulator import simulate_flux
     from oil_rejection import simulate_oil_rejection
-    from properties import WATER_VISCOSITY, OIL_DROPLET_SIZE
+    from properties import WATER_PROPERTIES, OIL_DROPLET_SIZE
+    from membrane_model import compute_interface_penalty
+      # Calculate composition fractions
+    if not structure.layers:
+        # Handle empty structure
+        return {
+            'structure_name': getattr(structure, 'name', 'Empty'),
+            'go_fraction': 0,
+            'rgo_fraction': 0,
+            'total_layers': 0,
+            'thickness_nm': 0,
+            'avg_pore_size': 0,
+            'contact_angle_deg': 0,
+            'predicted_flux': 0,
+            'predicted_rejection': 0,
+            'flux_error': 0,
+            'rejection_error': 0,
+            'weighted_modulus': 0,
+            'weighted_strength': 0,
+            'performance_score': 0,
+            'layer_metadata': []
+        }
     
-    # Calculate composition fractions
-    go_fraction = structure.layers.count('GO') / len(structure.layers) if structure.layers else 0
-    rgo_fraction = structure.layers.count('rGO') / len(structure.layers) if structure.layers else 0
+    go_fraction = structure.layers.count('GO') / len(structure.layers)
+    rgo_fraction = structure.layers.count('rGO') / len(structure.layers)
     
     # Physics-based property calculations
     # 1. Average pore size (weighted by layer fraction)
@@ -276,15 +296,24 @@ def predict_hybrid_properties(structure):
     rgo_pore_size = 0.99 # nm (from properties.py)
     avg_pore_size = go_fraction * go_pore_size + rgo_fraction * rgo_pore_size
     
+    # Handle edge case where avg_pore_size is 0
+    if avg_pore_size <= 0:
+        avg_pore_size = 1.0  # Default pore size
+    
     # 2. Use dynamic thickness from structure
     thickness = structure.total_thickness
     
-    # 3. Physics-based flux prediction (Hagen-Poiseuille)
+    # Handle edge case where thickness is 0
+    if thickness <= 0:
+        thickness = 1.0  # Default thickness
+      # 3. Physics-based flux prediction with advanced parameters
     predicted_flux = simulate_flux(
         pore_size_nm=avg_pore_size,
         thickness_nm=thickness,
         pressure_bar=1.0,
-        viscosity_mpas=WATER_VISCOSITY
+        viscosity_pas=WATER_PROPERTIES["viscosity_25C"],
+        porosity=WATER_PROPERTIES["porosity"],
+        tortuosity=WATER_PROPERTIES["tortuosity"]
     )
     
     # 4. Weighted contact angle
@@ -307,12 +336,15 @@ def predict_hybrid_properties(structure):
                        rgo_fraction * rgo_props['modulus'])
     weighted_strength = (go_fraction * go_props['strength'] + 
                         rgo_fraction * rgo_props['strength'])
+      # 7. Interface penalty for hybrid structures
+    interface_penalty = compute_interface_penalty(structure.layers)
+    predicted_flux *= (1 - interface_penalty)  # Apply penalty to flux
     
-    # 7. Error estimates (±5% flux, ±3% rejection)
+    # 8. Error estimates (±5% flux, ±3% rejection)
     flux_error = predicted_flux * 0.05
     rejection_error = predicted_rejection * 0.03
     
-    # 8. Performance score
+    # 9. Performance score
     performance_score = predicted_flux * (predicted_rejection / 100)
     
     return {
@@ -326,9 +358,10 @@ def predict_hybrid_properties(structure):
         'predicted_flux': predicted_flux,
         'predicted_rejection': predicted_rejection,
         'flux_error': flux_error,
-        'rejection_error': rejection_error,
-        'weighted_modulus': weighted_modulus,
-        'weighted_strength': weighted_strength,        'performance_score': performance_score,
+        'rejection_error': rejection_error,        'weighted_modulus': weighted_modulus,
+        'weighted_strength': weighted_strength,
+        'interface_penalty': interface_penalty,
+        'performance_score': performance_score,
         'layer_metadata': structure.layer_metadata
     }
 

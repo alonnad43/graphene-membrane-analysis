@@ -1,7 +1,7 @@
 # unify_results.py
 
 """
-Combines all results from Phase 1, 2, and 3 into a master summary.
+Combines all results from Phase 1, 2, 3, and 4 into a master summary.
 
 # TODO: Add flags for filtering hybrid-only, GO-only, etc.
 # TODO: Add ranking logic by performance/cost ratio
@@ -17,11 +17,12 @@ class ResultsUnifier:
     """
     Combines results from all simulation phases into unified datasets.
     """
-    
+
     def __init__(self):
         self.phase1_data = None
         self.phase2_data = None
         self.phase3_data = None
+        self.phase4_data = None
         self.unified_data = None
     
     def load_phase1_results(self, excel_path=None, dataframe=None):
@@ -133,8 +134,7 @@ class ResultsUnifier:
         
         for idx, row in df.iterrows():
             material = row['material']
-            if material == 'Hybrid' and not self.phase2_data.empty:
-                # Assign first available hybrid structure
+            if material == 'Hybrid' and not self.phase2_data.empty:                # Assign first available hybrid structure
                 structure_row = self.phase2_data.iloc[0]
                 df.at[idx, 'layer_sequence'] = structure_row['layer_sequence']
                 df.at[idx, 'total_layers'] = structure_row['total_layers']
@@ -149,25 +149,30 @@ class ResultsUnifier:
         """Merge Phase 3 LAMMPS data with main dataset."""
         # Match by membrane name (simplified)
         
+        df['lammps_simulated'] = False
         df['lammps_success'] = False
-        df['lammps_flux_rate'] = np.nan
-        df['lammps_final_pressure'] = np.nan
+        df['atomistic_flux_lmh'] = np.nan
+        df['atomistic_modulus_gpa'] = np.nan
+        df['simulation_temperature_k'] = np.nan
+        df['simulation_pressure_bar'] = np.nan
         
         for idx, row in df.iterrows():
             membrane_name = row['membrane_name']
-            # Look for matching LAMMPS simulation
+            
+            # Try to find matching LAMMPS result
             lammps_match = self.phase3_data[
-                self.phase3_data['simulation_name'].str.contains(
-                    membrane_name.replace(' ', '_'), na=False
-                )
+                self.phase3_data['simulation_name'].str.contains(membrane_name.replace(' ', '_'), case=False, na=False)
             ]
             
             if not lammps_match.empty:
                 lammps_row = lammps_match.iloc[0]
+                df.at[idx, 'lammps_simulated'] = True
                 df.at[idx, 'lammps_success'] = lammps_row['lammps_success']
+                
                 if lammps_row['lammps_success']:
-                    df.at[idx, 'lammps_flux_rate'] = lammps_row['estimated_flux_rate']
-                    df.at[idx, 'lammps_final_pressure'] = lammps_row['final_pressure']
+                    df.at[idx, 'atomistic_flux_lmh'] = lammps_row.get('estimated_flux_rate', np.nan)
+                    df.at[idx, 'simulation_temperature_k'] = lammps_row.get('final_temperature', np.nan)
+                    df.at[idx, 'simulation_pressure_bar'] = lammps_row.get('final_pressure', np.nan)
         
         return df
     
@@ -183,9 +188,17 @@ class ResultsUnifier:
             df['flux_per_pressure'] * df['rejection_efficiency']
         )
         
-        # LAMMPS vs Theoretical comparison
-        if 'lammps_flux_rate' in df.columns:
-            df['lammps_theoretical_ratio'] = df['lammps_flux_rate'] / df['flux_lmh']
+        # Merge empirical and atomistic results as specified in instructions
+        if 'atomistic_flux_lmh' in df.columns:
+            # If atomistic simulation was successful, use simulated flux
+            df['unified_flux_lmh'] = df.apply(lambda row: 
+                row['atomistic_flux_lmh'] if pd.notna(row['atomistic_flux_lmh']) 
+                else row['flux_lmh'], axis=1)
+            
+            # LAMMPS vs Theoretical comparison
+            df['atomistic_empirical_ratio'] = df['atomistic_flux_lmh'] / df['flux_lmh']
+        else:
+            df['unified_flux_lmh'] = df['flux_lmh']
         
         # Material efficiency ranking
         df['material_rank'] = df.groupby('material')['performance_score'].rank(ascending=False)
@@ -310,3 +323,84 @@ class ResultsUnifier:
             df = df[df['lammps_success'] == True]
         
         return df
+    
+    def load_phase4_results(self, chemistry_engine):
+        """
+        Load Phase 4 (chemical/biological) simulation results.
+        
+        Args:
+            chemistry_engine: ChemistrySimulationEngine with results
+        """
+        if chemistry_engine and hasattr(chemistry_engine, 'simulation_results'):
+            phase4_records = []
+            
+            for sim_result in chemistry_engine.simulation_results:
+                membrane_type = sim_result['membrane_type']
+                
+                for contaminant, data in sim_result['contaminants'].items():
+                    # Extract removal efficiency
+                    efficiency = 0
+                    if 'removal_efficiency' in data:
+                        efficiency = data['removal_efficiency']
+                    elif 'kill_efficiency' in data:
+                        efficiency = data['kill_efficiency']
+                    elif 'rejection_percent' in data:
+                        efficiency = max(0, data['rejection_percent'])
+                    
+                    record = {
+                        'membrane_type': membrane_type,
+                        'contaminant': contaminant,
+                        'contaminant_type': data.get('type', 'unknown'),
+                        'removal_efficiency_percent': efficiency,
+                        'simulation_time_min': sim_result.get('reaction_time', 180),
+                        'pH': sim_result.get('pH', 7.0),
+                        'phase': 'Phase4_Chemical_Biological'
+                    }
+                    
+                    # Add contaminant-specific data
+                    if 'q_max' in data:
+                        record['adsorption_capacity_mg_g'] = data['q_max']
+                    if 'k2' in data:
+                        record['kinetic_constant'] = data['k2']
+                    if 'kill_log' in data:
+                        record['log_reduction'] = data['kill_log']
+                    
+                    phase4_records.append(record)
+            
+            self.phase4_data = pd.DataFrame(phase4_records)
+        else:
+            print("Warning: No Phase 4 chemistry results provided")
+            self.phase4_data = pd.DataFrame()
+    
+    def create_unified_dataset_with_phase4(self):
+        """
+        Create unified dataset including all four phases.
+        """
+        datasets = []
+        
+        # Add existing phase data
+        if self.phase1_data is not None:
+            phase1_marked = self.phase1_data.copy()
+            phase1_marked['phase'] = 'Phase1_Macroscale'
+            datasets.append(phase1_marked)
+        
+        if self.phase2_data is not None:
+            phase2_marked = self.phase2_data.copy()
+            phase2_marked['phase'] = 'Phase2_Hybrid_Structure'
+            datasets.append(phase2_marked)
+        
+        if self.phase3_data is not None:
+            phase3_marked = self.phase3_data.copy()
+            phase3_marked['phase'] = 'Phase3_Atomistic'
+            datasets.append(phase3_marked)
+        
+        if self.phase4_data is not None and not self.phase4_data.empty:
+            datasets.append(self.phase4_data)
+        
+        if datasets:
+            self.unified_data = pd.concat(datasets, ignore_index=True, sort=False)
+            print(f"✅ Unified dataset created with {len(self.unified_data)} total records")
+            print(f"Phases included: {self.unified_data['phase'].unique()}")
+        else:
+            print("⚠️ No data loaded for any phase")
+            self.unified_data = pd.DataFrame()

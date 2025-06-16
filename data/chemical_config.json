@@ -1,0 +1,136 @@
+{
+  "simulation_settings": {
+    "timestep_minutes": 1.0,
+    "default_reaction_time_minutes": 180,
+    "default_pH": 6.5,
+    "membrane_mass_g": 1.0,
+    "solution_volume_L": 1.0,
+    "temperature_celsius": 25
+  },
+    "selected_membrane": "hybrid",
+  "contaminant_mix": {
+    "heavy_metals": {
+      "Pb2+": 50.0,
+      "Cd2+": 30.0,
+      "Hg2+": 15.0,
+      "As3+": 25.0,
+      "Cr6+": 40.0
+    },
+    "PFAS": {
+      "PFOA": 0.1,
+      "PFOS": 0.08,
+      "PFBS": 0.15
+    },
+    "organics": {
+      "BPA": 15.0,
+      "atrazine": 20.0,
+      "TCE": 35.0
+    },
+    "pathogens": {
+      "E_coli": 1e5,
+      "rotavirus": 5e4
+    },
+    "salts": {
+      "NaCl": 1000.0,
+      "MgSO4": 500.0
+    },
+    "nutrients": {
+      "NO3-": 45.0,
+      "PO43-": 30.0,
+      "F-": 20.0
+    },
+    "pharmaceuticals": {
+      "ibuprofen": 5.0,
+      "carbamazepine": 3.0
+    },
+    "antibiotics": {
+      "ciprofloxacin": 2.0,
+      "tetracycline": 1.5
+    },
+    "microplastics": {
+      "PET_microplastic": 100.0,
+      "PS_microplastic": 75.0
+    }
+  },
+  
+  "regeneration_settings": {
+    "enable_regeneration": true,
+    "max_cycles": 5,
+    "regeneration_method": "chemical_wash",
+    "efficiency_degradation_per_cycle": 0.05
+  },
+  
+  "output_settings": {
+    "save_csv": true,
+    "save_json": true,
+    "create_plots": true,
+    "output_directory": "output/phase4_chemistry",
+    "plot_directory": "graphs/phase4_chemistry"
+  },
+  
+  "validation_targets": {
+    "Pb2+_removal_percent_min": 85,
+    "E_coli_log_reduction_min": 4,
+    "NaCl_rejection_percent_min": 50,
+    "overall_performance_score_min": 75
+  },
+    "experimental_conditions": {
+    "water_source": "Lake_Victoria_synthetic",
+    "background_ions": {
+      "Ca2+": 20.0,
+      "Mg2+": 15.0,
+      "SO42-": 35.0,
+      "HCO3-": 45.0
+    },
+    "pH_range": [6.0, 8.0],
+    "temperature_range_celsius": [20, 30],
+    "pressure_bar": 1.0
+  },
+  
+  "lake_victoria_field_conditions": {
+    "water_chemistry": {
+      "pH_range": [6.3, 8.9],
+      "conductivity_uS_cm_range": [94.2, 110.5],
+      "turbidity_NTU_range": [21.4, 77.1],
+      "temperature_C_range": [24.4, 25.8],
+      "chloride_mg_L_range": [1.46, 21.9],
+      "nitrate_ug_L_range": [19.3, 313.5],
+      "iron_mg_L_range": [0.02, 0.14]
+    },
+    "target_contaminants": {
+      "priority_pathogens": {
+        "E_coli": 1e4,
+        "Giardia": 500,
+        "Salmonella": 1e3,
+        "Rotavirus": 1e3,
+        "Adenovirus": 800
+      },
+      "common_salts": {
+        "Na+": 15.0,
+        "Cl-": 12.0,
+        "Ca2+": 25.0,
+        "Mg2+": 18.0,
+        "SO4^2-": 20.0
+      },
+      "emerging_PFAS": {
+        "PFOA": 0.005,
+        "PFOS": 0.008,
+        "GenX_HFPO-DA": 0.003,
+        "PFBS": 0.012
+      },
+      "heavy_metals_detected": {
+        "Pb2+": 0.05,
+        "Cd2+": 0.02,
+        "Hg2+": 0.001
+      }
+    },
+    "operational_parameters": {
+      "membrane_types_recommended": ["GO-CTAC", "3D-GO-CNT", "CTAB-rGO-Fe3O4"],
+      "regeneration_method": "hypochlorite_100ppm",
+      "expected_cycles": 75,
+      "flux_recovery_target_percent": 90,
+      "tropical_adaptation": true,
+      "biofouling_resistance": "enhanced"
+    }
+  }
+}

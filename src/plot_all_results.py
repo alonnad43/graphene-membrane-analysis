@@ -377,6 +377,86 @@ class ComprehensivePlotter:
         self.plot_rejection_analysis(unified_data, plot_dir)
         self.plot_structural_analysis(unified_data, plot_dir)
         self.create_summary_dashboard(unified_data, summary_stats, plot_dir)
-        
         print(f"All plots saved to: {plot_dir}")
         return plot_dir
+    
+    def plot_phase4_contaminant_removal(self, unified_data, output_dir):
+        """
+        Create Phase 4 chemical/biological removal efficiency plots.
+        
+        Args:
+            unified_data (pd.DataFrame): Unified dataset with Phase 4 data
+            output_dir (str): Directory to save plots
+        """
+        # Filter for Phase 4 data
+        phase4_data = unified_data[unified_data['phase'] == 'Phase4_Chemical_Biological'].copy()
+        
+        if phase4_data.empty:
+            print("No Phase 4 data available for plotting")
+            return
+        
+        # Contaminant removal efficiency by membrane type
+        fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+        fig.suptitle('Phase 4: Chemical & Biological Contaminant Removal', fontsize=16, fontweight='bold')
+        
+        # Plot 1: Removal efficiency by contaminant type
+        if 'contaminant_type' in phase4_data.columns and 'removal_efficiency_percent' in phase4_data.columns:
+            contaminant_summary = phase4_data.groupby(['contaminant_type', 'membrane_type'])['removal_efficiency_percent'].mean().reset_index()
+            contaminant_pivot = contaminant_summary.pivot(index='contaminant_type', columns='membrane_type', values='removal_efficiency_percent')
+            
+            contaminant_pivot.plot(kind='bar', ax=axes[0,0], color=[self.colors.get(col, '#666666') for col in contaminant_pivot.columns])
+            axes[0,0].set_title('Removal Efficiency by Contaminant Type')
+            axes[0,0].set_ylabel('Removal Efficiency (%)')
+            axes[0,0].legend(title='Membrane Type')
+            axes[0,0].tick_params(axis='x', rotation=45)
+        
+        # Plot 2: Individual contaminant performance
+        if 'contaminant' in phase4_data.columns:
+            top_contaminants = phase4_data.groupby('contaminant')['removal_efficiency_percent'].mean().sort_values(ascending=False).head(8)
+            contaminant_data = phase4_data[phase4_data['contaminant'].isin(top_contaminants.index)]
+            
+            for membrane in ['GO', 'rGO', 'hybrid']:
+                mem_data = contaminant_data[contaminant_data['membrane_type'] == membrane]
+                if not mem_data.empty:
+                    axes[0,1].bar(mem_data['contaminant'], mem_data['removal_efficiency_percent'], 
+                                 label=membrane, alpha=0.7, color=self.colors.get(membrane, '#666666'))
+            
+            axes[0,1].set_title('Top Performing Contaminants')
+            axes[0,1].set_ylabel('Removal Efficiency (%)')
+            axes[0,1].legend()
+            axes[0,1].tick_params(axis='x', rotation=45)
+        
+        # Plot 3: Adsorption capacity comparison (if available)
+        if 'adsorption_capacity_mg_g' in phase4_data.columns:
+            adsorption_data = phase4_data.dropna(subset=['adsorption_capacity_mg_g'])
+            if not adsorption_data.empty:
+                membrane_capacity = adsorption_data.groupby('membrane_type')['adsorption_capacity_mg_g'].mean()
+                axes[1,0].bar(membrane_capacity.index, membrane_capacity.values, 
+                             color=[self.colors.get(mem, '#666666') for mem in membrane_capacity.index])
+                axes[1,0].set_title('Average Adsorption Capacity')
+                axes[1,0].set_ylabel('Capacity (mg/g)')
+        
+        # Plot 4: pH dependency (if available)
+        if 'pH' in phase4_data.columns:
+            ph_performance = phase4_data.groupby(['pH', 'membrane_type'])['removal_efficiency_percent'].mean().reset_index()
+            for membrane in ['GO', 'rGO', 'hybrid']:
+                mem_data = ph_performance[ph_performance['membrane_type'] == membrane]
+                if not mem_data.empty:
+                    axes[1,1].plot(mem_data['pH'], mem_data['removal_efficiency_percent'], 
+                                  marker='o', label=membrane, color=self.colors.get(membrane, '#666666'))
+            
+            axes[1,1].set_title('pH Dependency of Removal Efficiency')
+            axes[1,1].set_xlabel('pH')
+            axes[1,1].set_ylabel('Removal Efficiency (%)')
+            axes[1,1].legend()
+            axes[1,1].grid(True, alpha=0.3)
+        
+        plt.tight_layout()
+        
+        # Save plot
+        plot_path = os.path.join(output_dir, 'phase4_contaminant_removal_analysis.png')
+        plt.savefig(plot_path, dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        print(f"Phase 4 contaminant removal plot saved: {plot_path}")
+        return plot_path

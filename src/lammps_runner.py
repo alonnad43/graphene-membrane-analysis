@@ -130,7 +130,7 @@ class LAMMPSRunner:
     
     def run_membrane_simulation(self, membrane):
         """
-        Run complete LAMMPS simulation for a membrane.
+        Run complete LAMMPS simulation for a membrane using realistic molecular dynamics.
         
         Args:
             membrane: Membrane object from Phase 1
@@ -156,10 +156,10 @@ class LAMMPSRunner:
             data_file = os.path.join(sim_dir, f"{sim_name}.data")
             builder.write_lammps_data(atoms, data_file)
             
-            # Create input file
+            # Create realistic LAMMPS input file (based on Schmidt et al. [17])
             writer = LAMMPSInputWriter()
             input_file = os.path.join(sim_dir, f"{sim_name}.in")
-            writer.write_membrane_input(input_file, data_file, membrane)
+            writer.write_realistic_membrane_input(input_file, data_file, membrane)
             
             print(f"  Running LAMMPS simulation...")
             
@@ -168,6 +168,12 @@ class LAMMPSRunner:
             
             if result['success']:
                 print(f"  ✅ Simulation completed successfully")
+                
+                # Parse realistic results from LAMMPS output
+                from output_parser import parse_realistic_lammps_output
+                parsed_results = parse_realistic_lammps_output(sim_dir)
+                result.update(parsed_results)
+                
             else:
                 print(f"  ❌ Simulation failed: {result.get('error', 'Unknown error')}")
             
@@ -175,6 +181,10 @@ class LAMMPSRunner:
                 'success': result['success'],
                 'output_dir': sim_dir,
                 'log_file': os.path.join(sim_dir, 'log.lammps'),
+                'water_flux': result.get('water_flux_lmh', None),
+                'youngs_modulus': result.get('youngs_modulus_gpa', None),
+                'ultimate_strength': result.get('ultimate_strength_mpa', None),
+                'contact_angle': result.get('contact_angle_deg', None),
                 'error': result.get('error')
             }
             
@@ -245,62 +255,4 @@ def check_lammps_installation():
         return {
             "available": False,
             "message": "LAMMPS not found. Please install LAMMPS and ensure 'lmp' is in PATH."
-        }
-
-def run_membrane_simulation(membrane_type, membrane_object, simulation_steps=50000, output_dir="lammps_sims"):
-    """
-    Standalone function to run membrane simulation using LAMMPS.
-    
-    Args:
-        membrane_type (str): Type of membrane ('GO', 'rGO', 'Hybrid')
-        membrane_object: Membrane object from Phase 1/2
-        simulation_steps (int): Number of simulation steps
-        output_dir (str): Output directory for simulation files
-    
-    Returns:
-        dict: Simulation results including flux and mechanical properties
-    """
-    from output_parser import LAMMPSOutputParser
-    
-    try:
-        # Initialize LAMMPS runner
-        runner = LAMMPSRunner(working_dir=output_dir)
-        
-        # Run the simulation
-        result = runner.run_membrane_simulation(membrane_object)
-        
-        if result['success']:
-            # Parse simulation results
-            parser = LAMMPSOutputParser()
-            
-            # Parse water flux (example - would need actual LAMMPS output parsing)
-            water_flux = membrane_object.flux_lmh * (0.9 + 0.2 * np.random.random())  # Simulate atomistic correction
-            
-            # Parse mechanical properties (example - would need actual stress-strain analysis)
-            youngs_modulus = membrane_object.modulus_GPa * (0.95 + 0.1 * np.random.random())
-            ultimate_strength = membrane_object.tensile_strength_MPa * (0.9 + 0.2 * np.random.random())
-            
-            # Contact angle (would need actual surface analysis)
-            contact_angle = membrane_object.contact_angle_deg + np.random.normal(0, 5)
-            
-            return {
-                'success': True,
-                'water_flux': water_flux,
-                'youngs_modulus': youngs_modulus,
-                'ultimate_strength': ultimate_strength,
-                'contact_angle': contact_angle,
-                'simulation_dir': result['output_dir'],
-                'log_file': result['log_file']
-            }
-        else:
-            return {
-                'success': False,
-                'error': result.get('error', 'Unknown error'),
-                'simulation_dir': result.get('output_dir')
-            }
-            
-    except Exception as e:
-        return {
-            'success': False,
-            'error': f"Simulation setup error: {str(e)}"
         }

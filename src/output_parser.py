@@ -291,3 +291,200 @@ def calculate_water_permeability(flux_analysis, membrane_thickness_nm, pressure_
         "applied_pressure": pressure_bar,
         "units": "arbitrary (needs proper unit conversion)"
     }
+
+def parse_water_flux(dump_path, membrane_area_nm2=100.0, simulation_time_ns=50.0):
+    """
+    Parse water flux from LAMMPS dump file by counting water molecules crossing membrane.
+    
+    Args:
+        dump_path (str): Path to LAMMPS dump.xyz file
+        membrane_area_nm2 (float): Membrane area in nm²
+        simulation_time_ns (float): Simulation time in nanoseconds
+        
+    Returns:
+        dict: Flux analysis results
+    """
+    if not os.path.exists(dump_path):
+        return {"error": f"Dump file not found: {dump_path}", "flux_lmh": 0.0}
+    
+    try:
+        # Read dump file and count water molecules crossing z-threshold
+        water_crossings = count_z_crossings(dump_path, z_threshold=0.0)
+        
+        # Calculate flux using physical constants
+        water_molar_volume_l = 0.018015  # L/mol at 300K
+        avogadro = 6.02214076e23
+        area_m2 = membrane_area_nm2 * 1e-18  # nm² to m²
+        sim_time_hr = simulation_time_ns / 3.6e12  # ns to hours
+        
+        # Flux calculation: crossings → moles → liters → flux rate
+        moles_crossed = water_crossings / avogadro
+        volume_crossed_l = moles_crossed * water_molar_volume_l
+        flux_lmh = volume_crossed_l / (area_m2 * sim_time_hr)
+        
+        return {
+            "flux_lmh": flux_lmh,
+            "water_crossings": water_crossings,
+            "simulation_time_ns": simulation_time_ns,
+            "membrane_area_nm2": membrane_area_nm2
+        }
+        
+    except Exception as e:
+        return {"error": str(e), "flux_lmh": 0.0}
+
+def count_z_crossings(dump_path, z_threshold=0.0):
+    """
+    Count water molecules crossing z-threshold between frames.
+    
+    Args:
+        dump_path (str): Path to dump file
+        z_threshold (float): Z-coordinate threshold for crossing detection
+        
+    Returns:
+        int: Number of water molecule crossings
+    """
+    crossings = 0
+    previous_z_positions = {}
+    
+    try:
+        with open(dump_path, 'r') as f:
+            current_frame = []
+            reading_atoms = False
+            
+            for line in f:
+                line = line.strip()
+                
+                if line.startswith('ITEM: TIMESTEP'):
+                    # Process previous frame if exists
+                    if current_frame:
+                        crossings += analyze_frame_crossings(current_frame, previous_z_positions, z_threshold)
+                    current_frame = []
+                    reading_atoms = False
+                    
+                elif line.startswith('ITEM: ATOMS'):
+                    reading_atoms = True
+                    
+                elif reading_atoms and line and not line.startswith('ITEM:'):
+                    # Parse atom data: ID type x y z ...
+                    parts = line.split()
+                    if len(parts) >= 5:
+                        atom_id = int(parts[0])
+                        atom_type = int(parts[1])
+                        z_pos = float(parts[4])
+                        
+                        # Only track water oxygen atoms (type 4 in typical setup)
+                        if atom_type == 4:
+                            current_frame.append((atom_id, z_pos))
+            
+            # Process final frame
+            if current_frame:
+                crossings += analyze_frame_crossings(current_frame, previous_z_positions, z_threshold)
+                
+    except Exception as e:
+        print(f"Error reading dump file: {e}")
+        return 0
+    
+    return crossings
+
+def analyze_frame_crossings(current_frame, previous_z_positions, z_threshold):
+    """
+    Analyze crossings in current frame compared to previous positions.
+    
+    Args:
+        current_frame (list): List of (atom_id, z_pos) tuples
+        previous_z_positions (dict): Previous z-positions by atom_id
+        z_threshold (float): Crossing threshold
+        
+    Returns:
+        int: Number of crossings detected in this frame
+    """
+    crossings = 0
+    
+    for atom_id, z_pos in current_frame:
+        if atom_id in previous_z_positions:
+            prev_z = previous_z_positions[atom_id]
+            
+            # Check for crossing
+            if (prev_z < z_threshold <= z_pos) or (prev_z > z_threshold >= z_pos):
+                crossings += 1
+        
+        # Update position for next frame
+        previous_z_positions[atom_id] = z_pos
+    
+    return crossings
+
+def parse_realistic_lammps_output(sim_dir):
+    """
+    Parse all LAMMPS output files to extract realistic physical properties.
+    
+    Args:
+        sim_dir (str): Simulation directory containing LAMMPS output files
+        
+    Returns:
+        dict: Comprehensive simulation results
+    """
+    results = {
+        "water_flux_lmh": 0.0,
+        "youngs_modulus_gpa": None,
+        "ultimate_strength_mpa": None,
+        "contact_angle_deg": None,
+        "final_temperature": None,
+        "final_pressure": None,
+        "simulation_success": False
+    }
+    
+    try:
+        # Parse water flux from trajectory
+        dump_file = os.path.join(sim_dir, "dump.xyz")
+        if os.path.exists(dump_file):
+            flux_results = parse_water_flux(dump_file)
+            results["water_flux_lmh"] = flux_results.get("flux_lmh", 0.0)
+        
+        # Parse thermodynamic data from log
+        log_file = os.path.join(sim_dir, "log.lammps")
+        if os.path.exists(log_file):
+            thermo_data = extract_final_thermodynamics(log_file)
+            results.update(thermo_data)
+        
+        # Mark as successful if we got basic results
+        if results["water_flux_lmh"] > 0 or results["final_temperature"] is not None:
+            results["simulation_success"] = True
+            
+    except Exception as e:
+        results["error"] = str(e)
+    
+    return results
+
+def extract_final_thermodynamics(log_path):
+    """
+    Extract final thermodynamic properties from LAMMPS log file.
+    
+    Args:
+        log_path (str): Path to LAMMPS log file
+        
+    Returns:
+        dict: Final thermodynamic properties
+    """
+    results = {}
+    
+    try:
+        with open(log_path, 'r') as f:
+            content = f.read()
+            
+            # Extract final values using regex
+            temp_match = re.search(r'Final temperature:\s*([\d.]+)', content)
+            if temp_match:
+                results["final_temperature"] = float(temp_match.group(1))
+            
+            press_match = re.search(r'Final pressure:\s*([\d.-]+)', content)
+            if press_match:
+                results["final_pressure"] = float(press_match.group(1))
+                
+            pe_match = re.search(r'Final potential energy:\s*([\d.-]+)', content)
+            if pe_match:
+                results["final_potential_energy"] = float(pe_match.group(1))
+                
+    except Exception as e:
+        results["parse_error"] = str(e)
+    
+    return results

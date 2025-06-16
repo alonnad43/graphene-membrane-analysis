@@ -132,3 +132,23 @@ class Membrane:
             self.contact_angle_deg,
             self.rejection_percent
         ))
+
+def compute_interface_penalty(layers):
+    """
+    Compute performance penalty due to GO/rGO layer transitions in hybrid membranes.
+    
+    Args:
+        layers (list): List of layer types ['GO', 'rGO', 'GO', ...]
+    
+    Returns:
+        float: Penalty factor (0.02 = 2% penalty per transition)
+    
+    Scientific basis:
+        - Interface resistance increases with material transitions
+        - Each GO/rGO boundary introduces flow impedance
+    """
+    penalty = 0
+    for i in range(1, len(layers)):
+        if layers[i] != layers[i - 1]:
+            penalty += 0.02  # 2% penalty per transition
+    return penalty

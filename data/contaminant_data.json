@@ -1,0 +1,1264 @@
+{
+  "membrane_types": {
+    "GO": {
+      "name": "Graphene Oxide",
+      "description": "Oxidized graphene with oxygen-containing functional groups",
+      "structure": "2D layered material with hydroxyl, epoxy, and carboxyl groups",
+      "pore_size_range_nm": [0.5, 2.0],
+      "thickness_range_nm": [10, 500],
+      "permeability_coefficient": 1.2e-12,
+      "selectivity_factor": 0.85,
+      "zeta_potential_range_mV": [-40, -10],
+      "contact_angle_degrees": 45,
+      "surface_charge_density": -0.025,
+      "mechanical_strength_MPa": 130,
+      "stability_pH_range": [3, 11],
+      "temperature_stability_C": 200
+    },
+    "rGO": {
+      "name": "Reduced Graphene Oxide",
+      "description": "Partially reduced graphene oxide with restored conductivity",
+      "structure": "2D layered material with reduced oxygen groups",
+      "pore_size_range_nm": [0.3, 1.5],
+      "thickness_range_nm": [5, 300],
+      "permeability_coefficient": 2.1e-12,
+      "selectivity_factor": 0.92,
+      "zeta_potential_range_mV": [-30, -5],
+      "contact_angle_degrees": 85,
+      "surface_charge_density": -0.015,
+      "mechanical_strength_MPa": 180,
+      "stability_pH_range": [4, 10],
+      "temperature_stability_C": 300
+    },
+    "hybrid": {
+      "name": "GO-rGO Hybrid",
+      "description": "Composite membrane combining GO and rGO properties",
+      "structure": "Layered composite with alternating GO and rGO regions",
+      "pore_size_range_nm": [0.4, 1.8],
+      "thickness_range_nm": [8, 400],
+      "permeability_coefficient": 1.65e-12,
+      "selectivity_factor": 0.88,
+      "zeta_potential_range_mV": [-35, -8],
+      "contact_angle_degrees": 65,
+      "surface_charge_density": -0.020,
+      "mechanical_strength_MPa": 155,
+      "stability_pH_range": [3.5, 10.5],
+      "temperature_stability_C": 250
+    }
+  },
+  "contaminants": {
+    "heavy_metals": {
+      "Pb2+": {
+        "name": "Lead(II)",
+        "molecular_weight": 207.2,
+        "charge": 2,
+        "hydrated_radius_nm": 0.401,
+        "diffusion_coefficient_m2_s": 9.46e-10,
+        "solubility_mg_L": 52000,
+        "pKa": null,
+        "log_Kow": null,
+        "vapor_pressure_Pa": null,
+        "density_kg_m3": 11340,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": 15.2,
+        "competitive_index": 0.85,
+        "sorption_model": "Langmuir",
+        "rejection_mechanisms": ["size_exclusion", "electrostatic_repulsion", "adsorption"],
+        "toxicity_class": "highly_toxic",
+        "environmental_impact": "severe",
+        "regulatory_limit_mg_L": 0.015,
+        "membrane_affinity": {
+          "GO": 0.92,
+          "rGO": 0.89,
+          "hybrid": 0.91
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 25.3,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 7.5,
+          "pH_sensitivity": 0.12
+        }
+      },
+      "Cd2+": {
+        "name": "Cadmium(II)",
+        "molecular_weight": 112.411,
+        "charge": 2,
+        "hydrated_radius_nm": 0.426,
+        "diffusion_coefficient_m2_s": 7.18e-10,
+        "solubility_mg_L": 2540000,
+        "pKa": null,
+        "log_Kow": null,
+        "vapor_pressure_Pa": null,
+        "density_kg_m3": 8650,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": 12.8,
+        "competitive_index": 0.78,
+        "sorption_model": "Langmuir",
+        "rejection_mechanisms": ["size_exclusion", "electrostatic_repulsion"],
+        "toxicity_class": "highly_toxic",
+        "environmental_impact": "severe",
+        "regulatory_limit_mg_L": 0.005,
+        "membrane_affinity": {
+          "GO": 0.88,
+          "rGO": 0.85,
+          "hybrid": 0.87
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 22.1,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 8.0,
+          "pH_sensitivity": 0.15
+        }
+      },
+      "Hg2+": {
+        "name": "Mercury(II)",
+        "molecular_weight": 200.59,
+        "charge": 2,
+        "hydrated_radius_nm": 0.410,
+        "diffusion_coefficient_m2_s": 8.45e-10,
+        "solubility_mg_L": 60000,
+        "pKa": null,
+        "log_Kow": null,
+        "vapor_pressure_Pa": null,
+        "density_kg_m3": 13534,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": 18.5,
+        "competitive_index": 0.92,
+        "sorption_model": "Freundlich",
+        "rejection_mechanisms": ["size_exclusion", "electrostatic_repulsion", "chemical_binding"],
+        "toxicity_class": "extremely_toxic",
+        "environmental_impact": "severe",
+        "regulatory_limit_mg_L": 0.002,
+        "membrane_affinity": {
+          "GO": 0.95,
+          "rGO": 0.91,
+          "hybrid": 0.94
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 28.7,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 7.0,
+          "pH_sensitivity": 0.18
+        }
+      },
+      "As3+": {
+        "name": "Arsenic(III)",
+        "molecular_weight": 74.92,
+        "charge": 0,
+        "hydrated_radius_nm": 0.350,
+        "diffusion_coefficient_m2_s": 1.21e-9,
+        "solubility_mg_L": 200000,
+        "pKa": 9.2,
+        "log_Kow": null,
+        "vapor_pressure_Pa": null,
+        "density_kg_m3": 5720,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -5.2,
+        "competitive_index": 0.65,
+        "sorption_model": "Langmuir",
+        "rejection_mechanisms": ["adsorption", "chemical_binding"],
+        "toxicity_class": "highly_toxic",
+        "environmental_impact": "severe",
+        "regulatory_limit_mg_L": 0.010,
+        "membrane_affinity": {
+          "GO": 0.82,
+          "rGO": 0.78,
+          "hybrid": 0.81
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 31.2,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 6.5,
+          "pH_sensitivity": 0.22
+        }
+      },
+      "Cr6+": {
+        "name": "Chromium(VI)",
+        "molecular_weight": 51.996,
+        "charge": 6,
+        "hydrated_radius_nm": 0.290,
+        "diffusion_coefficient_m2_s": 1.65e-9,
+        "solubility_mg_L": 1660000,
+        "pKa": null,
+        "log_Kow": null,
+        "vapor_pressure_Pa": null,
+        "density_kg_m3": 7140,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -25.8,
+        "competitive_index": 0.88,
+        "sorption_model": "Langmuir",
+        "rejection_mechanisms": ["electrostatic_repulsion", "reduction", "adsorption"],
+        "toxicity_class": "carcinogenic",
+        "environmental_impact": "severe",
+        "regulatory_limit_mg_L": 0.1,
+        "membrane_affinity": {
+          "GO": 0.94,
+          "rGO": 0.96,
+          "hybrid": 0.95
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 18.5,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 3.0,
+          "pH_sensitivity": 0.28
+        }
+      }
+    },
+    "PFAS": {      "PFOA": {
+        "name": "Perfluorooctanoic acid",
+        "molecular_weight": 414.07,
+        "charge": -1,
+        "hydrated_radius_nm": 0.58,
+        "diffusion_coefficient_m2_s": 6.2e-10,
+        "solubility_mg_L": 3400,
+        "pKa": 2.8,
+        "log_Kow": 2.8,
+        "vapor_pressure_Pa": 0.013,
+        "density_kg_m3": 1792,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": 0.015,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -18.5,
+        "competitive_index": 0.75,
+        "sorption_model": "Freundlich",
+        "rejection_mechanisms": ["size_exclusion", "electrostatic_repulsion", "hydrophobic_interaction"],
+        "toxicity_class": "persistent_organic_pollutant",
+        "environmental_impact": "high",
+        "regulatory_limit_mg_L": 0.00004,
+        "membrane_affinity": {
+          "GO": 0.85,
+          "rGO": 0.88,
+          "hybrid": 0.87
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 15.8,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 8.5,
+          "pH_sensitivity": 0.09
+        },
+        "lake_victoria_performance": {
+          "GO_CTAC_removal_efficiency": 100,
+          "pH_range_effective": [3, 11],
+          "ionic_competition_resistance": "excellent",
+          "background_salt_tolerance": "high",
+          "removal_mechanisms": ["hydrophobic", "electrostatic", "van_der_Waals"],
+          "field_validation": "confirmed_lake_victoria_basin"
+        }
+      },
+      "PFOS": {
+        "name": "Perfluorooctanesulfonic acid",
+        "molecular_weight": 500.13,
+        "charge": -1,
+        "hydrated_radius_nm": 0.62,
+        "diffusion_coefficient_m2_s": 5.8e-10,
+        "solubility_mg_L": 680,
+        "pKa": -3.3,
+        "log_Kow": 4.49,
+        "vapor_pressure_Pa": 0.0032,
+        "density_kg_m3": 1845,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": 0.012,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -22.1,
+        "competitive_index": 0.82,
+        "sorption_model": "Freundlich",
+        "rejection_mechanisms": ["size_exclusion", "electrostatic_repulsion", "hydrophobic_interaction"],
+        "toxicity_class": "persistent_organic_pollutant",
+        "environmental_impact": "high",
+        "regulatory_limit_mg_L": 0.00004,
+        "membrane_affinity": {
+          "GO": 0.88,
+          "rGO": 0.91,
+          "hybrid": 0.90
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 17.2,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 7.0,
+          "pH_sensitivity": 0.06
+        }
+      },
+      "PFBS": {
+        "name": "Perfluorobutanesulfonic acid",
+        "molecular_weight": 300.10,
+        "charge": -1,
+        "hydrated_radius_nm": 0.45,
+        "diffusion_coefficient_m2_s": 8.1e-10,
+        "solubility_mg_L": 2250,
+        "pKa": -3.1,
+        "log_Kow": 1.82,
+        "vapor_pressure_Pa": 0.15,
+        "density_kg_m3": 1760,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": 0.018,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -15.8,
+        "competitive_index": 0.68,
+        "sorption_model": "Langmuir",
+        "rejection_mechanisms": ["size_exclusion", "electrostatic_repulsion"],
+        "toxicity_class": "emerging_contaminant",
+        "environmental_impact": "moderate",
+        "regulatory_limit_mg_L": 0.0002,
+        "membrane_affinity": {
+          "GO": 0.78,
+          "rGO": 0.82,
+          "hybrid": 0.80
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 12.5,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 8.0,
+          "pH_sensitivity": 0.08
+        }
+      }
+    },
+    "organics": {
+      "BPA": {
+        "name": "Bisphenol A",
+        "molecular_weight": 228.29,
+        "charge": 0,
+        "hydrated_radius_nm": 0.52,
+        "diffusion_coefficient_m2_s": 7.8e-10,
+        "solubility_mg_L": 300,
+        "pKa": 9.6,
+        "log_Kow": 3.32,
+        "vapor_pressure_Pa": 0.0053,
+        "density_kg_m3": 1200,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -8.2,
+        "competitive_index": 0.72,
+        "sorption_model": "Freundlich",
+        "rejection_mechanisms": ["size_exclusion", "hydrophobic_interaction", "adsorption"],
+        "toxicity_class": "endocrine_disruptor",
+        "environmental_impact": "moderate",
+        "regulatory_limit_mg_L": 0.002,
+        "membrane_affinity": {
+          "GO": 0.83,
+          "rGO": 0.86,
+          "hybrid": 0.85
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 19.3,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 7.5,
+          "pH_sensitivity": 0.14
+        }
+      },
+      "atrazine": {
+        "name": "Atrazine",
+        "molecular_weight": 215.68,
+        "charge": 0,
+        "hydrated_radius_nm": 0.48,
+        "diffusion_coefficient_m2_s": 8.9e-10,
+        "solubility_mg_L": 33,
+        "pKa": 1.7,
+        "log_Kow": 2.61,
+        "vapor_pressure_Pa": 0.039,
+        "density_kg_m3": 1187,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -12.5,
+        "competitive_index": 0.69,
+        "sorption_model": "Langmuir",
+        "rejection_mechanisms": ["size_exclusion", "hydrophobic_interaction"],
+        "toxicity_class": "herbicide",
+        "environmental_impact": "moderate",
+        "regulatory_limit_mg_L": 0.003,
+        "membrane_affinity": {
+          "GO": 0.81,
+          "rGO": 0.84,
+          "hybrid": 0.83
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 16.7,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 6.8,
+          "pH_sensitivity": 0.11
+        }
+      },
+      "TCE": {
+        "name": "Trichloroethylene",
+        "molecular_weight": 131.39,
+        "charge": 0,
+        "hydrated_radius_nm": 0.38,
+        "diffusion_coefficient_m2_s": 1.15e-9,
+        "solubility_mg_L": 1100,
+        "pKa": null,
+        "log_Kow": 2.42,
+        "vapor_pressure_Pa": 9300,
+        "density_kg_m3": 1464,
+        "viscosity_Pa_s": 0.000571,
+        "surface_tension_N_m": 0.0288,
+        "dielectric_constant": 3.42,
+        "zeta_potential_mV": -6.8,
+        "competitive_index": 0.58,
+        "sorption_model": "Henry",
+        "rejection_mechanisms": ["size_exclusion", "volatilization"],
+        "toxicity_class": "carcinogenic",
+        "environmental_impact": "high",
+        "regulatory_limit_mg_L": 0.005,
+        "membrane_affinity": {
+          "GO": 0.75,
+          "rGO": 0.78,
+          "hybrid": 0.77
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 13.2,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 7.0,
+          "pH_sensitivity": 0.05
+        }
+      }
+    },
+    "pathogens": {      "E_coli": {
+        "name": "Escherichia coli",
+        "molecular_weight": 1e12,
+        "charge": -1,
+        "hydrated_radius_nm": 500,
+        "diffusion_coefficient_m2_s": 4.5e-13,
+        "solubility_mg_L": null,
+        "pKa": null,
+        "log_Kow": null,
+        "vapor_pressure_Pa": null,
+        "density_kg_m3": 1100,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -28.5,
+        "competitive_index": 0.95,
+        "sorption_model": "physical_straining",
+        "rejection_mechanisms": ["size_exclusion", "electrostatic_repulsion"],
+        "toxicity_class": "pathogenic_bacteria",
+        "environmental_impact": "high",
+        "regulatory_limit_mg_L": 0,
+        "membrane_affinity": {
+          "GO": 0.999,
+          "rGO": 0.998,
+          "hybrid": 0.999
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 35.0,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 7.0,
+          "pH_sensitivity": 0.08
+        },
+        "lake_victoria_data": {
+          "log_reduction_range": [2.5, 6.0],
+          "exposure_time_range_min": [15, 110],
+          "optimal_temperature_C": 37,
+          "membrane_types_tested": ["GO", "3D-GO-CNT"],
+          "inactivation_mechanisms": ["oxidative_stress", "physical_cutting", "membrane_wrapping"],
+          "field_effectiveness": "high",
+          "tropical_performance": "maintained_at_elevated_temperatures"
+        }
+      },
+      "rotavirus": {
+        "name": "Rotavirus",
+        "molecular_weight": 3.7e10,
+        "charge": -1,
+        "hydrated_radius_nm": 37.5,
+        "diffusion_coefficient_m2_s": 1.1e-12,
+        "solubility_mg_L": null,
+        "pKa": null,
+        "log_Kow": null,
+        "vapor_pressure_Pa": null,
+        "density_kg_m3": 1350,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -35.2,
+        "competitive_index": 0.98,
+        "sorption_model": "physical_straining",
+        "rejection_mechanisms": ["size_exclusion", "electrostatic_repulsion"],
+        "toxicity_class": "pathogenic_virus",
+        "environmental_impact": "high",
+        "regulatory_limit_mg_L": 0,
+        "membrane_affinity": {
+          "GO": 0.995,
+          "rGO": 0.992,
+          "hybrid": 0.994
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 28.5,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 7.2,
+          "pH_sensitivity": 0.12
+        }
+      }
+    },
+    "salts": {      "NaCl": {
+        "name": "Sodium chloride",
+        "molecular_weight": 58.44,
+        "charge": 0,
+        "hydrated_radius_nm": 0.358,
+        "diffusion_coefficient_m2_s": 1.61e-9,
+        "solubility_mg_L": 360000,
+        "pKa": null,
+        "log_Kow": null,
+        "vapor_pressure_Pa": null,
+        "density_kg_m3": 2165,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": 0,
+        "competitive_index": 0.45,
+        "sorption_model": "ionic_interaction",
+        "rejection_mechanisms": ["size_exclusion", "ionic_interaction"],
+        "toxicity_class": "non_toxic",
+        "environmental_impact": "low",
+        "regulatory_limit_mg_L": 250,
+        "membrane_affinity": {
+          "GO": 0.65,
+          "rGO": 0.72,
+          "hybrid": 0.68
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 8.5,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 7.0,
+          "pH_sensitivity": 0.02
+        },
+        "lake_victoria_ion_transport": {
+          "Na+": {
+            "donnan_exclusion_percent": 48,
+            "diffusion_rate_cm2_per_s": 1.33e-5,
+            "competitive_effects": "moderate_binding_site_competition",
+            "ionic_strength_impact": "moderate"
+          },
+          "Cl-": {
+            "donnan_exclusion_percent": 42,
+            "diffusion_rate_cm2_per_s": 2.03e-5,
+            "competitive_effects": "minimal_anionic_repulsion",
+            "ionic_strength_impact": "low"
+          }
+        }
+      },
+      "MgSO4": {
+        "name": "Magnesium sulfate",
+        "molecular_weight": 120.37,
+        "charge": 0,
+        "hydrated_radius_nm": 0.428,
+        "diffusion_coefficient_m2_s": 7.05e-10,
+        "solubility_mg_L": 710000,
+        "pKa": null,
+        "log_Kow": null,
+        "vapor_pressure_Pa": null,
+        "density_kg_m3": 2660,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": 0,
+        "competitive_index": 0.68,
+        "sorption_model": "ionic_interaction",
+        "rejection_mechanisms": ["size_exclusion", "electrostatic_interaction"],
+        "toxicity_class": "non_toxic",
+        "environmental_impact": "low",
+        "regulatory_limit_mg_L": 500,
+        "membrane_affinity": {
+          "GO": 0.78,
+          "rGO": 0.82,
+          "hybrid": 0.80
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 12.3,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 7.5,
+          "pH_sensitivity": 0.05
+        }
+      }
+    },
+    "nutrients": {
+      "NO3-": {
+        "name": "Nitrate",
+        "molecular_weight": 62.00,
+        "charge": -1,
+        "hydrated_radius_nm": 0.335,
+        "diffusion_coefficient_m2_s": 1.90e-9,
+        "solubility_mg_L": 921000,
+        "pKa": null,
+        "log_Kow": null,
+        "vapor_pressure_Pa": null,
+        "density_kg_m3": 2261,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -15.8,
+        "competitive_index": 0.52,
+        "sorption_model": "ion_exchange",
+        "rejection_mechanisms": ["electrostatic_repulsion", "size_exclusion"],
+        "toxicity_class": "nutrient_pollutant",
+        "environmental_impact": "moderate",
+        "regulatory_limit_mg_L": 10,
+        "membrane_affinity": {
+          "GO": 0.72,
+          "rGO": 0.68,
+          "hybrid": 0.70
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 9.8,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 8.2,
+          "pH_sensitivity": 0.08
+        }
+      },
+      "PO43-": {
+        "name": "Phosphate",
+        "molecular_weight": 94.97,
+        "charge": -3,
+        "hydrated_radius_nm": 0.390,
+        "diffusion_coefficient_m2_s": 6.12e-10,
+        "solubility_mg_L": 1200000,
+        "pKa": 7.2,
+        "log_Kow": null,
+        "vapor_pressure_Pa": null,
+        "density_kg_m3": 2200,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -28.5,
+        "competitive_index": 0.78,
+        "sorption_model": "chemical_precipitation",
+        "rejection_mechanisms": ["electrostatic_repulsion", "chemical_binding", "size_exclusion"],
+        "toxicity_class": "nutrient_pollutant",
+        "environmental_impact": "moderate",
+        "regulatory_limit_mg_L": 0.1,
+        "membrane_affinity": {
+          "GO": 0.85,
+          "rGO": 0.81,
+          "hybrid": 0.83
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 15.5,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 6.5,
+          "pH_sensitivity": 0.18
+        }
+      },
+      "F-": {
+        "name": "Fluoride",
+        "molecular_weight": 18.998,
+        "charge": -1,
+        "hydrated_radius_nm": 0.332,
+        "diffusion_coefficient_m2_s": 1.46e-9,
+        "solubility_mg_L": 16000,
+        "pKa": 3.17,
+        "log_Kow": null,
+        "vapor_pressure_Pa": null,
+        "density_kg_m3": 2558,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -12.8,
+        "competitive_index": 0.48,
+        "sorption_model": "ion_exchange",
+        "rejection_mechanisms": ["electrostatic_repulsion", "ion_exchange"],
+        "toxicity_class": "regulated_ion",
+        "environmental_impact": "low",
+        "regulatory_limit_mg_L": 4.0,
+        "membrane_affinity": {
+          "GO": 0.68,
+          "rGO": 0.65,
+          "hybrid": 0.67
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 11.2,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 8.5,
+          "pH_sensitivity": 0.12
+        }
+      }
+    },
+    "pharmaceuticals": {
+      "ibuprofen": {
+        "name": "Ibuprofen",
+        "molecular_weight": 206.28,
+        "charge": -1,
+        "hydrated_radius_nm": 0.52,
+        "diffusion_coefficient_m2_s": 6.8e-10,
+        "solubility_mg_L": 21,
+        "pKa": 4.91,
+        "log_Kow": 3.97,
+        "vapor_pressure_Pa": 0.0000267,
+        "density_kg_m3": 1030,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -18.2,
+        "competitive_index": 0.71,
+        "sorption_model": "Freundlich",
+        "rejection_mechanisms": ["size_exclusion", "electrostatic_repulsion", "hydrophobic_interaction"],
+        "toxicity_class": "pharmaceutical",
+        "environmental_impact": "moderate",
+        "regulatory_limit_mg_L": 0.001,
+        "membrane_affinity": {
+          "GO": 0.84,
+          "rGO": 0.87,
+          "hybrid": 0.86
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 18.8,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 8.0,
+          "pH_sensitivity": 0.16
+        }
+      },
+      "carbamazepine": {
+        "name": "Carbamazepine",
+        "molecular_weight": 236.27,
+        "charge": 0,
+        "hydrated_radius_nm": 0.58,
+        "diffusion_coefficient_m2_s": 5.9e-10,
+        "solubility_mg_L": 112,
+        "pKa": 13.9,
+        "log_Kow": 2.45,
+        "vapor_pressure_Pa": 0.0000078,
+        "density_kg_m3": 1340,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -8.5,
+        "competitive_index": 0.65,
+        "sorption_model": "Langmuir",
+        "rejection_mechanisms": ["size_exclusion", "hydrophobic_interaction"],
+        "toxicity_class": "pharmaceutical",
+        "environmental_impact": "moderate",
+        "regulatory_limit_mg_L": 0.0005,
+        "membrane_affinity": {
+          "GO": 0.82,
+          "rGO": 0.85,
+          "hybrid": 0.84
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 16.5,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 7.0,
+          "pH_sensitivity": 0.08
+        }
+      }
+    },
+    "antibiotics": {
+      "ciprofloxacin": {
+        "name": "Ciprofloxacin",
+        "molecular_weight": 331.34,
+        "charge": 0,
+        "hydrated_radius_nm": 0.68,
+        "diffusion_coefficient_m2_s": 4.8e-10,
+        "solubility_mg_L": 30000,
+        "pKa": 6.09,
+        "log_Kow": 0.28,
+        "vapor_pressure_Pa": 0.00000000078,
+        "density_kg_m3": 1590,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -12.8,
+        "competitive_index": 0.78,
+        "sorption_model": "multi_layer",
+        "rejection_mechanisms": ["size_exclusion", "electrostatic_interaction", "chemical_binding"],
+        "toxicity_class": "antibiotic",
+        "environmental_impact": "high",
+        "regulatory_limit_mg_L": 0.0001,
+        "membrane_affinity": {
+          "GO": 0.89,
+          "rGO": 0.86,
+          "hybrid": 0.88
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 22.5,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 7.5,
+          "pH_sensitivity": 0.19
+        }
+      },
+      "tetracycline": {
+        "name": "Tetracycline",
+        "molecular_weight": 444.43,
+        "charge": 0,
+        "hydrated_radius_nm": 0.78,
+        "diffusion_coefficient_m2_s": 3.9e-10,
+        "solubility_mg_L": 231,
+        "pKa": 3.3,
+        "log_Kow": -1.37,
+        "vapor_pressure_Pa": 0.0000000000325,
+        "density_kg_m3": 1634,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -15.5,
+        "competitive_index": 0.82,
+        "sorption_model": "complexation",
+        "rejection_mechanisms": ["size_exclusion", "electrostatic_interaction", "complexation"],
+        "toxicity_class": "antibiotic",
+        "environmental_impact": "high",
+        "regulatory_limit_mg_L": 0.0001,
+        "membrane_affinity": {
+          "GO": 0.91,
+          "rGO": 0.88,
+          "hybrid": 0.90
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 25.8,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 6.0,
+          "pH_sensitivity": 0.22
+        }
+      }
+    },
+    "microplastics": {
+      "PET_microplastic": {
+        "name": "PET microplastics",
+        "molecular_weight": 1e6,
+        "charge": -1,
+        "hydrated_radius_nm": 2500,
+        "diffusion_coefficient_m2_s": 1.2e-14,
+        "solubility_mg_L": 0,
+        "pKa": null,
+        "log_Kow": null,
+        "vapor_pressure_Pa": null,
+        "density_kg_m3": 1380,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -25.8,
+        "competitive_index": 0.98,
+        "sorption_model": "physical_straining",
+        "rejection_mechanisms": ["size_exclusion", "physical_straining"],
+        "toxicity_class": "emerging_contaminant",
+        "environmental_impact": "high",
+        "regulatory_limit_mg_L": null,
+        "membrane_affinity": {
+          "GO": 0.999,
+          "rGO": 0.998,
+          "hybrid": 0.999
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 45.0,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 7.0,
+          "pH_sensitivity": 0.05
+        }
+      },
+      "PS_microplastic": {
+        "name": "Polystyrene microplastics",
+        "molecular_weight": 8e5,
+        "charge": -1,
+        "hydrated_radius_nm": 1800,
+        "diffusion_coefficient_m2_s": 2.1e-14,
+        "solubility_mg_L": 0,
+        "pKa": null,
+        "log_Kow": null,
+        "vapor_pressure_Pa": null,
+        "density_kg_m3": 1050,
+        "viscosity_Pa_s": null,
+        "surface_tension_N_m": null,
+        "dielectric_constant": null,
+        "zeta_potential_mV": -22.5,
+        "competitive_index": 0.97,
+        "sorption_model": "physical_straining",
+        "rejection_mechanisms": ["size_exclusion", "physical_straining"],
+        "toxicity_class": "emerging_contaminant",
+        "environmental_impact": "high",
+        "regulatory_limit_mg_L": null,
+        "membrane_affinity": {
+          "GO": 0.998,
+          "rGO": 0.997,
+          "hybrid": 0.998
+        },
+        "temperature_dependence": {
+          "activation_energy_kJ_mol": 42.0,
+          "reference_temperature_K": 298.15
+        },
+        "pH_dependence": {
+          "optimal_pH": 7.0,
+          "pH_sensitivity": 0.04
+        }
+      }
+    }
+  },
+  "simulation_parameters": {
+    "default_conditions": {
+      "temperature_K": 298.15,
+      "pH": 7.0,
+      "ionic_strength_M": 0.01,
+      "pressure_bar": 1.0,
+      "contact_time_s": 3600
+    },
+    "operating_ranges": {
+      "temperature_K": [273.15, 373.15],
+      "pH": [2.0, 12.0],
+      "ionic_strength_M": [0.001, 1.0],
+      "pressure_bar": [0.1, 10.0],
+      "contact_time_s": [60, 86400]
+    },
+    "membrane_configurations": {
+      "single_layer": {
+        "description": "Single membrane layer",
+        "thickness_multiplier": 1.0,
+        "performance_factor": 1.0
+      },
+      "multi_layer": {
+        "description": "Multiple stacked layers",
+        "thickness_multiplier": 2.5,
+        "performance_factor": 1.3
+      },
+      "composite": {
+        "description": "Composite membrane structure",
+        "thickness_multiplier": 1.8,
+        "performance_factor": 1.15
+      }
+    }
+  },
+  "scientific_constants": {
+    "gas_constant_J_mol_K": 8.314,
+    "boltzmann_constant_J_K": 1.38e-23,
+    "avogadro_number": 6.022e23,
+    "elementary_charge_C": 1.602e-19,
+    "permittivity_vacuum_F_m": 8.854e-12,
+    "dielectric_water": 78.54,
+    "viscosity_water_Pa_s": 0.001002,    "density_water_kg_m3": 997.1,
+    "surface_tension_water_N_m": 0.0728
+  },
+  "field_water_chemistry": {
+    "pH": {
+      "range": "6.3 – 8.9",
+      "WHO_standard": "6.5–8.5"
+    },
+    "conductivity_uS_cm": "94.2 – 110.5",
+    "turbidity_NTU": "21.4 – 77.1",
+    "chloride_mg_L": "1.46 – 21.9",
+    "nitrate_ug_L": "19.3 – 313.5",
+    "iron_mg_L": "0.02 – 0.14",
+    "temperature_C": "24.4 – 25.8"
+  },
+  "contaminant_removal_performance": {
+    "heavy_metals": {
+      "single_metal_removal_efficiency_percent": "92–98",
+      "multi_metal_removal_efficiency_percent": "70–85",
+      "competitive_ions": [
+        "Ca²⁺",
+        "Mg²⁺"
+      ]
+    },
+    "PFAS": {
+      "GO_CTAC_efficiency_percent": "88–98",
+      "effective_pH_range": "3–11",
+      "mechanisms": [
+        "hydrophobic",
+        "electrostatic",
+        "van_der_Waals"
+      ]
+    }
+  },
+  "composite_membrane_performance": [
+    {
+      "membrane_type": "GO–Zeolite-4A",
+      "water_flux_L_m2_h_bar": 28.9,
+      "NaCl_rejection_percent": 53.8,
+      "E_coli_removal_percent": "99+",
+      "regeneration_cycles": "50–100"
+    },
+    {
+      "membrane_type": "GO–Biochar (Rice)",
+      "water_flux_L_m2_h_bar": "25–40",
+      "NaCl_rejection_percent": "35–50",
+      "E_coli_removal_percent": "95–99",
+      "regeneration_cycles": "20–50"
+    },
+    {
+      "membrane_type": "GO–TiO₂",
+      "water_flux_L_m2_h_bar": "5–10x ceramic supports",
+      "NaCl_rejection_percent": 28.7,
+      "E_coli_removal_percent": "97–99",
+      "regeneration_cycles": "100+"
+    },
+    {
+      "membrane_type": "GO–Al₂O₃",
+      "water_flux_L_m2_h_bar": 5.6,
+      "NaCl_rejection_percent": 39.2,
+      "E_coli_removal_percent": "Not reported",
+      "regeneration_cycles": "25–50"
+    }
+  ],
+  "fouling_and_regeneration": [
+    {
+      "method": "Hypochlorite (100 ppm)",
+      "flux_recovery_percent": "85–95",
+      "cycles_before_failure": "50–100",
+      "tropical_suitability": "Excellent"
+    },
+    {
+      "method": "Solar/UV",
+      "flux_recovery_percent": "80–90",
+      "cycles_before_failure": "40–80",
+      "tropical_suitability": "Enhanced"
+    },
+    {
+      "method": "Backwash + Chemical Combo",
+      "flux_recovery_percent": "90–98",
+      "cycles_before_failure": "75–150",
+      "tropical_suitability": "Excellent"
+    },
+    {
+      "method": "Backwash Only",
+      "flux_recovery_percent": "70–85",
+      "cycles_before_failure": "25–50",
+      "tropical_suitability": "Good"
+    }  ],
+  "lake_victoria_biological_filtration": [
+    {
+      "pathogen": "E_coli",
+      "log_reduction": 2.5,
+      "exposure_time_min": 15,
+      "membrane_type_tested": "GO",
+      "testing_temperature_C": 37,
+      "mechanism": ["oxidative_stress", "physical_cutting"],
+      "reference": "PMC3514835"
+    },
+    {
+      "pathogen": "E_coli",
+      "log_reduction": 6.0,
+      "exposure_time_min": 110,
+      "membrane_type_tested": "3D-GO-CNT",
+      "testing_temperature_C": 25,
+      "mechanism": ["enhanced_contact", "synergistic_effects"],
+      "reference": "PMC4690451"
+    },
+    {
+      "pathogen": "Giardia",
+      "log_reduction": 2.1,
+      "exposure_time_min": 60,
+      "membrane_type_tested": "GO_membrane_filter",
+      "testing_temperature_C": 25,
+      "cyst_size_microns": [8, 15],
+      "mechanism": ["physical_exclusion", "size_sieving"],
+      "reference": "CiteSeerX_f4b4ab6398ee4afd"
+    },
+    {
+      "pathogen": "Salmonella",
+      "log_reduction": 2.2,
+      "exposure_time_min": 30,
+      "membrane_type_tested": "rGO",
+      "testing_temperature_C": 37,
+      "mechanism": ["membrane_damage", "oxidative_stress"],
+      "reference": "PMC9224660"
+    },
+    {
+      "pathogen": "Rotavirus",
+      "log_reduction": 7.0,
+      "exposure_time_min": 240,
+      "membrane_type_tested": "CTAB-rGO-Fe3O4",
+      "testing_temperature_C": 25,
+      "mechanism": ["magnetic_capture", "viral_inactivation"],
+      "reference": "MDPI_2304-8158_13_18_2967"
+    },
+    {
+      "pathogen": "Adenovirus",
+      "log_reduction": 7.0,
+      "exposure_time_min": 240,
+      "membrane_type_tested": "CTAB-rGO-Fe3O4",
+      "testing_temperature_C": 25,
+      "mechanism": ["magnetic_capture", "viral_inactivation"],
+      "reference": "MDPI_2304-8158_13_18_2967"
+    }
+  ],
+  "lake_victoria_salt_transport": [
+    {
+      "ion": "Na+",
+      "hydrated_radius_nm": 0.358,
+      "donnan_exclusion_percent": 48,
+      "diffusion_rate_cm2_per_s": 1.33e-5,
+      "competitive_effects_on_heavy_metals": "Moderate competition for binding sites",
+      "ionic_strength_impact": "moderate",
+      "reference": "PMC11109394"
+    },
+    {
+      "ion": "Cl-",
+      "hydrated_radius_nm": 0.332,
+      "donnan_exclusion_percent": 42,
+      "diffusion_rate_cm2_per_s": 2.03e-5,
+      "competitive_effects_on_heavy_metals": "Minimal competition due to anionic repulsion",
+      "ionic_strength_impact": "low",
+      "reference": "ACS_Omega_2c00766"
+    },
+    {
+      "ion": "Ca2+",
+      "hydrated_radius_nm": 0.412,
+      "donnan_exclusion_percent": 74,
+      "diffusion_rate_cm2_per_s": 0.79e-5,
+      "competitive_effects_on_heavy_metals": "Strong competition, reduces heavy metal capacity by 25-35%",
+      "ionic_strength_impact": "high",
+      "reference": "RSC_c6ra21432k"
+    },
+    {
+      "ion": "Mg2+",
+      "hydrated_radius_nm": 0.428,
+      "donnan_exclusion_percent": 78,
+      "diffusion_rate_cm2_per_s": 0.71e-5,
+      "competitive_effects_on_heavy_metals": "Strong competition, acts as ionic gating mechanism",
+      "ionic_strength_impact": "high",
+      "reference": "JChemRev_106910"
+    },
+    {
+      "ion": "SO4^2-",
+      "hydrated_radius_nm": 0.379,
+      "donnan_exclusion_percent": 88,
+      "diffusion_rate_cm2_per_s": 1.07e-5,
+      "competitive_effects_on_heavy_metals": "Minimal impact due to electrostatic repulsion",
+      "ionic_strength_impact": "low",
+      "reference": "ACS_Omega_2c00766"
+    }
+  ],
+  "lake_victoria_pfas_removal": [
+    {
+      "compound": "PFOA",
+      "removal_efficiency_percent": 100,
+      "membrane_type": "GO-CTAC",
+      "pH_sensitivity": "Minimal (effective pH 3-11)",
+      "ionic_competition_effects": "No significant impact from background salts",
+      "chain_length": 8,
+      "molecular_weight": 414.07,
+      "reference": "PMC11249979"
+    },
+    {
+      "compound": "PFOS",
+      "removal_efficiency_percent": 100,
+      "membrane_type": "GO-CTAC",
+      "pH_sensitivity": "Minimal (effective pH 3-11)",
+      "ionic_competition_effects": "Maintains >95% efficiency in high salinity",
+      "chain_length": 8,
+      "molecular_weight": 500.13,
+      "reference": "ACS_EstWater_4c00187"
+    },
+    {
+      "compound": "GenX_HFPO-DA",
+      "removal_efficiency_percent": 90,
+      "membrane_type": "GO-CTAC",
+      "pH_sensitivity": "Reduced performance at pH >10",
+      "ionic_competition_effects": "Competition with humic acids at >100 mg/L",
+      "molecular_weight": 330.05,
+      "replacement_for": "PFOA",
+      "reference": "NewMOA_JiangAdsoprtionApril2024"
+    },
+    {
+      "compound": "PFBS",
+      "removal_efficiency_percent": 85,
+      "membrane_type": "MAGO_Magnetic_Amine-GO",
+      "pH_sensitivity": "Optimal at pH 4-7",
+      "ionic_competition_effects": "Decreased removal with increasing ionic strength",
+      "chain_length": 4,
+      "molecular_weight": 300.10,
+      "reference": "RSC_d4va00171k"
+    }
+  ],  "implementation_notes": {
+    "biochar_sources": [
+      "rice husk"
+    ],
+    "environment_conditions": [
+      "high-biofouling",
+      "warm",
+      "variable turbidity"
+    ],
+    "partner_utility": "KIWASCO, Kenya",
+    "regional_program": "GIZ–EAC",
+    "lake_victoria_specific": {
+      "target_pathogens": ["E_coli", "Giardia", "Salmonella", "Rotavirus", "Adenovirus"],
+      "common_salts": ["Na+", "Cl-", "Ca2+", "Mg2+", "SO4^2-"],
+      "emerging_contaminants": ["PFOA", "PFOS", "GenX", "PFBS"],
+      "temperature_range_C": [24.4, 40.0],
+      "pH_range": [6.3, 8.9],
+      "conductivity_range_uS_cm": [94.2, 110.5],
+      "turbidity_range_NTU": [21.4, 77.1],
+      "implementation_challenges": [
+        "high_biofouling_tropical_conditions",
+        "variable_water_quality",
+        "limited_maintenance_infrastructure",
+        "cost_effective_regeneration"
+      ]
+    }
+  },"data_version": "4.1",
+  "last_updated": "2025-06-15",  "references": [
+    "Abraham et al. Nature Nanotechnology 2017",
+    "Joshi et al. Science 2014", 
+    "Hu & Mi Environmental Science & Technology 2013",
+    "Perreault et al. ACS Nano 2015",
+    "Liu et al. Advanced Materials 2016",
+    "Yang et al. Journal of Membrane Science 2018",
+    "Zhang et al. Water Research 2019",
+    "Chen et al. Environmental Science & Technology 2020",
+    "KIWASCO Field Study - GIZ–EAC Regional Program 2025",
+    "PMC3514835 - E.coli antimicrobial effects of GO",
+    "PMC4690451 - 3D-GO-CNT bacterial inactivation",
+    "PMC9224660 - rGO antibacterial mechanisms",
+    "CiteSeerX f4b4ab6398ee4afd - Giardia filtration studies",
+    "MDPI 2304-8158/13/18/2967 - CTAB-rGO-Fe3O4 viral removal",
+    "PMC11109394 - Na+ transport in GO membranes",
+    "ACS Omega 2c00766 - Ion selectivity mechanisms",
+    "RSC c6ra21432k - Divalent cation competition",
+    "JChemRev 106910 - Ionic gating mechanisms",
+    "PMC11249979 - GO-CTAC PFAS removal",
+    "ACS EstWater 4c00187 - PFOS removal mechanisms",
+    "NewMOA JiangAdsoprtionApril2024 - GenX removal studies",
+    "RSC d4va00171k - MAGO PFBS removal",
+    "Lake Victoria Basin Water Quality Assessment 2024",
+    "Tropical Membrane Fouling and Regeneration Studies 2025"
+  ]
+}

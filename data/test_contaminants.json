@@ -1,0 +1,56 @@
+{
+  "test_water_mix": {
+    "description": "Synthetic Lake Victoria water contamination scenario",
+    "contaminants": {
+      "Pb2+": {
+        "concentration_mg_L": 0.15,
+        "source": "industrial_runoff"
+      },
+      "E_coli": {
+        "concentration_cfu_mL": 2400,
+        "source": "sewage_contamination"
+      },
+      "NaCl": {
+        "concentration_mg_L": 850,
+        "source": "road_salt_runoff"
+      }
+    },
+    "background_chemistry": {
+      "pH": 7.2,
+      "temperature_celsius": 26,
+      "turbidity_ntu": 15,
+      "total_dissolved_solids_mg_L": 450
+    },
+    "treatment_targets": {
+      "Pb2+_removal_percent": 95,
+      "E_coli_log_reduction": 4,
+      "NaCl_rejection_percent": 60,
+      "overall_score_min": 80
+    }
+  },
+  
+  "membrane_test_conditions": {
+    "GO": {
+      "membrane_area_cm2": 25,
+      "active_sites_mmol_g": 2.8,
+      "surface_charge_mv": -35
+    },
+    "rGO": {
+      "membrane_area_cm2": 25,
+      "active_sites_mmol_g": 1.9,
+      "surface_charge_mv": -15
+    },
+    "hybrid": {
+      "membrane_area_cm2": 25,
+      "active_sites_mmol_g": 2.4,
+      "surface_charge_mv": -25
+    }
+  },
+  
+  "simulation_parameters": {
+    "flow_rate_mL_min": 50,
+    "contact_time_minutes": 120,
+    "regeneration_cycles": 3,
+    "replicate_runs": 3
+  }
+}

@@ -269,6 +269,74 @@ write_restart   {OUTPUT_PREFIX}_final.restart
         # Use production template for membrane simulation
         self.write_input_file(filename, 'production', **params)
 
+    def write_realistic_membrane_input(self, filename, data_file, membrane):
+        """
+        Generate realistic LAMMPS input script based on literature (Schmidt et al. [17]).
+        
+        Args:
+            filename (str): Output LAMMPS input file path
+            data_file (str): Path to LAMMPS data file
+            membrane: Membrane object with properties
+        """
+        # Generate realistic LAMMPS script based on Schmidt et al. [17]
+        realistic_input = f"""# LAMMPS input file for {membrane.name} membrane simulation
+# Based on Schmidt et al. [17] for GO-water interactions
+# Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+
+units real
+atom_style full
+boundary p p f
+
+# Read data file
+read_data {os.path.basename(data_file)}
+
+# Pair style and coefficients based on literature
+pair_style lj/cut 10.0
+pair_coeff * * 0.1553 3.166  # GO-water interactions from Schmidt et al.
+
+# Bond styles for molecular water
+bond_style harmonic
+angle_style harmonic
+
+# Molecular constraints
+fix rigid_water water shake 1e-4 20 0 b 1 a 1
+
+# Temperature and pressure control
+fix 1 all nvt temp 300.0 300.0 100.0
+fix 2 all aveforce NULL NULL -1.0  # Applied pressure gradient
+
+# Output settings
+compute temp_water water temp
+compute pressure_system all pressure temp_water
+
+thermo_style custom step temp c_temp_water press c_pressure_system pe ke etotal vol
+thermo 1000
+
+# Trajectory dump for flux analysis
+dump 1 all atom 100 dump.xyz
+dump_modify 1 scale no
+
+# Production run for water flux measurement
+timestep 1.0
+run 50000
+
+# Calculate and output final properties
+variable final_temp equal c_temp_water
+variable final_press equal c_pressure_system
+variable final_pe equal pe
+variable final_ke equal ke
+
+print "Final temperature: ${{final_temp}} K"
+print "Final pressure: ${{final_press}} atm" 
+print "Final potential energy: ${{final_pe}} kcal/mol"
+print "Final kinetic energy: ${{final_ke}} kcal/mol"
+"""
+        
+        with open(filename, 'w') as f:
+            f.write(realistic_input)
+        
+        print(f"  Realistic LAMMPS input written to {filename}")
+
 def create_batch_inputs(membrane_list, output_base_dir):
     """
     Create LAMMPS input files for a batch of membranes.

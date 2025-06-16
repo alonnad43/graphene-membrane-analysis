@@ -6,6 +6,7 @@ This script orchestrates the complete simulation workflow:
 1. Phase 1: Runs macroscale simulations of GO, rGO, and hybrid membranes.
 2. Phase 2: Constructs realistic hybrid GO/rGO membrane structures.
 3. Phase 3: Runs atomistic simulations using LAMMPS.
+4. Phase 4: Simulates chemical and biological interactions.
 
 # TODO: Connect each membrane object across all phases
 # TODO: Output membrane_summary.csv with macro + nano data
@@ -19,7 +20,7 @@ from plot_utils import (
     plot_flux_vs_thickness_at_pressure,
     plot_flux_vs_pore_size_at_pressure
 )
-from properties import MEMBRANE_TYPES, PRESSURE_RANGE
+from properties import MEMBRANE_TYPES, PRESSURE_RANGE, WATER_PROPERTIES
 from hybrid_structure import (
     run_phase2_analysis,
     create_alternating_structure, 
@@ -53,14 +54,14 @@ def generate_membrane_variants():
                     contact_angle_deg=props['contact_angle_deg'],
                     rejection_percent=rejection
                 ))
-    
-    # Add Hybrid
+      # Add Hybrid
     hybrid_props = MEMBRANE_TYPES["Hybrid"]
     membranes.append(Membrane(
         name="Hybrid",
         pore_size_nm=hybrid_props['pore_size'],
         thickness_nm=hybrid_props['thickness'],
-        flux_lmh=hybrid_props['flux'],        modulus_GPa=hybrid_props['modulus'],
+        flux_lmh=hybrid_props['flux'],
+        modulus_GPa=hybrid_props['modulus'],
         tensile_strength_MPa=hybrid_props['strength'],
         contact_angle_deg=hybrid_props['contact_angle_deg'],
         rejection_percent=hybrid_props['rejection']
@@ -83,10 +84,21 @@ def main():
         mat_folder = mem.name.split()[0] if mem.name != "Hybrid" else "Hybrid"
         mat_dir = os.path.join(output_base, mat_folder)
         # Save flux vs. pressure plot in the appropriate folder
-        flux_dir = os.path.join(mat_dir, "flux_vs_pressure")
-        
-        # Use new physics-based flux simulation
-        fluxes = [simulate_flux(mem.pore_size_nm, mem.thickness_nm, p, mem.water_viscosity) for p in PRESSURE_RANGE]
+        flux_dir = os.path.join(mat_dir, "flux_vs_pressure")        # Use new physics-based flux simulation with advanced parameters
+        fluxes = []
+        for p in PRESSURE_RANGE:
+            flux = simulate_flux(
+                pore_size_nm=mem.pore_size_nm, 
+                thickness_nm=mem.thickness_nm, 
+                pressure_bar=p, 
+                viscosity_pas=WATER_PROPERTIES["viscosity_25C"],
+                porosity=WATER_PROPERTIES["porosity"],
+                tortuosity=WATER_PROPERTIES["tortuosity"]
+            )
+            fluxes.append(flux)
+            # Log validation for flux calculation
+            if p == PRESSURE_RANGE[0]:  # Log for first pressure only
+                print(f"  Flux validation for {mem.name} at {p} bar: {flux:.1f} L·m⁻²·h⁻¹")
         
         for p, flux in zip(PRESSURE_RANGE, fluxes):
             results.append({
@@ -138,19 +150,47 @@ def main():
         thicknesses = MEMBRANE_TYPES['GO']['thicknesses']
         fluxes_dict = {}
         for m in ['GO', 'rGO']:
-            # Use new parameter order: pore_size_nm, thickness_nm, pressure_bar, viscosity_mpas
-            fluxes_dict[m] = [simulate_flux(MEMBRANE_TYPES[m]['pore_sizes'][0], t, pressure) for t in thicknesses]
+            # Use new parameter order with advanced physics: pore_size_nm, thickness_nm, pressure_bar
+            fluxes_dict[m] = [simulate_flux(
+                pore_size_nm=MEMBRANE_TYPES[m]['pore_sizes'][0], 
+                thickness_nm=t, 
+                pressure_bar=pressure,
+                viscosity_pas=WATER_PROPERTIES["viscosity_25C"],
+                porosity=WATER_PROPERTIES["porosity"],
+                tortuosity=WATER_PROPERTIES["tortuosity"]
+            ) for t in thicknesses]
         # Hybrid: use average pore size
-        fluxes_dict['Hybrid'] = [simulate_flux(MEMBRANE_TYPES['Hybrid']['pore_size'], t, pressure) for t in thicknesses]
+        fluxes_dict['Hybrid'] = [simulate_flux(
+            pore_size_nm=MEMBRANE_TYPES['Hybrid']['pore_size'], 
+            thickness_nm=t, 
+            pressure_bar=pressure,
+            viscosity_pas=WATER_PROPERTIES["viscosity_25C"],
+            porosity=WATER_PROPERTIES["porosity"],
+            tortuosity=WATER_PROPERTIES["tortuosity"]
+        ) for t in thicknesses]
         plot_flux_vs_thickness_at_pressure(thicknesses, fluxes_dict, pressure, thickness_dir)    # Flux vs pore size per pressure
     for pressure in PRESSURE_RANGE:
         pore_sizes = MEMBRANE_TYPES['GO']['pore_sizes']
         fluxes_dict = {}
         for m in ['GO', 'rGO']:
-            # Use new parameter order: pore_size_nm, thickness_nm, pressure_bar, viscosity_mpas
-            fluxes_dict[m] = [simulate_flux(p, MEMBRANE_TYPES[m]['thicknesses'][0], pressure) for p in pore_sizes]
+            # Use new parameter order with advanced physics: pore_size_nm, thickness_nm, pressure_bar
+            fluxes_dict[m] = [simulate_flux(
+                pore_size_nm=p, 
+                thickness_nm=MEMBRANE_TYPES[m]['thicknesses'][0], 
+                pressure_bar=pressure,
+                viscosity_pas=WATER_PROPERTIES["viscosity_25C"],
+                porosity=WATER_PROPERTIES["porosity"],
+                tortuosity=WATER_PROPERTIES["tortuosity"]
+            ) for p in pore_sizes]
         # Hybrid: use average thickness
-        fluxes_dict['Hybrid'] = [simulate_flux(p, MEMBRANE_TYPES['Hybrid']['thickness'], pressure) for p in pore_sizes]
+        fluxes_dict['Hybrid'] = [simulate_flux(
+            pore_size_nm=p, 
+            thickness_nm=MEMBRANE_TYPES['Hybrid']['thickness'], 
+            pressure_bar=pressure,
+            viscosity_pas=WATER_PROPERTIES["viscosity_25C"],
+            porosity=WATER_PROPERTIES["porosity"],
+            tortuosity=WATER_PROPERTIES["tortuosity"]
+        ) for p in pore_sizes]
         plot_flux_vs_pore_size_at_pressure(pore_sizes, fluxes_dict, pressure, pore_dir)
     
     # Phase 2: Hybrid Structure Design (optional)
@@ -190,13 +230,12 @@ def main():
         print(f"\nPhase 2 structures added to results. Total entries: {len(results)}")
     
     else:
-        print("\nSkipping Phase 2 - Running Phase 1 only")
-    
+        print("\nSkipping Phase 2 - Running Phase 1 only")    
     # Phase 3: Atomistic LAMMPS Simulations (optional)
     run_phase3 = input("\nRun Phase 3 (LAMMPS Atomistic Simulations)? [yes/no]: ").lower().strip() in ['yes', 'y']
     
     if run_phase3:
-        from lammps_runner import run_membrane_simulation
+        from lammps_runner import LAMMPSRunner
         from unify_results import unify_all_results
         
         print("\nAvailable membranes for atomistic simulation:")
@@ -240,15 +279,10 @@ def main():
                     lammps_type = "rGO"
                 else:
                     lammps_type = "Hybrid"
-                
-                # Run LAMMPS simulation
+                  # Run LAMMPS simulation
                 try:
-                    lammps_results = run_membrane_simulation(
-                        membrane_type=lammps_type,
-                        membrane_object=selected_membrane,
-                        simulation_steps=50000,  # Reasonable for testing
-                        output_dir="lammps_sims"
-                    )
+                    lammps_runner = LAMMPSRunner()
+                    lammps_results = lammps_runner.run_membrane_simulation(selected_membrane)
                     
                     if lammps_results:
                         print(f"\nLAMMPS Simulation Results:")
@@ -290,6 +324,139 @@ def main():
     else:
         print("\nSkipping Phase 3 - LAMMPS simulations not run")
     
+    # Phase 4: Chemical and Biological Simulation (optional)
+    run_phase4 = input("\nRun Phase 4 (Chemical & Biological Simulation)? [yes/no]: ").lower().strip() in ['yes', 'y']
+    
+    if run_phase4:
+        from simulate_chemistry import run_phase4_simulation
+        from plot_chemistry import plot_phase4_results
+        
+        print("\n🧪 PHASE 4: CHEMICAL AND BIOLOGICAL SIMULATION")
+        print("==================================================")
+        
+        # Get user input for contaminants        print("\nAvailable contaminant categories:")
+        print("1. Heavy metals (Pb2+, As3+, Cd2+)")
+        print("2. Pathogens (E_coli, Rotavirus)")
+        print("3. Salts (NaCl, CaCl2)")
+        print("4. Organic pollutants (BPA, PFOS, Atrazine)")
+        print("5. Inorganic anions (NO3, PO4, F)")
+        print("6. All contaminants (comprehensive test)")
+        
+        try:
+            category = int(input("Select category (1-6): "))
+            
+            if category == 1:
+                contaminants = ['Pb2+', 'As3+', 'Cd2+']
+                concentrations = {'Pb2+': 50.0, 'As3+': 25.0, 'Cd2+': 30.0}
+            elif category == 2:
+                contaminants = ['E_coli', 'Rotavirus']
+                concentrations = {'E_coli': 1e5, 'Rotavirus': 5e4}
+            elif category == 3:
+                contaminants = ['NaCl', 'CaCl2']
+                concentrations = {'NaCl': 1000.0, 'CaCl2': 500.0}
+            elif category == 4:
+                contaminants = ['BPA', 'PFOS', 'Atrazine']
+                concentrations = {'BPA': 15.0, 'PFOS': 10.0, 'Atrazine': 20.0}
+            elif category == 5:
+                contaminants = ['NO3', 'PO4', 'F']
+                concentrations = {'NO3': 45.0, 'PO4': 30.0, 'F': 20.0}
+            elif category == 6:
+                contaminants = ['Pb2+', 'E_coli', 'NaCl', 'BPA', 'NO3', 'Microplastics']
+                concentrations = {
+                    'Pb2+': 50.0, 'E_coli': 1e5, 'NaCl': 1000.0, 
+                    'BPA': 15.0, 'NO3': 45.0, 'Microplastics': 100.0
+                }
+            else:
+                print("Invalid selection. Using default heavy metals.")
+                contaminants = ['Pb2+', 'As3+']
+                concentrations = {'Pb2+': 50.0, 'As3+': 25.0}
+                
+        except ValueError:
+            print("Invalid input. Using default heavy metals.")
+            contaminants = ['Pb2+', 'As3+']
+            concentrations = {'Pb2+': 50.0, 'As3+': 25.0}
+        
+        # Get reaction time
+        try:
+            reaction_time = float(input("Reaction time (minutes) [Enter for 180]: ") or "180")
+        except ValueError:
+            reaction_time = 180
+        
+        print(f"\nRunning Phase 4 simulation...")
+        print(f"Contaminants: {contaminants}")
+        print(f"Concentrations: {concentrations}")
+        print(f"Reaction time: {reaction_time} minutes")
+        
+        # Run Phase 4 simulation
+        try:
+            membrane_types_phase4 = ['GO', 'rGO', 'hybrid']
+            
+            # Include Phase 2 hybrid results if available
+            if run_phase2 and phase2_results:
+                print("Including Phase 2 hybrid structures in chemical simulation...")
+                # Use top hybrid structure from Phase 2
+                top_structure = phase2_results['top_structures'][0]
+                membrane_types_phase4.append(f"Phase2_{top_structure['structure_name']}")
+            
+            chemistry_engine = run_phase4_simulation(
+                membrane_types=membrane_types_phase4[:3],  # Standard membrane types
+                contaminants=contaminants,
+                initial_concentrations=concentrations,
+                reaction_time=reaction_time
+            )
+            
+            if chemistry_engine and chemistry_engine.simulation_results:
+                print(f"\n✅ Phase 4 simulation completed successfully!")
+                
+                # Generate visualization report
+                print("Generating Phase 4 visualization report...")
+                plot_figures = plot_phase4_results(chemistry_engine, save_plots=True)
+                print(f"Generated {len(plot_figures)} chemical simulation plots")
+                
+                # Add Phase 4 results to main results for unified analysis
+                for sim_result in chemistry_engine.simulation_results:
+                    membrane_type = sim_result['membrane_type']
+                    
+                    for contaminant, data in sim_result['contaminants'].items():
+                        # Get final removal efficiency
+                        efficiency = 0
+                        if 'removal_efficiency' in data:
+                            efficiency = data['removal_efficiency']
+                        elif 'kill_efficiency' in data:
+                            efficiency = data['kill_efficiency']
+                        elif 'rejection_percent' in data:
+                            efficiency = max(0, data['rejection_percent'])
+                        
+                        # Add to main results
+                        results.append({
+                            "material": f"{membrane_type}_Phase4",
+                            "membrane_name": f"{membrane_type}_{contaminant}",
+                            "pressure_bar": 1.0,
+                            "thickness_nm": MEMBRANE_TYPES.get(membrane_type, {}).get('thickness', 100),
+                            "pore_size_nm": MEMBRANE_TYPES.get(membrane_type, {}).get('pore_size', 2.0),
+                            "flux_lmh": MEMBRANE_TYPES.get(membrane_type, {}).get('flux', 100),
+                            "modulus_GPa": MEMBRANE_TYPES.get(membrane_type, {}).get('modulus', 200),
+                            "tensile_strength_MPa": MEMBRANE_TYPES.get(membrane_type, {}).get('strength', 30),
+                            "contact_angle_deg": MEMBRANE_TYPES.get(membrane_type, {}).get('contact_angle_deg', 90),
+                            "rejection_percent": efficiency,
+                            "contaminant_type": contaminant,
+                            "removal_mechanism": data.get('interaction_mechanisms', data.get('mechanisms', [])),
+                            "simulation_type": "Chemical_Biological",
+                            "phase4_data": data
+                        })
+                
+                print(f"Phase 4 chemical data integrated into main results.")
+                
+            else:
+                print("❌ Phase 4 simulation failed or returned no results.")
+                
+        except Exception as e:
+            print(f"❌ Error in Phase 4 simulation: {e}")
+            print("Phase 4 simulation failed, but previous phase results are still available.")
+    
+    else:
+        print("\nSkipping Phase 4 - Chemical and biological simulations not run")
+
     # Final export with all phases
     try:
         df_final = pd.DataFrame(results)
