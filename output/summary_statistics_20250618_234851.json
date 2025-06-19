@@ -1,0 +1,64 @@
+{
+  "total_simulations": 1320,
+  "materials_tested": 3,
+  "pressure_range": {
+    "min": 0.1,
+    "max": 1.0
+  },
+  "flux_statistics": {
+    "mean": 18.428026300266925,
+    "std": 24.359916420035535,
+    "min": 0.003347039447005071,
+    "max": 189.0588300081261
+  },
+  "rejection_statistics": {
+    "mean": NaN,
+    "std": NaN,
+    "min": NaN,
+    "max": NaN
+  },
+  "top_performers": {
+    "highest_flux": [
+      {
+        "membrane_name": "hybrid",
+        "flux_lmh": 189.0588300081261
+      },
+      {
+        "membrane_name": "GO",
+        "flux_lmh": 176.4220288299334
+      },
+      {
+        "membrane_name": "hybrid",
+        "flux_lmh": 170.1529470073135
+      }
+    ],
+    "highest_rejection": [
+      {
+        "membrane_name": "GO",
+        "rejection_percent": NaN
+      },
+      {
+        "membrane_name": "GO",
+        "rejection_percent": NaN
+      },
+      {
+        "membrane_name": "GO",
+        "rejection_percent": NaN
+      }
+    ],
+    "best_overall": [
+      {
+        "membrane_name": "GO",
+        "performance_score": NaN
+      },
+      {
+        "membrane_name": "GO",
+        "performance_score": NaN
+      },
+      {
+        "membrane_name": "GO",
+        "performance_score": NaN
+      }
+    ]
+  }
+}

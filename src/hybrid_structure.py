@@ -125,6 +125,20 @@ class HybridStructure:
     
     def __repr__(self):
         return f"<HybridStructure: {self.stacking_sequence}, {self.total_thickness:.2f} nm>"
+    
+    def calculate_effective_flux(self, base_flux):
+        """
+        Calculate effective flux with interface penalty.
+        
+        Args:
+            base_flux (float): Theoretical base flux (LMH)
+        
+        Returns:
+            float: Penalized effective flux
+        """
+        num_interfaces = sum(1 for i in range(1, len(self.layers)) if self.layers[i] != self.layers[i-1])
+        interface_penalty = 0.97 ** num_interfaces  # 3% loss per interface
+        return base_flux * interface_penalty
 
 def create_alternating_structure(num_layers=6, start_with='GO'):
     """
@@ -332,8 +346,8 @@ def predict_hybrid_properties(structure):
     go_props = MEMBRANE_TYPES['GO']
     rgo_props = MEMBRANE_TYPES['rGO']
     
-    weighted_modulus = (go_fraction * go_props['modulus'] + 
-                       rgo_fraction * rgo_props['modulus'])
+    weighted_modulus = (go_fraction * go_props['youngs_modulus_GPa'] + 
+                       rgo_fraction * rgo_props['youngs_modulus_GPa'])
     weighted_strength = (go_fraction * go_props['strength'] + 
                         rgo_fraction * rgo_props['strength'])
       # 7. Interface penalty for hybrid structures

@@ -1,0 +1,22 @@
+LAMMPS (29 Aug 2024 - Update 3)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:99)
+  using 1 OpenMP thread(s) per MPI task
+Loaded 1 plugins from C:\Users\ramaa\Documents\lammps-full\plugins
+# LAMMPS input file for Alt_4L_GO membrane simulation
+# Based on Schmidt et al. [17] for GO-water interactions
+# Generated on 2025-06-18 23:48:51
+
+units real
+atom_style full
+boundary p p f
+
+# Read data file
+read_data data.lammps
+Reading data file ...
+  orthogonal box = (-5.414718 -5.556773 -5) to (18 13.688486 22.160323)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+ERROR: Incorrect format in Atoms section of data file: 1 1 0.000000 0.000000 0.000000
+For more information see https://docs.lammps.org/err0002 (src/atom.cpp:1089)
+Last command: read_data data.lammps
+Total wall time: 0:00:00

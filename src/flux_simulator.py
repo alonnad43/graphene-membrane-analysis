@@ -87,6 +87,29 @@ def simulate_flux_old(thickness_nm, pore_size_nm, pressure_bar=1.0):
     """
     return simulate_flux(pore_size_nm, thickness_nm, pressure_bar)
 
+def simulate_flux_with_variability(params, pressure_bar, viscosity_pas=None, temperature=298, porosity=None, tortuosity=None):
+    """
+    Wrapper for simulate_flux that accepts a dict of noisy parameters.
+    Args:
+        params (dict): {'pore_size_nm', 'thickness_nm', 'contact_angle_deg'}
+        pressure_bar (float): Applied pressure
+        viscosity_pas (float, optional): Dynamic viscosity in Pa·s
+        temperature (float): Temperature in Kelvin (default: 298K)
+        porosity (float, optional): Membrane porosity (default from properties)
+        tortuosity (float, optional): Tortuosity factor (default from properties)
+    Returns:
+        float: Water flux in L·m⁻²·h⁻¹ (LMH)
+    """
+    return simulate_flux(
+        pore_size_nm=params['pore_size_nm'],
+        thickness_nm=params['thickness_nm'],
+        pressure_bar=pressure_bar,
+        viscosity_pas=viscosity_pas,
+        temperature=temperature,
+        porosity=porosity,
+        tortuosity=tortuosity
+    )
+
 def plot_flux_vs_thickness():
     """
     Plot water flux vs. membrane thickness for GO and rGO membranes.

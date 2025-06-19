@@ -1,0 +1,86 @@
+{
+  "Pb2+": {
+    "type": "heavy_metal",
+    "membranes": {
+      "GO": {},
+      "rGO": {},
+      "hybrid": {}
+    },
+    "qmax": 250,
+    "k2": 0.0041,
+    "activation_energy_kJ_mol": 25.0
+  },
+  "Cd2+": {
+    "type": "heavy_metal",
+    "membranes": {
+      "GO": {},
+      "rGO": {},
+      "hybrid": {}
+    },
+    "qmax": 180,
+    "k2": 0.0060,
+    "activation_energy_kJ_mol": 22.0
+  },
+  "As3+": {
+    "type": "heavy_metal",
+    "membranes": {
+      "GO": {},
+      "rGO": {},
+      "hybrid": {}
+    },
+    "qmax": 288,
+    "k2": 0.015,
+    "activation_energy_kJ_mol": 19.0
+  },
+  "BPA": {
+    "type": "organic",
+    "membranes": {
+      "GO": {},
+      "rGO": {},
+      "hybrid": {}
+    },
+    "qmax": 49,
+    "k2": 0.0015,
+    "activation_energy_kJ_mol": 15.0
+  },
+  "Atrazine": {
+    "type": "organic",
+    "membranes": {
+      "GO": {},
+      "rGO": {},
+      "hybrid": {}
+    },
+    "qmax": 138,
+    "k2": 0.003,
+    "activation_energy_kJ_mol": 18.0
+  },
+  "E_coli": {
+    "type": "bacteria",
+    "membranes": {
+      "GO": {},
+      "rGO": {},
+      "hybrid": {}
+    },
+    "kill_rate_min^-1": 0.12,
+    "log_reduction_target": 6.0
+  },
+  "Rotavirus": {
+    "type": "virus",
+    "membranes": {
+      "GO": {},
+      "rGO": {},
+      "hybrid": {}
+    },
+    "kill_rate_min^-1": 0.10,
+    "log_reduction_target": 4.0
+  },
+  "NaCl": {
+    "type": "salt",
+    "membranes": {
+      "GO": {},
+      "rGO": {},
+      "hybrid": {}
+    },
+    "rejection_coefficient": 0.85
+  }
+}

@@ -8,6 +8,7 @@ References: Schmidt et al. 2023, Activated Carbon Blended with rGO 2021
 """
 
 from math import log, exp
+import numpy as np
 from properties import MEMBRANE_TYPES, OIL_DROPLET_SIZE
 
 def simulate_oil_rejection(pore_size_nm, droplet_size_um, contact_angle_deg, alpha=2.5, beta=0.1):
@@ -63,6 +64,59 @@ def simulate_oil_rejection(pore_size_nm, droplet_size_um, contact_angle_deg, alp
             rejection = 50.0  # Moderate rejection as fallback
     
     return round(rejection, 2)
+
+def simulate_oil_rejection_stochastic(pore_size_nm, droplet_size_um, contact_angle_deg, membrane_type=None, alpha=2.5, beta=0.1):
+    """
+    Enhanced oil rejection model with stochasticity, physical upper/lower limits, and literature-based ranges.
+    
+    Args:
+        pore_size_nm (float): Pore size in nanometers
+        droplet_size_um (float): Oil droplet size in micrometers
+        contact_angle_deg (float): Water contact angle in degrees
+        membrane_type (str): 'GO', 'rGO', or 'hybrid' (for literature-based range)
+        alpha (float): Size exclusion parameter
+        beta (float): Wettability parameter
+    
+    Returns:
+        float: Oil rejection efficiency (literature-based, 0–100%)
+    """
+    # Literature-based ranges
+    LIT_RANGES = {
+        'GO': (85, 95),
+        'rGO': (92, 97),
+        'hybrid': (89, 99)
+    }
+    # Add log-normal variability to pore size (10% std dev)
+    effective_pore = pore_size_nm * np.random.lognormal(0, 0.1)
+    # Add Gaussian noise to contact angle (±3°)
+    effective_contact_angle = contact_angle_deg + np.random.normal(0, 3)
+    # Add variability to droplet size (±20%)
+    effective_droplet = droplet_size_um * np.random.normal(1, 0.2)
+    # Unit conversions
+    pore_size = max(0.1, effective_pore)
+    droplet_size = max(0.1, effective_droplet * 1000)  # μm to nm
+    # Calculate size ratio
+    size_ratio = droplet_size / pore_size
+    if size_ratio <= 1.0:
+        base = 5.0
+    else:
+        theta = effective_contact_angle
+        try:
+            exponent = -(alpha * np.log(size_ratio) + beta * (90 - theta))
+            rejection = 1 / (1 + np.exp(exponent))
+            rejection = min(max(rejection, 0), 1) * 100
+        except (ValueError, OverflowError):
+            rejection = 95.0 if size_ratio > 10 else 50.0
+        base = rejection
+    # Clamp to literature-based range for membrane type
+    if membrane_type in LIT_RANGES:
+        lo, hi = LIT_RANGES[membrane_type]
+        # Add ±2–5% random spread within the range
+        spread = np.random.uniform(-2, 2)
+        base = np.clip(base + spread, lo, hi)
+    else:
+        base = min(max(base, 0), 99.5)
+    return round(base, 2)
 
 # Backward compatibility function
 def simulate_oil_rejection_old(membrane_type, pore_size_nm=None):

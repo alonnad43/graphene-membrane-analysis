@@ -1,0 +1,23 @@
+{
+  "description": "Tracks validation of simulation results against lab data. Each entry records the experiment, simulation, and error margin.",
+  "entries": [
+    {
+      "experiment_id": "2025-06-19-001",
+      "membrane": "GO_rGO",
+      "property": "flux_lmh",
+      "simulated": 120.0,
+      "measured": 125.0,
+      "error_percent": 4.0,
+      "within_tolerance": true
+    },
+    {
+      "experiment_id": "2025-06-19-002",
+      "membrane": "rGO",
+      "property": "CO_ratio",
+      "simulated": 3.8,
+      "measured": 3.9,
+      "error_percent": 2.6,
+      "within_tolerance": true
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+    "sample_id": "BGU_GO_rGO_001",
+    "synthesis_date": "2025-06-15",
+    "synthesis_conditions": {
+        "pH": 6.5,
+        "voltage_V": 1.8,
+        "temperature_C": 50,
+        "humidity_percent": 40,
+        "reduction_time_min": 120,
+        "electrodes": "graphite",
+        "electrolyte": "Na2SO4"
+    },
+    "characterization": {
+        "XRD": {
+            "interlayer_spacing_nm": 0.82,
+            "2theta_degrees": 10.8,
+            "uncertainty_nm": 0.03,
+            "peak_intensity": 1250,
+            "fwhm": 0.45,
+            "crystal_size_nm": 18.2
+        },
+        "Raman": {
+            "ID_IG_ratio": 1.58,
+            "D_peak_cm1": 1348,
+            "G_peak_cm1": 1582,
+            "2D_peak_cm1": 2695,
+            "D_peak_intensity": 2850,
+            "G_peak_intensity": 1800,
+            "laser_wavelength_nm": 532,
+            "laser_power_mW": 1.0
+        },
+        "FTIR": {
+            "COOH_intensity": 0.75,
+            "OH_intensity": 1.15,
+            "epoxy_intensity": 0.52,
+            "C_C_intensity": 2.1,
+            "peak_assignments": {
+                "3200-3600": "OH stretching",
+                "1720": "C=O stretching (COOH)",
+                "1620": "C=C aromatic",
+                "1050": "C-O stretching (epoxy)"
+            }
+        },
+        "contact_angle": {
+            "water_deg": 76.2,
+            "oil_deg": 142.5,
+            "uncertainty_deg": 2.1
+        },
+        "mechanical": {
+            "youngs_modulus_GPa": 185.4,
+            "tensile_strength_MPa": 35.8,
+            "strain_at_failure": 0.025
+        }
+    },
+    "field_test_location": "Lake Victoria, Kisumu, Kenya",
+    "water_conditions": {
+        "pH": 7.2,
+        "conductivity_uS_cm": 98.5,
+        "turbidity_NTU": 45.2,
+        "temperature_C": 24.8,
+        "major_contaminants": ["E_coli", "Pb2+", "turbidity"]
+    },
+    "performance_validation": {
+        "flux_lmh": 142.5,
+        "rejection_efficiency": {
+            "E_coli_log": 4.2,
+            "Pb2+_percent": 89.5,
+            "turbidity_percent": 94.1
+        }
+    },
+    "notes": [
+        "Sample prepared using solar-powered electrochemical reduction",
+        "Field testing conducted at KIWASCO water treatment facility",
+        "XRD analysis performed at BGU Materials Characterization Center",
+        "Raman spectroscopy conducted with 532 nm laser at 1 mW power"
+    ]
+}

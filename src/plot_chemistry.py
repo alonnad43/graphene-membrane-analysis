@@ -86,7 +86,7 @@ class ChemistryPlotter:
                 
                 membrane_type = result['membrane_type']
                 contaminant_data = result['contaminants'][contaminant]
-                time_points = result['time_min']
+                time_points = result['time_points']
                 
                 # Plot concentration vs time
                 if 'concentration_mg_L' in contaminant_data:
@@ -174,7 +174,7 @@ class ChemistryPlotter:
                 
                 membrane_type = result['membrane_type']
                 contaminant_data = result['contaminants'][contaminant]
-                time_points = result['time_min']
+                time_points = result['time_points']
                 
                 if 'saturation_percent' not in contaminant_data:
                     continue
@@ -428,6 +428,10 @@ class ChemistryPlotter:
                 membrane_performance[membrane] = []
             
             for contaminant, data in result['contaminants'].items():
+                # Defensive: skip if data is not a dict (corrupt or unexpected input)
+                if not isinstance(data, dict):
+                    print(f"[WARN] Skipping contaminant '{contaminant}' for membrane '{membrane}' due to unexpected data type: {type(data)}")
+                    continue
                 efficiency = 0
                 if 'removal_efficiency' in data:
                     efficiency = data['removal_efficiency']
@@ -437,7 +441,7 @@ class ChemistryPlotter:
                     efficiency = max(0, data['rejection_percent'])
                 
                 membrane_performance[membrane].append(efficiency)
-        
+
         # Box plot of performance
         membrane_names = list(membrane_performance.keys())
         performance_data = [membrane_performance[m] for m in membrane_names]
@@ -456,6 +460,9 @@ class ChemistryPlotter:
         contaminant_types = {}
         for result in results:
             for contaminant, data in result['contaminants'].items():
+                if not isinstance(data, dict):
+                    print(f"[WARN] Skipping contaminant '{contaminant}' for type analysis due to unexpected data type: {type(data)}")
+                    continue
                 # Determine contaminant type (simplified)
                 if 'bacteria' in contaminant.lower() or 'coli' in contaminant.lower():
                     cont_type = 'Bacteria'
@@ -509,7 +516,7 @@ class ChemistryPlotter:
             for contaminant, data in result['contaminants'].items():
                 if 'saturation_percent' in data:
                     saturation = data['saturation_percent']
-                    time_points = result['time_min']
+                    time_points = result['time_points']
                     
                     # Find time to reach 95% saturation
                     eq_time = None

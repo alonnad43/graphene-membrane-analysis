@@ -404,3 +404,29 @@ class ResultsUnifier:
         else:
             print("⚠️ No data loaded for any phase")
             self.unified_data = pd.DataFrame()
+
+def unify_all_results(phase1_path=None, phase2_data=None, phase3_data=None, phase4_data=None, output_dir=None):
+    """
+    Convenience function to unify all results using ResultsUnifier.
+    Args:
+        phase1_path (str): Path to Phase 1 Excel file
+        phase2_data (list): Phase 2 structure data (list of dicts)
+        phase3_data (list): Phase 3 results (optional)
+        phase4_data (object): Phase 4 chemistry engine (optional)
+        output_dir (str): Directory to save unified results
+    Returns:
+        pd.DataFrame: Unified results DataFrame
+    """
+    unifier = ResultsUnifier()
+    if phase1_path:
+        unifier.load_phase1_results(excel_path=phase1_path)
+    if phase2_data:
+        unifier.load_phase2_results(phase2_data)
+    if phase3_data:
+        unifier.load_phase3_results(phase3_data)
+    if phase4_data:
+        unifier.load_phase4_results(phase4_data)
+    unifier.create_unified_dataset()
+    if output_dir:
+        unifier.export_unified_results(output_dir)
+    return unifier.unified_data

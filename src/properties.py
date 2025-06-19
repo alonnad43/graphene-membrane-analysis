@@ -4,39 +4,41 @@ Material constants and simulation parameters for GO/rGO membranes.
 This module stores all physical constants, empirical values, and simulation ranges used throughout the project.
 """
 
-# Pore Sizes (nm)
-PORE_SIZE_GO = 1.2
-PORE_SIZE_RGO = 0.99
-PORE_SIZE_RGOTH = 0.85
-
-# Thicknesses (nm)
+# Thickness (nm)
 THICKNESS_GO = 100
-THICKNESS_RGOTA = 150
-THICKNESS_RGOTH = 60
+THICKNESS_RGO = 80
+THICKNESS_HYBRID = 90
 
-# Water Flux (L·m⁻²·h⁻¹·bar⁻¹)
-FLUX_GO = 35
-FLUX_RGOTA = 10191
-FLUX_RGOTH = 10720
+# Average Pore Size (nm)
+PORE_SIZE_GO = 2.0
+PORE_SIZE_RGO = 1.5
+PORE_SIZE_HYBRID = 1.75
 
-# Oil Rejection Efficiency (%)
-REJECTION_GO = 90
-REJECTION_RGO = 90
-REJECTION_HYBRID = 99
+# Contact Angle (degrees)
+CONTACT_ANGLE_GO = 29.5
+CONTACT_ANGLE_RGO = 73.9
+CONTACT_ANGLE_HYBRID = 51.7
+
+# Water Flux at 1 bar (LMH)
+FLUX_GO = 120
+FLUX_RGO = 80
+FLUX_HYBRID = 100
+
+# Oil Rejection (%)
+REJECTION_GO = 85
+REJECTION_RGO = 93
+REJECTION_HYBRID = 89
+
+# Young’s Modulus (GPa)
+YOUNG_MODULUS_GO = 207
+YOUNG_MODULUS_RGO = 280
+YOUNG_MODULUS_HYBRID = 243.5
 
 # Mechanical Properties
-YOUNG_MODULUS_GO = 207.6  # GPa
 TENSILE_STRENGTH_GO = 84.5  # MPa
-YOUNG_MODULUS_RGO = 1.84  # GPa
 TENSILE_STRENGTH_RGO = 150  # MPa
 FRACTURE_STRAIN_GO = 0.02  # %
 FRACTURE_STRAIN_RGO = 0.03  # %
-
-# Contact Angle (Wettability)
-CONTACT_ANGLE_GO = 29.5  # degrees
-CONTACT_ANGLE_RGO = 73.9  # degrees
-CONTACT_ANGLE_HYBRID = (CONTACT_ANGLE_GO + CONTACT_ANGLE_RGO) / 2  # Estimated
-
 
 # Surface Energy (mJ/m²)
 SURFACE_ENERGY_GO = 62.1
@@ -77,66 +79,71 @@ PORE_SIZE_RANGE = [0.3, 0.7, 1.2]  # nm
 # Hybrid Membrane Note
 HYBRID_STRUCTURE_NOTE = "Layered GO/rGO alternating structure with average thickness ~110 nm"
 
-# Membrane Types Dictionary with Literature-Supported Values
+# Membrane Properties (Literature-derived)
+MEMBRANE_PROPERTIES = {
+    'GO': {
+        'thickness_nm': 100,
+        'pore_size_nm': 2.0,
+        'contact_angle_deg': 29.5,
+        'water_flux_LMH': 120,
+        'oil_rejection_pct': 85,
+        'youngs_modulus_GPa': 207
+    },
+    'rGO': {
+        'thickness_nm': 80,
+        'pore_size_nm': 1.5,
+        'contact_angle_deg': 73.9,
+        'water_flux_LMH': 80,
+        'oil_rejection_pct': 93,
+        'youngs_modulus_GPa': 280
+    },
+    'hybrid': {
+        'thickness_nm': 90,
+        'pore_size_nm': 1.75,
+        'contact_angle_deg': 51.7,
+        'water_flux_LMH': 100,
+        'oil_rejection_pct': 89,
+        'youngs_modulus_GPa': 243.5
+    }
+}
+
+# Unified membrane type dictionary for all simulation modules
 MEMBRANE_TYPES = {
-    "GO": {
-        "thickness_nm": 100,
-        "pore_size_nm": 2.0,
-        "contact_angle_deg": 65,
-        "flux_lmh": 120,
-        "oil_rejection_pct": 85,
-        "youngs_modulus_gpa": 207,
-        "ultimate_strength_mpa": 30,
-        "citation": "[6], [13], [14]",
-        "pore_sizes": [1.5, 2.0, 2.5],
-        "thicknesses": [60, 100, 150],
-        "flux_map": {
-            60: 180,
-            100: 120,
-            150: 80,
-        },
-        "rejection_map": {
-            1.5: 90,
-            2.0: 85,
-            2.5: 80,
-        },
-        "modulus": 207,
-        "strength": 30
+    'GO': {
+        'thickness_nm': THICKNESS_GO,
+        'pore_size_nm': PORE_SIZE_GO,
+        'contact_angle_deg': CONTACT_ANGLE_GO,
+        'water_flux_LMH': FLUX_GO,
+        'oil_rejection_pct': REJECTION_GO,
+        'youngs_modulus_GPa': YOUNG_MODULUS_GO,
+        'strength': TENSILE_STRENGTH_GO,  # Added for hybrid structure calculations
+        'thicknesses': [60, 100, 150],
+        'pore_sizes': [0.3, 0.7, 1.2, 2.0],
+        'flux_map': {60: FLUX_GO, 100: FLUX_GO, 150: FLUX_GO}
     },
-    "rGO": {
-        "thickness_nm": 80,
-        "pore_size_nm": 1.5,
-        "contact_angle_deg": 122,
-        "flux_lmh": 80,
-        "oil_rejection_pct": 93,
-        "youngs_modulus_gpa": 280,
-        "ultimate_strength_mpa": 44,
-        "citation": "[12], [14], [17]",
-        "pore_sizes": [1.0, 1.5, 2.0],
-        "thicknesses": [60, 80, 100],
-        "flux_map": {
-            60: 110,
-            80: 80,
-            100: 60,
-        },
-        "rejection_map": {
-            1.0: 95,
-            1.5: 93,
-            2.0: 88,
-        },
-        "modulus": 280,
-        "strength": 44
+    'rGO': {
+        'thickness_nm': THICKNESS_RGO,
+        'pore_size_nm': PORE_SIZE_RGO,
+        'contact_angle_deg': CONTACT_ANGLE_RGO,
+        'water_flux_LMH': FLUX_RGO,
+        'oil_rejection_pct': REJECTION_RGO,
+        'youngs_modulus_GPa': YOUNG_MODULUS_RGO,
+        'strength': TENSILE_STRENGTH_RGO,  # Added for hybrid structure calculations
+        'thicknesses': [60, 80, 100, 150],
+        'pore_sizes': [0.3, 0.7, 1.2, 1.5],
+        'flux_map': {60: FLUX_RGO, 80: FLUX_RGO, 100: FLUX_RGO, 150: FLUX_RGO}
     },
-    "Hybrid": {
-        "pore_size": (2.0 + 1.5) / 2,
-        "thickness": 90,
-        "flux": (120 + 80) / 2,
-        "rejection": 89,
-        "modulus": (207 + 280) / 2,
-        "strength": (30 + 44) / 2,
-        "contact_angle": (65 + 122) / 2,
-        "contact_angle_deg": (65 + 122) / 2,
-        "citation": "Hybrid model based on [6], [12], [13], [14]"
+    'hybrid': {
+        'thickness_nm': THICKNESS_HYBRID,
+        'pore_size_nm': PORE_SIZE_HYBRID,
+        'contact_angle_deg': CONTACT_ANGLE_HYBRID,
+        'water_flux_LMH': FLUX_HYBRID,
+        'oil_rejection_pct': REJECTION_HYBRID,
+        'youngs_modulus_GPa': YOUNG_MODULUS_HYBRID,
+        'strength': (TENSILE_STRENGTH_GO + TENSILE_STRENGTH_RGO) / 2,  # Approximate for hybrid
+        'thicknesses': [60, 90, 110, 150],
+        'pore_sizes': [0.3, 0.7, 1.2, 1.75],
+        'flux_map': {60: FLUX_HYBRID, 90: FLUX_HYBRID, 110: FLUX_HYBRID, 150: FLUX_HYBRID}
     }
 }
 
@@ -433,3 +440,137 @@ LAKE_VICTORIA_REFERENCES = [
     "RSC d4va00171k - MAGO PFBS removal",
     "KIWASCO-GIZ Field Studies 2024-2025"
 ]
+
+# Microstructure Variants for GO/rGO Membranes
+# Based on BGU lab characterization and field trials in Kenya
+MICROSTRUCTURE_VARIANTS = {
+    'GO_GO': {
+        'interlayer_spacing_nm': 1.05,
+        'description': 'Hydrated GO layers with hydrogen bonding',
+        'porosity': 0.45,
+        'c_o_ratio': 2.1,
+        'id_ig_ratio': 0.95,  # D-band/G-band intensity ratio from Raman
+        'surface_energy_mJ_m2': 62.1,
+        'contact_angle_deg': 29.5,
+        'flux_multiplier': 1.2,
+        'rejection_multiplier': 0.9,
+        'synthesis_conditions': {
+            'pH': 2.0,
+            'voltage_V': 0,  # Chemical reduction
+            'temperature_C': 25,
+            'humidity_percent': 65
+        }
+    },
+    'rGO_rGO': {
+        'interlayer_spacing_nm': 0.34,
+        'description': 'π-π stacked rGO layers, dry conditions',
+        'porosity': 0.25,
+        'c_o_ratio': 8.5,
+        'id_ig_ratio': 2.8,
+        'surface_energy_mJ_m2': 110.0,
+        'contact_angle_deg': 122.0,
+        'flux_multiplier': 0.7,
+        'rejection_multiplier': 1.15,
+        'synthesis_conditions': {
+            'pH': 10.0,
+            'voltage_V': 3.5,  # Electrochemical reduction
+            'temperature_C': 80,
+            'humidity_percent': 15
+        }
+    },
+    'GO_rGO': {
+        'interlayer_spacing_nm': 0.80,
+        'description': 'GO-rGO hybrid interface with mixed bonding',
+        'porosity': 0.35,
+        'c_o_ratio': 4.8,
+        'id_ig_ratio': 1.6,
+        'surface_energy_mJ_m2': 86.0,
+        'contact_angle_deg': 75.8,
+        'flux_multiplier': 1.0,
+        'rejection_multiplier': 1.05,
+        'synthesis_conditions': {
+            'pH': 6.5,
+            'voltage_V': 1.8,  # Partial reduction
+            'temperature_C': 50,
+            'humidity_percent': 40
+        }
+    },
+    'dry_hybrid': {
+        'interlayer_spacing_nm': 0.60,
+        'description': 'Compressed hybrid structure, low humidity',
+        'porosity': 0.28,
+        'c_o_ratio': 5.2,
+        'id_ig_ratio': 1.8,
+        'surface_energy_mJ_m2': 95.0,
+        'contact_angle_deg': 85.0,
+        'flux_multiplier': 0.8,
+        'rejection_multiplier': 1.1,
+        'synthesis_conditions': {
+            'pH': 7.0,
+            'voltage_V': 2.2,
+            'temperature_C': 60,
+            'humidity_percent': 20
+        }
+    },
+    'wet_hybrid': {
+        'interlayer_spacing_nm': 0.85,
+        'description': 'Hydrated hybrid structure, high humidity',
+        'porosity': 0.40,
+        'c_o_ratio': 4.2,
+        'id_ig_ratio': 1.4,
+        'surface_energy_mJ_m2': 78.0,
+        'contact_angle_deg': 65.0,
+        'flux_multiplier': 1.1,
+        'rejection_multiplier': 0.95,
+        'synthesis_conditions': {
+            'pH': 6.0,
+            'voltage_V': 1.5,
+            'temperature_C': 35,
+            'humidity_percent': 75
+        }
+    }
+}
+
+# XRD and Raman Analysis Parameters
+CHARACTERIZATION_METHODS = {
+    'XRD': {
+        'interlayer_spacing_calculation': 'd = λ / (2 * sin(θ))',  # Bragg's law
+        'wavelength_nm': 0.154,  # Cu Kα radiation
+        'typical_2theta_degrees': {
+            'GO': 10.5,    # ~1.05 nm spacing
+            'rGO': 26.2,   # ~0.34 nm spacing
+            'hybrid': 14.0  # ~0.8 nm spacing
+        },
+        'uncertainty_nm': 0.05  # ±0.05 nm measurement uncertainty
+    },
+    'Raman': {
+        'D_band_cm_minus1': 1350,  # Disorder-induced band
+        'G_band_cm_minus1': 1580,  # Graphitic band
+        'ID_IG_interpretation': {
+            'GO': 0.8-1.0,     # High disorder
+            'rGO': 2.5-3.0,    # Reduced but still defective
+            'hybrid': 1.4-1.8  # Intermediate disorder
+        },
+        'laser_wavelength_nm': 532  # Green laser
+    },
+    'FTIR': {
+        'functional_groups_cm_minus1': {
+            'COOH': 1720,     # Carboxyl stretching
+            'OH': 3200-3600,  # Hydroxyl stretching
+            'epoxy': 1050,    # C-O stretching
+            'C=C': 1620       # Aromatic C=C
+        }
+    }
+}
+
+# Variant inference tolerances for lab data matching
+VARIANT_INFERENCE = {
+    'spacing_tolerance_nm': 0.1,
+    'id_ig_tolerance': 0.3,
+    'c_o_tolerance': 1.0,
+    'confidence_thresholds': {
+        'high': 0.9,      # < 0.05 nm difference
+        'medium': 0.7,    # < 0.08 nm difference  
+        'low': 0.5        # < 0.1 nm difference
+    }
+}

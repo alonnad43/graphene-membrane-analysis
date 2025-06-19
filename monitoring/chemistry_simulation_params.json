@@ -1,0 +1,10 @@
+{
+  "reaction_time_min": 180,
+  "timestep_min": 10,
+  "initial_concentrations_mg_L": {
+    "Pb2+": 100,
+    "E_coli": 1000000
+  },
+  "pH": 7.0,
+  "temperature_C": 25
+}

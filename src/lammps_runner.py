@@ -22,7 +22,7 @@ class LAMMPSRunner:
         log_file (str): Path to log file
     """
     
-    def __init__(self, lammps_exe="lmp", working_dir="./lammps_sims"):
+    def __init__(self, lammps_exe="lmp", working_dir="./output/phase3"):
         self.lammps_exe = lammps_exe
         self.working_dir = working_dir
         self.log_file = os.path.join(working_dir, "lammps_runner.log")
@@ -140,6 +140,7 @@ class LAMMPSRunner:
         """
         from data_builder import LAMMPSDataBuilder
         from input_writer import LAMMPSInputWriter
+        import os
         
         sim_name = f"lammps_{membrane.name.replace(' ', '_')}"
         sim_dir = os.path.join(self.working_dir, sim_name)
@@ -152,14 +153,20 @@ class LAMMPSRunner:
             builder = LAMMPSDataBuilder()
             atoms = builder.create_membrane_structure(membrane)
             
-            # Write data file
-            data_file = os.path.join(sim_dir, f"{sim_name}.data")
+            # Use a consistent data file name
+            data_file = os.path.join(sim_dir, "data.lammps")
             builder.write_lammps_data(atoms, data_file)
             
             # Create realistic LAMMPS input file (based on Schmidt et al. [17])
             writer = LAMMPSInputWriter()
-            input_file = os.path.join(sim_dir, f"{sim_name}.in")
+            input_file = os.path.join(sim_dir, "input.in")
             writer.write_realistic_membrane_input(input_file, data_file, membrane)
+            
+            # Check that both files exist before running LAMMPS
+            if not os.path.isfile(data_file):
+                raise FileNotFoundError(f"LAMMPS data file not found: {data_file}")
+            if not os.path.isfile(input_file):
+                raise FileNotFoundError(f"LAMMPS input file not found: {input_file}")
             
             print(f"  Running LAMMPS simulation...")
             

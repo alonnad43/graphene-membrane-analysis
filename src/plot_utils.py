@@ -8,6 +8,7 @@ Includes functions for plotting water flux vs. thickness and oil rejection effic
 
 import matplotlib.pyplot as plt
 import os
+import numpy as np
 
 def plot_rejection_summary(membrane_types, rejections, output_dir):
     """
@@ -131,6 +132,7 @@ def plot_flux_vs_pressure(pressures, fluxes, membrane_name, output_dir=None):
 def plot_flux_vs_pore_size_at_pressure(pore_sizes, fluxes_dict, pressure, output_dir):
     """
     Plot flux vs. pore size for all membrane types at a given pressure.
+    Aggregates flux values by pore size (mean) to ensure x and y match.
     Saves to graphs/flux_vs_pore_size_per_pressure/.
 
     Args:
@@ -142,6 +144,20 @@ def plot_flux_vs_pore_size_at_pressure(pore_sizes, fluxes_dict, pressure, output
     os.makedirs(output_dir, exist_ok=True)
     plt.figure()
     for membrane_name, flux_values in fluxes_dict.items():
+        # If there are more flux values than pore sizes, aggregate by pore size
+        if len(flux_values) != len(pore_sizes):
+            # Assume flux_values is a flat list, and there are N variants per pore size
+            n_variants = len(flux_values) // len(pore_sizes)
+            flux_values_agg = []
+            for i in range(len(pore_sizes)):
+                start = i * n_variants
+                end = start + n_variants
+                flux_group = flux_values[start:end]
+                if flux_group:
+                    flux_values_agg.append(np.mean(flux_group))
+                else:
+                    flux_values_agg.append(np.nan)
+            flux_values = flux_values_agg
         plt.plot(pore_sizes, flux_values, marker='o', label=membrane_name)
     plt.xlabel('Pore Size (nm)')
     plt.ylabel('Water Flux (L·m⁻²·h⁻¹)')
