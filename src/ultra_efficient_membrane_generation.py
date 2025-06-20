@@ -19,8 +19,10 @@ warnings.filterwarnings('ignore')
 
 # Import the ultra-efficient simulators
 try:
-    from ultra_efficient_flux import ULTRA_FLUX_SIMULATOR
-    from ultra_efficient_oil_rejection import ULTRA_REJECTION_SIMULATOR
+    from src.ultra_efficient_flux import ULTRA_FLUX_SIMULATOR
+    from src.ultra_efficient_oil_rejection import ULTRA_REJECTION_SIMULATOR
+    from src.flux_simulator import simulate_flux
+    from src.oil_rejection import simulate_oil_rejection
     ADVANCED_SIMULATORS_AVAILABLE = True
 except ImportError:
     # Fallback to standard simulators
@@ -28,8 +30,8 @@ except ImportError:
     from oil_rejection import simulate_oil_rejection
     ADVANCED_SIMULATORS_AVAILABLE = False
 
-from properties import MEMBRANE_TYPES, PRESSURE_RANGE
-from membrane_model import Membrane
+from src.properties import MEMBRANE_TYPES, PRESSURE_RANGE
+from src.membrane_model import Membrane
 
 class UltraEfficientMembraneGenerator:
     """
@@ -79,7 +81,7 @@ class UltraEfficientMembraneGenerator:
                 if len(thicknesses) > 1:
                     self.flux_interpolators[mem_type] = RegularGridInterpolator(
                         (thicknesses,), flux_values,
-                        method='linear', bounds_error=False, fill_value='nearest'
+                        method='linear', bounds_error=False, fill_value=None
                     )
             
             if 'rejection_map' in props:
@@ -90,7 +92,7 @@ class UltraEfficientMembraneGenerator:
                 if len(pore_sizes) > 1:
                     self.rejection_interpolators[mem_type] = RegularGridInterpolator(
                         (pore_sizes,), rejection_values,
-                        method='linear', bounds_error=False, fill_value='nearest'
+                        method='linear', bounds_error=False, fill_value=None
                     )
     
     def generate_membrane_variants_batch(self, membrane_types=None):
@@ -155,15 +157,18 @@ class UltraEfficientMembraneGenerator:
         """Calculate flux using advanced ultra-efficient simulator."""
         # Use batch simulation for entire parameter space
         pressure = 1.0  # Standard pressure for variant generation
-        
+        # Pass unique 1D arrays, not flattened meshgrids
+        thicknesses = np.unique(thickness_tensor)
+        pore_sizes = np.unique(pore_size_tensor)
         flux_results = ULTRA_FLUX_SIMULATOR.simulate_flux_batch(
-            pore_size_tensor.flatten(),
-            thickness_tensor.flatten(),
+            pore_sizes,
+            thicknesses,
             [pressure]
         )
         
         # Reshape to match parameter tensor shape
-        return flux_results[:, :, 0].reshape(thickness_tensor.shape)
+        # Transpose to (thickness, pore_size) before reshape
+        return flux_results[:, :, 0].T.reshape(thickness_tensor.shape)
     
     def _calculate_rejection_batch_advanced(self, pore_size_tensor, mem_type):
         """Calculate rejection using advanced ultra-efficient simulator."""

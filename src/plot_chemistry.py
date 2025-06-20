@@ -28,7 +28,7 @@ class ChemistryPlotter:
     Visualization class for Phase 4 chemical simulation results.
     """
     
-    def __init__(self, results=None, output_dir="graphs/phase4_chemistry"):
+    def __init__(self, results=None, output_dir=r"C:\Users\ramaa\Documents\graphene_mebraine\output\plots\phase4_chemistry"):
         self.results = results
         self.output_dir = output_dir
         os.makedirs(output_dir, exist_ok=True)

@@ -1,0 +1,1953 @@
+{
+  "metadata": {
+    "timestamp": "2025-06-20T00:58:44.822090",
+    "phases_run": [
+      1,
+      2,
+      4
+    ],
+    "ultra_modules": true,
+    "parallel_enabled": true
+  },
+  "phase_results": {
+    "phase_1": {
+      "batch_results": {
+        "GO": {
+          "names": [
+            [
+              "GO_T60_P0.3",
+              "GO_T60_P0.7",
+              "GO_T60_P1.2",
+              "GO_T60_P2.0"
+            ],
+            [
+              "GO_T100_P0.3",
+              "GO_T100_P0.7",
+              "GO_T100_P1.2",
+              "GO_T100_P2.0"
+            ],
+            [
+              "GO_T150_P0.3",
+              "GO_T150_P0.7",
+              "GO_T150_P1.2",
+              "GO_T150_P2.0"
+            ]
+          ],
+          "thicknesses": [
+            [
+              60,
+              60,
+              60,
+              60
+            ],
+            [
+              100,
+              100,
+              100,
+              100
+            ],
+            [
+              150,
+              150,
+              150,
+              150
+            ]
+          ],
+          "pore_sizes": [
+            [
+              0.3,
+              0.7,
+              1.2,
+              2.0
+            ],
+            [
+              0.3,
+              0.7,
+              1.2,
+              2.0
+            ],
+            [
+              0.3,
+              0.7,
+              1.2,
+              2.0
+            ]
+          ],
+          "flux_values": [
+            [
+              8.813712224787036,
+              47.98576655717386,
+              141.01939559659257,
+              391.72054332386836
+            ],
+            [
+              5.288227334872222,
+              28.791459934304317,
+              84.61163735795556,
+              235.03232599432098
+            ],
+            [
+              3.525484889914815,
+              19.194306622869544,
+              56.40775823863704,
+              156.6882173295473
+            ]
+          ],
+          "rejection_values": [
+            [
+              2.2889795950302497e-10,
+              1.903635891313825e-09,
+              7.324734703577063e-09,
+              2.6267199552748003e-08
+            ],
+            [
+              2.2889795950302497e-10,
+              1.903635891313825e-09,
+              7.324734703577063e-09,
+              2.6267199552748003e-08
+            ],
+            [
+              2.2889795950302497e-10,
+              1.903635891313825e-09,
+              7.324734703577063e-09,
+              2.6267199552748003e-08
+            ]
+          ],
+          "combinations_shape": [
+            3,
+            4
+          ],
+          "total_variants": 12
+        },
+        "rGO": {
+          "names": [
+            [
+              "rGO_T60_P0.3",
+              "rGO_T60_P0.7",
+              "rGO_T60_P1.2",
+              "rGO_T60_P1.5"
+            ],
+            [
+              "rGO_T80_P0.3",
+              "rGO_T80_P0.7",
+              "rGO_T80_P1.2",
+              "rGO_T80_P1.5"
+            ],
+            [
+              "rGO_T100_P0.3",
+              "rGO_T100_P0.7",
+              "rGO_T100_P1.2",
+              "rGO_T100_P1.5"
+            ],
+            [
+              "rGO_T150_P0.3",
+              "rGO_T150_P0.7",
+              "rGO_T150_P1.2",
+              "rGO_T150_P1.5"
+            ]
+          ],
+          "thicknesses": [
+            [
+              60,
+              60,
+              60,
+              60
+            ],
+            [
+              80,
+              80,
+              80,
+              80
+            ],
+            [
+              100,
+              100,
+              100,
+              100
+            ],
+            [
+              150,
+              150,
+              150,
+              150
+            ]
+          ],
+          "pore_sizes": [
+            [
+              0.3,
+              0.7,
+              1.2,
+              1.5
+            ],
+            [
+              0.3,
+              0.7,
+              1.2,
+              1.5
+            ],
+            [
+              0.3,
+              0.7,
+              1.2,
+              1.5
+            ],
+            [
+              0.3,
+              0.7,
+              1.2,
+              1.5
+            ]
+          ],
+          "flux_values": [
+            [
+              8.813712224787036,
+              47.98576655717386,
+              141.01939559659257,
+              220.342805619676
+            ],
+            [
+              6.610284168590279,
+              35.9893249178804,
+              105.76454669744446,
+              165.25710421475702
+            ],
+            [
+              5.288227334872222,
+              28.791459934304317,
+              84.61163735795556,
+              132.20568337180563
+            ],
+            [
+              3.525484889914815,
+              19.194306622869544,
+              56.40775823863704,
+              88.13712224787041
+            ]
+          ],
+          "rejection_values": [
+            [
+              2.2889795950302497e-10,
+              1.903635891313825e-09,
+              7.324734703577063e-09,
+              1.2795784932385957e-08
+            ],
+            [
+              2.2889795950302497e-10,
+              1.903635891313825e-09,
+              7.324734703577063e-09,
+              1.2795784932385957e-08
+            ],
+            [
+              2.2889795950302497e-10,
+              1.903635891313825e-09,
+              7.324734703577063e-09,
+              1.2795784932385957e-08
+            ],
+            [
+              2.2889795950302497e-10,
+              1.903635891313825e-09,
+              7.324734703577063e-09,
+              1.2795784932385957e-08
+            ]
+          ],
+          "combinations_shape": [
+            4,
+            4
+          ],
+          "total_variants": 16
+        },
+        "hybrid": {
+          "names": [
+            [
+              "hybrid_T60_P0.3",
+              "hybrid_T60_P0.7",
+              "hybrid_T60_P1.2",
+              "hybrid_T60_P1.8"
+            ],
+            [
+              "hybrid_T90_P0.3",
+              "hybrid_T90_P0.7",
+              "hybrid_T90_P1.2",
+              "hybrid_T90_P1.8"
+            ],
+            [
+              "hybrid_T110_P0.3",
+              "hybrid_T110_P0.7",
+              "hybrid_T110_P1.2",
+              "hybrid_T110_P1.8"
+            ],
+            [
+              "hybrid_T150_P0.3",
+              "hybrid_T150_P0.7",
+              "hybrid_T150_P1.2",
+              "hybrid_T150_P1.8"
+            ]
+          ],
+          "thicknesses": [
+            [
+              60,
+              60,
+              60,
+              60
+            ],
+            [
+              90,
+              90,
+              90,
+              90
+            ],
+            [
+              110,
+              110,
+              110,
+              110
+            ],
+            [
+              150,
+              150,
+              150,
+              150
+            ]
+          ],
+          "pore_sizes": [
+            [
+              0.3,
+              0.7,
+              1.2,
+              1.75
+            ],
+            [
+              0.3,
+              0.7,
+              1.2,
+              1.75
+            ],
+            [
+              0.3,
+              0.7,
+              1.2,
+              1.75
+            ],
+            [
+              0.3,
+              0.7,
+              1.2,
+              1.75
+            ]
+          ],
+          "flux_values": [
+            [
+              8.813712224787036,
+              47.98576655717386,
+              141.01939559659257,
+              299.9110409823368
+            ],
+            [
+              5.875808149858025,
+              31.990511038115912,
+              94.0129303977284,
+              199.9406939882245
+            ],
+            [
+              4.807479395338384,
+              26.1740544857312,
+              76.91967032541415,
+              163.58784053582008
+            ],
+            [
+              3.525484889914815,
+              19.194306622869544,
+              56.40775823863704,
+              119.96441639293471
+            ]
+          ],
+          "rejection_values": [
+            [
+              2.2889795950302497e-10,
+              1.903635891313825e-09,
+              7.324734703577063e-09,
+              1.8811953909933033e-08
+            ],
+            [
+              2.2889795950302497e-10,
+              1.903635891313825e-09,
+              7.324734703577063e-09,
+              1.8811953909933033e-08
+            ],
+            [
+              2.2889795950302497e-10,
+              1.903635891313825e-09,
+              7.324734703577063e-09,
+              1.8811953909933033e-08
+            ],
+            [
+              2.2889795950302497e-10,
+              1.903635891313825e-09,
+              7.324734703577063e-09,
+              1.8811953909933033e-08
+            ]
+          ],
+          "combinations_shape": [
+            4,
+            4
+          ],
+          "total_variants": 16
+        }
+      },
+      "performance_analysis": {
+        "total_variants": 44,
+        "membrane_types": [
+          "GO",
+          "rGO",
+          "hybrid"
+        ],
+        "parameter_ranges": {
+          "thickness_nm": {
+            "min": 60,
+            "max": 150,
+            "mean": 100.9090909090909,
+            "std": 34.62880786336796,
+            "median": 100.0
+          },
+          "pore_size_nm": {
+            "min": 0.3,
+            "max": 2.0,
+            "mean": 0.9818181818181816,
+            "std": 0.5510129054634884,
+            "median": 0.95
+          },
+          "flux_lmh": {
+            "min": 3.525484889914815,
+            "max": 391.72054332386836,
+            "mean": 82.48078011866936,
+            "std": 87.42443277545043,
+            "median": 52.196762397905445
+          },
+          "rejection_percent": {
+            "min": 2.2889795950302497e-10,
+            "max": 2.6267199552748003e-08,
+            "mean": 7.028693366496658e-09,
+            "std": 7.77186405973118e-09,
+            "median": 4.614185297445444e-09
+          }
+        },
+        "performance_statistics": {
+          "GO": {
+            "count": 12,
+            "mean_performance": 0.15050000003572442,
+            "best_performance": 0.6000000001050688,
+            "mean_flux": 98.25656961707033,
+            "mean_rejection": 8.931117026785476e-09
+          },
+          "rGO": {
+            "count": 16,
+            "mean_performance": 0.19570833335558635,
+            "best_performance": 0.6000000000511831,
+            "mean_flux": 71.8715387496957,
+            "mean_rejection": 5.5632633716949675e-09
+          },
+          "hybrid": {
+            "count": 16,
+            "mean_performance": 0.16256456403569036,
+            "best_performance": 0.6000000000752478,
+            "mean_flux": 81.25817936384232,
+            "mean_rejection": 7.067305616081737e-09
+          }
+        },
+        "top_performers": [
+          {
+            "membrane_name": "GO_T60_P2.0",
+            "membrane_type": "GO",
+            "thickness_nm": 60,
+            "pore_size_nm": 2.0,
+            "flux_lmh": 391.72054332386836,
+            "rejection_percent": 2.6267199552748003e-08,
+            "performance_score": 0.6000000001050688,
+            "flux_normalized": 1.0,
+            "rejection_normalized": 2.6267199552748003e-10,
+            "rank": 1
+          },
+          {
+            "membrane_name": "hybrid_T60_P1.8",
+            "membrane_type": "hybrid",
+            "thickness_nm": 60,
+            "pore_size_nm": 1.75,
+            "flux_lmh": 299.9110409823368,
+            "rejection_percent": 1.8811953909933033e-08,
+            "performance_score": 0.6000000000752478,
+            "flux_normalized": 1.0,
+            "rejection_normalized": 1.8811953909933032e-10,
+            "rank": 2
+          },
+          {
+            "membrane_name": "rGO_T60_P1.5",
+            "membrane_type": "rGO",
+            "thickness_nm": 60,
+            "pore_size_nm": 1.5,
+            "flux_lmh": 220.342805619676,
+            "rejection_percent": 1.2795784932385957e-08,
+            "performance_score": 0.6000000000511831,
+            "flux_normalized": 1.0,
+            "rejection_normalized": 1.2795784932385957e-10,
+            "rank": 3
+          },
+          {
+            "membrane_name": "rGO_T80_P1.5",
+            "membrane_type": "rGO",
+            "thickness_nm": 80,
+            "pore_size_nm": 1.5,
+            "flux_lmh": 165.25710421475702,
+            "rejection_percent": 1.2795784932385957e-08,
+            "performance_score": 0.4500000000511832,
+            "flux_normalized": 0.7500000000000001,
+            "rejection_normalized": 1.2795784932385957e-10,
+            "rank": 4
+          },
+          {
+            "membrane_name": "hybrid_T90_P1.8",
+            "membrane_type": "hybrid",
+            "thickness_nm": 90,
+            "pore_size_nm": 1.75,
+            "flux_lmh": 199.9406939882245,
+            "rejection_percent": 1.8811953909933033e-08,
+            "performance_score": 0.4000000000752478,
+            "flux_normalized": 0.6666666666666666,
+            "rejection_normalized": 1.8811953909933032e-10,
+            "rank": 5
+          },
+          {
+            "membrane_name": "rGO_T60_P1.2",
+            "membrane_type": "rGO",
+            "thickness_nm": 60,
+            "pore_size_nm": 1.2,
+            "flux_lmh": 141.01939559659257,
+            "rejection_percent": 7.324734703577063e-09,
+            "performance_score": 0.38400000002929874,
+            "flux_normalized": 0.6399999999999997,
+            "rejection_normalized": 7.324734703577063e-11,
+            "rank": 6
+          },
+          {
+            "membrane_name": "GO_T100_P2.0",
+            "membrane_type": "GO",
+            "thickness_nm": 100,
+            "pore_size_nm": 2.0,
+            "flux_lmh": 235.03232599432098,
+            "rejection_percent": 2.6267199552748003e-08,
+            "performance_score": 0.3600000001050688,
+            "flux_normalized": 0.6,
+            "rejection_normalized": 2.6267199552748003e-10,
+            "rank": 7
+          },
+          {
+            "membrane_name": "rGO_T100_P1.5",
+            "membrane_type": "rGO",
+            "thickness_nm": 100,
+            "pore_size_nm": 1.5,
+            "flux_lmh": 132.20568337180563,
+            "rejection_percent": 1.2795784932385957e-08,
+            "performance_score": 0.3600000000511832,
+            "flux_normalized": 0.6000000000000002,
+            "rejection_normalized": 1.2795784932385957e-10,
+            "rank": 8
+          },
+          {
+            "membrane_name": "hybrid_T110_P1.8",
+            "membrane_type": "hybrid",
+            "thickness_nm": 110,
+            "pore_size_nm": 1.75,
+            "flux_lmh": 163.58784053582008,
+            "rejection_percent": 1.8811953909933033e-08,
+            "performance_score": 0.32727272734797513,
+            "flux_normalized": 0.5454545454545455,
+            "rejection_normalized": 1.8811953909933032e-10,
+            "rank": 9
+          },
+          {
+            "membrane_name": "rGO_T80_P1.2",
+            "membrane_type": "rGO",
+            "thickness_nm": 80,
+            "pore_size_nm": 1.2,
+            "flux_lmh": 105.76454669744446,
+            "rejection_percent": 7.324734703577063e-09,
+            "performance_score": 0.2880000000292989,
+            "flux_normalized": 0.4799999999999999,
+            "rejection_normalized": 7.324734703577063e-11,
+            "rank": 10
+          }
+        ],
+        "batch_generation_time": "N/A"
+      },
+      "efficiency_metrics": {
+        "total_variants": 44,
+        "generation_rate": 526.0469695544476,
+        "computation_time": 0.08364272117614746
+      }
+    },
+    "phase_2": {
+      "structures": [
+        {
+          "layers": [
+            "GO",
+            "rGO",
+            "GO",
+            "rGO"
+          ],
+          "stacking_sequence": "GO-rGO-GO-rGO",
+          "total_thickness": 3.76,
+          "layer_metadata": [
+            {
+              "layer_type": "GO",
+              "layer_index": 0,
+              "z_start": 0.0,
+              "z_end": 0.34,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 1,
+              "z_start": 1.1400000000000001,
+              "z_end": 1.4800000000000002,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 2,
+              "z_start": 2.2800000000000002,
+              "z_end": 2.62,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 3,
+              "z_start": 3.42,
+              "z_end": 3.76,
+              "thickness": 0.34,
+              "spacing_above": 0.0
+            }
+          ],
+          "num_layers": 4,
+          "go_fraction": 0.5,
+          "rgo_fraction": 0.5
+        },
+        {
+          "layers": [
+            "rGO",
+            "GO",
+            "rGO",
+            "GO"
+          ],
+          "stacking_sequence": "rGO-GO-rGO-GO",
+          "total_thickness": 3.76,
+          "layer_metadata": [
+            {
+              "layer_type": "rGO",
+              "layer_index": 0,
+              "z_start": 0.0,
+              "z_end": 0.34,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 1,
+              "z_start": 1.1400000000000001,
+              "z_end": 1.4800000000000002,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 2,
+              "z_start": 2.2800000000000002,
+              "z_end": 2.62,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 3,
+              "z_start": 3.42,
+              "z_end": 3.76,
+              "thickness": 0.34,
+              "spacing_above": 0.0
+            }
+          ],
+          "num_layers": 4,
+          "go_fraction": 0.5,
+          "rgo_fraction": 0.5
+        },
+        {
+          "layers": [
+            "GO",
+            "rGO",
+            "GO",
+            "rGO",
+            "GO",
+            "rGO"
+          ],
+          "stacking_sequence": "GO-rGO-GO-rGO-GO-rGO",
+          "total_thickness": 6.039999999999999,
+          "layer_metadata": [
+            {
+              "layer_type": "GO",
+              "layer_index": 0,
+              "z_start": 0.0,
+              "z_end": 0.34,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 1,
+              "z_start": 1.1400000000000001,
+              "z_end": 1.4800000000000002,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 2,
+              "z_start": 2.2800000000000002,
+              "z_end": 2.62,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 3,
+              "z_start": 3.42,
+              "z_end": 3.76,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 4,
+              "z_start": 4.56,
+              "z_end": 4.8999999999999995,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 5,
+              "z_start": 5.699999999999999,
+              "z_end": 6.039999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.0
+            }
+          ],
+          "num_layers": 6,
+          "go_fraction": 0.5,
+          "rgo_fraction": 0.5
+        },
+        {
+          "layers": [
+            "rGO",
+            "GO",
+            "rGO",
+            "GO",
+            "rGO",
+            "GO"
+          ],
+          "stacking_sequence": "rGO-GO-rGO-GO-rGO-GO",
+          "total_thickness": 6.039999999999999,
+          "layer_metadata": [
+            {
+              "layer_type": "rGO",
+              "layer_index": 0,
+              "z_start": 0.0,
+              "z_end": 0.34,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 1,
+              "z_start": 1.1400000000000001,
+              "z_end": 1.4800000000000002,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 2,
+              "z_start": 2.2800000000000002,
+              "z_end": 2.62,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 3,
+              "z_start": 3.42,
+              "z_end": 3.76,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 4,
+              "z_start": 4.56,
+              "z_end": 4.8999999999999995,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 5,
+              "z_start": 5.699999999999999,
+              "z_end": 6.039999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.0
+            }
+          ],
+          "num_layers": 6,
+          "go_fraction": 0.5,
+          "rgo_fraction": 0.5
+        },
+        {
+          "layers": [
+            "GO",
+            "rGO",
+            "GO",
+            "rGO",
+            "GO",
+            "rGO",
+            "GO",
+            "rGO"
+          ],
+          "stacking_sequence": "GO-rGO-GO-rGO-GO-rGO-GO-rGO",
+          "total_thickness": 8.319999999999999,
+          "layer_metadata": [
+            {
+              "layer_type": "GO",
+              "layer_index": 0,
+              "z_start": 0.0,
+              "z_end": 0.34,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 1,
+              "z_start": 1.1400000000000001,
+              "z_end": 1.4800000000000002,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 2,
+              "z_start": 2.2800000000000002,
+              "z_end": 2.62,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 3,
+              "z_start": 3.42,
+              "z_end": 3.76,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 4,
+              "z_start": 4.56,
+              "z_end": 4.8999999999999995,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 5,
+              "z_start": 5.699999999999999,
+              "z_end": 6.039999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 6,
+              "z_start": 6.839999999999999,
+              "z_end": 7.179999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 7,
+              "z_start": 7.979999999999999,
+              "z_end": 8.319999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.0
+            }
+          ],
+          "num_layers": 8,
+          "go_fraction": 0.5,
+          "rgo_fraction": 0.5
+        },
+        {
+          "layers": [
+            "rGO",
+            "GO",
+            "rGO",
+            "GO",
+            "rGO",
+            "GO",
+            "rGO",
+            "GO"
+          ],
+          "stacking_sequence": "rGO-GO-rGO-GO-rGO-GO-rGO-GO",
+          "total_thickness": 8.319999999999999,
+          "layer_metadata": [
+            {
+              "layer_type": "rGO",
+              "layer_index": 0,
+              "z_start": 0.0,
+              "z_end": 0.34,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 1,
+              "z_start": 1.1400000000000001,
+              "z_end": 1.4800000000000002,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 2,
+              "z_start": 2.2800000000000002,
+              "z_end": 2.62,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 3,
+              "z_start": 3.42,
+              "z_end": 3.76,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 4,
+              "z_start": 4.56,
+              "z_end": 4.8999999999999995,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 5,
+              "z_start": 5.699999999999999,
+              "z_end": 6.039999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 6,
+              "z_start": 6.839999999999999,
+              "z_end": 7.179999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 7,
+              "z_start": 7.979999999999999,
+              "z_end": 8.319999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.0
+            }
+          ],
+          "num_layers": 8,
+          "go_fraction": 0.5,
+          "rgo_fraction": 0.5
+        },
+        {
+          "layers": [
+            "GO",
+            "rGO",
+            "GO",
+            "rGO",
+            "GO",
+            "rGO",
+            "GO",
+            "rGO",
+            "GO",
+            "rGO"
+          ],
+          "stacking_sequence": "GO-rGO-GO-rGO-GO-rGO-GO-rGO-GO-rGO",
+          "total_thickness": 10.6,
+          "layer_metadata": [
+            {
+              "layer_type": "GO",
+              "layer_index": 0,
+              "z_start": 0.0,
+              "z_end": 0.34,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 1,
+              "z_start": 1.1400000000000001,
+              "z_end": 1.4800000000000002,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 2,
+              "z_start": 2.2800000000000002,
+              "z_end": 2.62,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 3,
+              "z_start": 3.42,
+              "z_end": 3.76,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 4,
+              "z_start": 4.56,
+              "z_end": 4.8999999999999995,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 5,
+              "z_start": 5.699999999999999,
+              "z_end": 6.039999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 6,
+              "z_start": 6.839999999999999,
+              "z_end": 7.179999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 7,
+              "z_start": 7.979999999999999,
+              "z_end": 8.319999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 8,
+              "z_start": 9.12,
+              "z_end": 9.459999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 9,
+              "z_start": 10.26,
+              "z_end": 10.6,
+              "thickness": 0.34,
+              "spacing_above": 0.0
+            }
+          ],
+          "num_layers": 10,
+          "go_fraction": 0.5,
+          "rgo_fraction": 0.5
+        },
+        {
+          "layers": [
+            "rGO",
+            "GO",
+            "rGO",
+            "GO",
+            "rGO",
+            "GO",
+            "rGO",
+            "GO",
+            "rGO",
+            "GO"
+          ],
+          "stacking_sequence": "rGO-GO-rGO-GO-rGO-GO-rGO-GO-rGO-GO",
+          "total_thickness": 10.6,
+          "layer_metadata": [
+            {
+              "layer_type": "rGO",
+              "layer_index": 0,
+              "z_start": 0.0,
+              "z_end": 0.34,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 1,
+              "z_start": 1.1400000000000001,
+              "z_end": 1.4800000000000002,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 2,
+              "z_start": 2.2800000000000002,
+              "z_end": 2.62,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 3,
+              "z_start": 3.42,
+              "z_end": 3.76,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 4,
+              "z_start": 4.56,
+              "z_end": 4.8999999999999995,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 5,
+              "z_start": 5.699999999999999,
+              "z_end": 6.039999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 6,
+              "z_start": 6.839999999999999,
+              "z_end": 7.179999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 7,
+              "z_start": 7.979999999999999,
+              "z_end": 8.319999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 8,
+              "z_start": 9.12,
+              "z_end": 9.459999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 9,
+              "z_start": 10.26,
+              "z_end": 10.6,
+              "thickness": 0.34,
+              "spacing_above": 0.0
+            }
+          ],
+          "num_layers": 10,
+          "go_fraction": 0.5,
+          "rgo_fraction": 0.5
+        },
+        {
+          "layers": [
+            "GO",
+            "rGO",
+            "rGO",
+            "GO"
+          ],
+          "stacking_sequence": "GO-rGO-rGO-GO",
+          "total_thickness": 3.3,
+          "layer_metadata": [
+            {
+              "layer_type": "GO",
+              "layer_index": 0,
+              "z_start": 0.0,
+              "z_end": 0.34,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 1,
+              "z_start": 1.1400000000000001,
+              "z_end": 1.4800000000000002,
+              "thickness": 0.34,
+              "spacing_above": 0.34
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 2,
+              "z_start": 1.8200000000000003,
+              "z_end": 2.16,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 3,
+              "z_start": 2.96,
+              "z_end": 3.3,
+              "thickness": 0.34,
+              "spacing_above": 0.0
+            }
+          ],
+          "num_layers": 4,
+          "go_fraction": 0.5,
+          "rgo_fraction": 0.5
+        },
+        {
+          "layers": [
+            "GO",
+            "rGO",
+            "rGO",
+            "rGO",
+            "GO"
+          ],
+          "stacking_sequence": "GO-rGO-rGO-rGO-GO",
+          "total_thickness": 3.9799999999999995,
+          "layer_metadata": [
+            {
+              "layer_type": "GO",
+              "layer_index": 0,
+              "z_start": 0.0,
+              "z_end": 0.34,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 1,
+              "z_start": 1.1400000000000001,
+              "z_end": 1.4800000000000002,
+              "thickness": 0.34,
+              "spacing_above": 0.34
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 2,
+              "z_start": 1.8200000000000003,
+              "z_end": 2.16,
+              "thickness": 0.34,
+              "spacing_above": 0.34
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 3,
+              "z_start": 2.5,
+              "z_end": 2.84,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 4,
+              "z_start": 3.6399999999999997,
+              "z_end": 3.9799999999999995,
+              "thickness": 0.34,
+              "spacing_above": 0.0
+            }
+          ],
+          "num_layers": 5,
+          "go_fraction": 0.4,
+          "rgo_fraction": 0.6
+        },
+        {
+          "layers": [
+            "GO",
+            "rGO",
+            "rGO",
+            "rGO",
+            "rGO",
+            "GO"
+          ],
+          "stacking_sequence": "GO-rGO-rGO-rGO-rGO-GO",
+          "total_thickness": 4.659999999999999,
+          "layer_metadata": [
+            {
+              "layer_type": "GO",
+              "layer_index": 0,
+              "z_start": 0.0,
+              "z_end": 0.34,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 1,
+              "z_start": 1.1400000000000001,
+              "z_end": 1.4800000000000002,
+              "thickness": 0.34,
+              "spacing_above": 0.34
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 2,
+              "z_start": 1.8200000000000003,
+              "z_end": 2.16,
+              "thickness": 0.34,
+              "spacing_above": 0.34
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 3,
+              "z_start": 2.5,
+              "z_end": 2.84,
+              "thickness": 0.34,
+              "spacing_above": 0.34
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 4,
+              "z_start": 3.1799999999999997,
+              "z_end": 3.5199999999999996,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 5,
+              "z_start": 4.319999999999999,
+              "z_end": 4.659999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.0
+            }
+          ],
+          "num_layers": 6,
+          "go_fraction": 0.3333333333333333,
+          "rgo_fraction": 0.6666666666666666
+        },
+        {
+          "layers": [
+            "GO",
+            "rGO",
+            "rGO",
+            "rGO",
+            "rGO",
+            "rGO",
+            "GO"
+          ],
+          "stacking_sequence": "GO-rGO-rGO-rGO-rGO-rGO-GO",
+          "total_thickness": 5.339999999999999,
+          "layer_metadata": [
+            {
+              "layer_type": "GO",
+              "layer_index": 0,
+              "z_start": 0.0,
+              "z_end": 0.34,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 1,
+              "z_start": 1.1400000000000001,
+              "z_end": 1.4800000000000002,
+              "thickness": 0.34,
+              "spacing_above": 0.34
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 2,
+              "z_start": 1.8200000000000003,
+              "z_end": 2.16,
+              "thickness": 0.34,
+              "spacing_above": 0.34
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 3,
+              "z_start": 2.5,
+              "z_end": 2.84,
+              "thickness": 0.34,
+              "spacing_above": 0.34
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 4,
+              "z_start": 3.1799999999999997,
+              "z_end": 3.5199999999999996,
+              "thickness": 0.34,
+              "spacing_above": 0.34
+            },
+            {
+              "layer_type": "rGO",
+              "layer_index": 5,
+              "z_start": 3.8599999999999994,
+              "z_end": 4.199999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.8
+            },
+            {
+              "layer_type": "GO",
+              "layer_index": 6,
+              "z_start": 4.999999999999999,
+              "z_end": 5.339999999999999,
+              "thickness": 0.34,
+              "spacing_above": 0.0
+            }
+          ],
+          "num_layers": 7,
+          "go_fraction": 0.2857142857142857,
+          "rgo_fraction": 0.7142857142857143
+        }
+      ],
+      "optimized_structures": [
+        {
+          "target": "flux",
+          "structure": {
+            "layers": [
+              "GO",
+              "rGO",
+              "GO",
+              "rGO",
+              "GO",
+              "rGO",
+              "GO",
+              "rGO",
+              "GO",
+              "rGO"
+            ],
+            "stacking_sequence": "GO-rGO-GO-rGO-GO-rGO-GO-rGO-GO-rGO",
+            "total_thickness": 10.6,
+            "layer_metadata": [
+              {
+                "layer_type": "GO",
+                "layer_index": 0,
+                "z_start": 0.0,
+                "z_end": 0.34,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 1,
+                "z_start": 1.1400000000000001,
+                "z_end": 1.4800000000000002,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "GO",
+                "layer_index": 2,
+                "z_start": 2.2800000000000002,
+                "z_end": 2.62,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 3,
+                "z_start": 3.42,
+                "z_end": 3.76,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "GO",
+                "layer_index": 4,
+                "z_start": 4.56,
+                "z_end": 4.8999999999999995,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 5,
+                "z_start": 5.699999999999999,
+                "z_end": 6.039999999999999,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "GO",
+                "layer_index": 6,
+                "z_start": 6.839999999999999,
+                "z_end": 7.179999999999999,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 7,
+                "z_start": 7.979999999999999,
+                "z_end": 8.319999999999999,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "GO",
+                "layer_index": 8,
+                "z_start": 9.12,
+                "z_end": 9.459999999999999,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 9,
+                "z_start": 10.26,
+                "z_end": 10.6,
+                "thickness": 0.34,
+                "spacing_above": 0.0
+              }
+            ],
+            "num_layers": 10,
+            "go_fraction": 0.5,
+            "rgo_fraction": 0.5
+          },
+          "optimization_score": 0.7913127837661307
+        },
+        {
+          "target": "rejection",
+          "structure": {
+            "layers": [
+              "GO",
+              "rGO",
+              "GO",
+              "rGO",
+              "GO",
+              "rGO",
+              "GO",
+              "rGO",
+              "GO",
+              "rGO"
+            ],
+            "stacking_sequence": "GO-rGO-GO-rGO-GO-rGO-GO-rGO-GO-rGO",
+            "total_thickness": 10.6,
+            "layer_metadata": [
+              {
+                "layer_type": "GO",
+                "layer_index": 0,
+                "z_start": 0.0,
+                "z_end": 0.34,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 1,
+                "z_start": 1.1400000000000001,
+                "z_end": 1.4800000000000002,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "GO",
+                "layer_index": 2,
+                "z_start": 2.2800000000000002,
+                "z_end": 2.62,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 3,
+                "z_start": 3.42,
+                "z_end": 3.76,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "GO",
+                "layer_index": 4,
+                "z_start": 4.56,
+                "z_end": 4.8999999999999995,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 5,
+                "z_start": 5.699999999999999,
+                "z_end": 6.039999999999999,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "GO",
+                "layer_index": 6,
+                "z_start": 6.839999999999999,
+                "z_end": 7.179999999999999,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 7,
+                "z_start": 7.979999999999999,
+                "z_end": 8.319999999999999,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "GO",
+                "layer_index": 8,
+                "z_start": 9.12,
+                "z_end": 9.459999999999999,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 9,
+                "z_start": 10.26,
+                "z_end": 10.6,
+                "thickness": 0.34,
+                "spacing_above": 0.0
+              }
+            ],
+            "num_layers": 10,
+            "go_fraction": 0.5,
+            "rgo_fraction": 0.5
+          },
+          "optimization_score": 0.912121333090784
+        },
+        {
+          "target": "combined",
+          "structure": {
+            "layers": [
+              "GO",
+              "rGO",
+              "GO",
+              "rGO",
+              "GO",
+              "rGO",
+              "GO",
+              "rGO",
+              "GO",
+              "rGO"
+            ],
+            "stacking_sequence": "GO-rGO-GO-rGO-GO-rGO-GO-rGO-GO-rGO",
+            "total_thickness": 10.6,
+            "layer_metadata": [
+              {
+                "layer_type": "GO",
+                "layer_index": 0,
+                "z_start": 0.0,
+                "z_end": 0.34,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 1,
+                "z_start": 1.1400000000000001,
+                "z_end": 1.4800000000000002,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "GO",
+                "layer_index": 2,
+                "z_start": 2.2800000000000002,
+                "z_end": 2.62,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 3,
+                "z_start": 3.42,
+                "z_end": 3.76,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "GO",
+                "layer_index": 4,
+                "z_start": 4.56,
+                "z_end": 4.8999999999999995,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 5,
+                "z_start": 5.699999999999999,
+                "z_end": 6.039999999999999,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "GO",
+                "layer_index": 6,
+                "z_start": 6.839999999999999,
+                "z_end": 7.179999999999999,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 7,
+                "z_start": 7.979999999999999,
+                "z_end": 8.319999999999999,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "GO",
+                "layer_index": 8,
+                "z_start": 9.12,
+                "z_end": 9.459999999999999,
+                "thickness": 0.34,
+                "spacing_above": 0.8
+              },
+              {
+                "layer_type": "rGO",
+                "layer_index": 9,
+                "z_start": 10.26,
+                "z_end": 10.6,
+                "thickness": 0.34,
+                "spacing_above": 0.0
+              }
+            ],
+            "num_layers": 10,
+            "go_fraction": 0.5,
+            "rgo_fraction": 0.5
+          },
+          "optimization_score": 0.7887121478946373
+        }
+      ],
+      "generation_time": 0.00032329559326171875
+    },
+    "phase_4": {
+      "simulation_results": {
+        "membrane_types": [
+          "GO",
+          "rGO",
+          "hybrid"
+        ],
+        "contaminants": [
+          "Pb2+",
+          "E_coli"
+        ],
+        "time_points": [
+          0.0,
+          45.0,
+          90.0,
+          135.0,
+          180.0
+        ],
+        "concentration_matrix": [
+          [
+            [
+              100.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              100.0,
+              0.451658094261267,
+              0.002039950341117196,
+              9.213600834566134e-06,
+              4.1613973942241634e-08
+            ]
+          ],
+          [
+            [
+              100.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              100.0,
+              0.451658094261267,
+              0.002039950341117196,
+              9.213600834566134e-06,
+              4.1613973942241634e-08
+            ]
+          ],
+          [
+            [
+              100.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              100.0,
+              0.451658094261267,
+              0.002039950341117196,
+              9.213600834566134e-06,
+              4.1613973942241634e-08
+            ]
+          ]
+        ],
+        "efficiency_matrix": [
+          [
+            100.0,
+            9.380760809110239
+          ],
+          [
+            100.0,
+            9.380760809110239
+          ],
+          [
+            100.0,
+            9.380760809110239
+          ]
+        ],
+        "performance_note": "Batch processed 3x2 combinations in 5 time steps"
+      },
+      "configuration": {
+        "membrane_types": [
+          "GO",
+          "rGO",
+          "hybrid"
+        ],
+        "contaminants": [
+          "Pb2+",
+          "E_coli"
+        ],
+        "initial_concentrations": {
+          "Pb2+": 100.0,
+          "E_coli": 100.0
+        },
+        "time_points": [
+          0.0,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          7.0,
+          8.0,
+          9.0,
+          10.0,
+          11.0,
+          12.0,
+          13.0,
+          14.0,
+          15.0,
+          16.0,
+          17.0,
+          18.0,
+          19.0,
+          20.0,
+          21.0,
+          22.0,
+          23.0,
+          24.0,
+          25.0,
+          26.0,
+          27.0,
+          28.0,
+          29.0,
+          30.0,
+          31.0,
+          32.0,
+          33.0,
+          34.0,
+          35.0,
+          36.0,
+          37.0,
+          38.0,
+          39.0,
+          40.0,
+          41.0,
+          42.0,
+          43.0,
+          44.0,
+          45.0,
+          46.0,
+          47.0,
+          48.0,
+          49.0,
+          50.0,
+          51.0,
+          52.0,
+          53.0,
+          54.0,
+          55.0,
+          56.0,
+          57.0,
+          58.0,
+          59.0,
+          60.0
+        ],
+        "conditions": {
+          "pH": 7.0,
+          "temperature": 298.0,
+          "pressure": 1.0
+        }
+      },
+      "computation_time": 0.0003933906555175781,
+      "efficiency_metrics": {
+        "total_combinations": 366,
+        "computation_rate": 930372.8872727273
+      }
+    }
+  },
+  "performance_metrics": {
+    "total_pipeline_time": 2.798898458480835,
+    "phase_breakdown": {
+      "plotting": 1.8834517002105713
+    },
+    "total_computations": 0,
+    "overall_computation_rate": 0.0,
+    "estimated_memory_usage_mb": 0.0,
+    "efficiency_score": 0.0,
+    "ultra_modules_used": true,
+    "parallel_execution": true
+  },
+  "visualizations": {
+    "membrane_performance": {
+      "_stale": true,
+      "stale_callback": {},
+      "_parent_figure": null,
+      "_transform": null,
+      "_transformSet": false,
+      "_visible": true,
+      "_animated": false,
+      "_alpha": null,
+      "clipbox": null,
+      "_clippath": null,
+      "_clipon": true,
+      "_label": "",
+      "_picker": null,
+      "_rasterized": false,
+      "_agg_filter": null,
+      "_mouseover": false,
+      "_callbacks": {
+        "_signals": [
+          "pchanged"
+        ],
+        "exception_handler": {},
+        "callbacks": {},
+        "_cid_gen": 

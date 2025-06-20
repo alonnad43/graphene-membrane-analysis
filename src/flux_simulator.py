@@ -10,7 +10,7 @@ References: Schmidt et al. 2023, Green Synthesis GO 2018, Revolutionizing water 
 import numpy as np
 import matplotlib.pyplot as plt
 from math import pi, log10
-from properties import MEMBRANE_TYPES, PRESSURE_RANGE, WATER_PROPERTIES
+from src.properties import MEMBRANE_TYPES, PRESSURE_RANGE, WATER_PROPERTIES
 
 def calculate_temperature_viscosity(temperature=298):
     """

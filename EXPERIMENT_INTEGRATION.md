@@ -6,7 +6,7 @@ This guide explains how to connect the simulation framework to your experimental
 
 ## 1. Before Experiments: Use Simulation to Guide Lab Work
 - Run `main.py` to simulate water flux, oil rejection, and mechanical properties for a wide range of GO/rGO/hybrid membranes.
-- Review the output in the `output/` and `graphs/` folders to identify the most promising membrane designs.
+- Review the output in the `output/` and `output/plots/` folders to identify the most promising membrane designs.
 - Select a small number of top-performing variants for fabrication in the lab.
 - If testing a new GO/rGO synthesis route (e.g., electrochemical, biological, or algae-based), use Phase 4 to simulate expected C/O ratios and reduction effectiveness based on literature data.
 
@@ -41,7 +41,7 @@ This guide explains how to connect the simulation framework to your experimental
 ## 4. Data File Reference (2025+)
 - **Membrane, contaminant, force field, synthesis, and validation data:** `forcefield_and_simulation_data.json` (single consolidated source; includes all advanced sections and placeholders for extension)
 - **Experimental/lab data:** `data/lab_characterization_example.json`
-- **Simulation results and plots:** `output/`, `graphs/`
+- **Simulation results and plots:** `output/`, `output/plots/`
 - **Atomistic simulation logs and structures:** `output/phase3/[membrane_name]/`
 
 ---
@@ -58,6 +58,14 @@ This guide explains how to connect the simulation framework to your experimental
 - After updating force field or membrane properties, validate atomistic-level simulation stability using Phase 3 LAMMPS logs (`output/phase3/log.lammps`).
 - If new contaminants, pathogens, microplastics, or NOM subtypes are tested, ensure their properties are added to the relevant section in `forcefield_and_simulation_data.json`.
 - Use the `validation_and_field_data` section in the JSON to track and compare lab/field results.
+
+---
+
+## Ultra-Optimized Pipeline & Data Integration (2025)
+- The codebase now uses an ultra-optimized, batch-capable simulation pipeline with robust error handling and serialization.
+- All simulation results and plots are saved under `output/` with subfolders for each phase and plot type (e.g., `output/phase1/`, `output/plots/oil_rejection_summary/`).
+- All data import/export supports CSV and JSON formats for easy lab integration.
+- The workflow is validated end-to-end and produces performance summaries for each run.
 
 ---
 

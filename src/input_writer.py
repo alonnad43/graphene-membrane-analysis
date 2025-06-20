@@ -378,40 +378,57 @@ write_restart   {OUTPUT_PREFIX}_final.restart
         dihedral_types_in_data = parse_types_from_data(data_file, 'Dihedrals')
         # Add bond_coeffs for all types in data file
         if self.forcefield:
-            ff_bond_types = {v['id']: (k, v) for k, v in self.forcefield['bond_types'].items()} if self.forcefield and 'bond_types' in self.forcefield else {}
+            ff_bond_types = {v['id']: (k, v) for k, v in self.forcefield['bond_types'].items()}
             for bond_type in sorted(bond_types_in_data):
                 if bond_type in ff_bond_types:
                     k, v = ff_bond_types[bond_type]
                     lines.append(f"bond_coeff {v['id']} {v['k']} {v['r0']}  # {k}")
                 else:
                     lines.append(f"bond_coeff {bond_type} 100.0 1.0  # MISSING TYPE")
-        # --- DEBUG/VALIDATION BLOCK ---
-        def print_section_lines(data_file, section_name):
+        # --- PATCH: Guarantee all bond_coeffs for all defined types ---
+        def parse_num_types_from_data(data_file, type_name):
+            # e.g., type_name='bond types' -> line: '18 bond types'
             try:
                 with open(data_file, 'r') as f:
-                    lines = f.readlines()
-                in_section = False
-                section_lines = []
-                for line in lines:
-                    if line.strip() == section_name:
-                        in_section = True
-                        continue
-                    if in_section:
-                        if not line.strip() or line[0].isalpha() or line.strip().endswith('types'):
-                            break
-                        section_lines.append(line.strip())
-                print(f"[DEBUG] Raw lines from {section_name} section:")
-                for l in section_lines:
-                    print(l)
+                    for line in f:
+                        if line.strip().endswith(type_name):
+                            return int(line.strip().split()[0])
             except Exception as e:
-                print(f"[DEBUG] Could not read section {section_name}: {e}")
-        print_section_lines(data_file, 'Bonds')
-        print_section_lines(data_file, 'Angles')
-        print_section_lines(data_file, 'Dihedrals')
-        # Always define ff_angle_types and ff_dihedral_types, even if empty
+                print(f"[DEBUG] Error parsing num {type_name}: {e}")
+            return 0
+        num_bond_types = parse_num_types_from_data(data_file, 'bond types')
+        # Build a dict of bond_coeff lines for all types 1..N
+        bond_coeff_dict = {}
+        if self.forcefield:
+            ff_bond_types = {v['id']: (k, v) for k, v in self.forcefield['bond_types'].items()}
+            for bond_type in range(1, num_bond_types + 1):
+                if bond_type in ff_bond_types:
+                    k, v = ff_bond_types[bond_type]
+                    bond_coeff_dict[bond_type] = f"bond_coeff {v['id']} {v['k']} {v['r0']}  # {k}"
+                else:
+                    bond_coeff_dict[bond_type] = f"bond_coeff {bond_type} 100.0 1.0  # MISSING TYPE"
+        else:
+            for bond_type in range(1, num_bond_types + 1):
+                bond_coeff_dict[bond_type] = f"bond_coeff {bond_type} 100.0 1.0  # MISSING TYPE"
+        # Remove any previously added bond_coeff lines
+        lines = [l for l in lines if not l.strip().startswith('bond_coeff')]
+        # Insert all bond_coeffs in order after bond_style
+        bond_style_idx = next((i for i, l in enumerate(lines) if l.strip().startswith('bond_style')), None)
+        bond_coeff_lines = [bond_coeff_dict[i] for i in range(1, num_bond_types + 1)]
+        if bond_style_idx is not None:
+            for i, coeff_line in enumerate(bond_coeff_lines):
+                lines.insert(bond_style_idx + 1 + i, coeff_line)
+        else:
+            lines += bond_coeff_lines
+        # --- END PATCH ---
+        # --- DEBUG/VALIDATION BLOCK ---
+        # --- Ensure all debug variables are always defined at the top of the block ---
         ff_bond_types = {v['id']: (k, v) for k, v in self.forcefield['bond_types'].items()} if self.forcefield and 'bond_types' in self.forcefield else {}
         ff_angle_types = {v['id']: (k, v) for k, v in self.forcefield['angle_types'].items()} if self.forcefield and 'angle_types' in self.forcefield else {}
         ff_dihedral_types = {v['id']: (k, v) for k, v in self.forcefield['dihedral_types'].items()} if self.forcefield and 'dihedral_types' in self.forcefield else {}
+        bond_coeff_lines = [l for l in lines if l.strip().startswith('bond_coeff')]
+        angle_coeff_lines = [l for l in lines if l.strip().startswith('angle_coeff')]
+        dihedral_coeff_lines = [l for l in lines if l.strip().startswith('dihedral_coeff')]
         # Print all type IDs found and in forcefield
         print(f"[DEBUG] Bond type IDs in data file: {sorted(bond_types_in_data)}")
         print(f"[DEBUG] Bond type IDs in forcefield: {sorted(ff_bond_types.keys())}")
@@ -420,28 +437,23 @@ write_restart   {OUTPUT_PREFIX}_final.restart
         if write_dihedrals:
             print(f"[DEBUG] Dihedral type IDs in data file: {sorted(dihedral_types_in_data)}")
             print(f"[DEBUG] Dihedral type IDs in forcefield: {sorted(ff_dihedral_types.keys())}")
-        # Print all coeff lines
-        print(f"[DEBUG] Bond_coeff lines written:")
-        for l in bond_coeff_lines:
-            print(l)
-        print(f"[DEBUG] Angle_coeff lines written:")
-        for l in angle_coeff_lines:
-            print(l)
-        if write_dihedrals:
+        # Only print angle/dihedral debug output if those coeff lines are non-empty
+        if angle_coeff_lines:
+            print(f"[DEBUG] Angle_coeff lines written:")
+            for l in angle_coeff_lines:
+                print(l)
+            unused_angles = [aid for aid in ff_angle_types if aid not in angle_types_in_data]
+            if unused_angles:
+                print(f"[WARNING] Unused angle types in forcefield: {unused_angles}")
+            print(f"[SUMMARY] Angles: {len(angle_types_in_data)} in data, {len(ff_angle_types)} in forcefield.")
+        if dihedral_coeff_lines:
             print(f"[DEBUG] Dihedral_coeff lines written:")
             for l in dihedral_coeff_lines:
                 print(l)
-        # Print warnings for unused forcefield types
-        unused_bonds = [bid for bid in ff_bond_types if bid not in bond_types_in_data]
-        if unused_bonds:
-            print(f"[WARNING] Unused bond types in forcefield: {unused_bonds}")
-        unused_angles = [aid for aid in ff_angle_types if aid not in angle_types_in_data]
-        if unused_angles:
-            print(f"[WARNING] Unused angle types in forcefield: {unused_angles}")
-        if write_dihedrals:
             unused_dihedrals = [did for did in ff_dihedral_types if did not in dihedral_types_in_data]
             if unused_dihedrals:
                 print(f"[WARNING] Unused dihedral types in forcefield: {unused_dihedrals}")
+            print(f"[SUMMARY] Dihedrals: {len(dihedral_types_in_data)} in data, {len(ff_dihedral_types)} in forcefield.")
         # Print summary
         print(f"[SUMMARY] Bonds: {len(bond_types_in_data)} in data, {len(ff_bond_types)} in forcefield.")
         print(f"[SUMMARY] Angles: {len(angle_types_in_data)} in data, {len(ff_angle_types)} in forcefield.")
@@ -454,7 +466,7 @@ write_restart   {OUTPUT_PREFIX}_final.restart
         # --- END DEBUG/VALIDATION BLOCK ---
         # Add angle_coeffs for all types in data file
         if self.forcefield:
-            ff_angle_types = {v['id']: (k, v) for k, v in self.forcefield['angle_types'].items()} if self.forcefield and 'angle_types' in self.forcefield else {}
+            ff_angle_types = {v['id']: (k, v) for k, v in self.forcefield['angle_types'].items()}
             for angle_type in sorted(angle_types_in_data):
                 if angle_type in ff_angle_types:
                     k, v = ff_angle_types[angle_type]
@@ -463,7 +475,7 @@ write_restart   {OUTPUT_PREFIX}_final.restart
                     lines.append(f"angle_coeff {angle_type} 50.0 120.0  # MISSING TYPE")
         # Add dihedral_coeffs for all types in data file (if present)
         if write_dihedrals and self.forcefield and 'dihedral_types' in self.forcefield:
-            ff_dihedral_types = {v['id']: (k, v) for k, v in self.forcefield['dihedral_types'].items()} if self.forcefield and 'dihedral_types' in self.forcefield else {}
+            ff_dihedral_types = {v['id']: (k, v) for k, v in self.forcefield['dihedral_types'].items()}
             for dihedral_type in sorted(dihedral_types_in_data):
                 if dihedral_type in ff_dihedral_types:
                     k, v = ff_dihedral_types[dihedral_type]
@@ -538,6 +550,56 @@ write_restart   {OUTPUT_PREFIX}_final.restart
             'print "Final potential energy: ${final_pe} kcal/mol"',
             'print "Final kinetic energy: ${final_ke} kcal/mol"',
         ]
+        # --- FINAL PATCH: Guarantee all angle_coeffs for all defined types (overwrite any previous logic) ---
+        num_angle_types = parse_num_types_from_data(data_file, 'angle types')
+        angle_coeff_dict = {}
+        if self.forcefield and 'angle_types' in self.forcefield:
+            ff_angle_types = {v['id']: (k, v) for k, v in self.forcefield['angle_types'].items()}
+            for angle_type in range(1, num_angle_types + 1):
+                if angle_type in ff_angle_types:
+                    k, v = ff_angle_types[angle_type]
+                    angle_coeff_dict[angle_type] = f"angle_coeff {v['id']} {v['k']} {v['theta0']}  # {k}"
+                else:
+                    angle_coeff_dict[angle_type] = f"angle_coeff {angle_type} 50.0 120.0  # MISSING TYPE"
+        else:
+            for angle_type in range(1, num_angle_types + 1):
+                angle_coeff_dict[angle_type] = f"angle_coeff {angle_type} 50.0 120.0  # MISSING TYPE"
+        # Remove any previously added angle_coeff lines
+        lines = [l for l in lines if not l.strip().startswith('angle_coeff')]
+        # Insert all angle_coeffs in order after angle_style
+        angle_style_idx = next((i for i, l in enumerate(lines) if l.strip().startswith('angle_style')), None)
+        angle_coeff_lines = [angle_coeff_dict[i] for i in range(1, num_angle_types + 1)]
+        if angle_style_idx is not None:
+            for i, coeff_line in enumerate(angle_coeff_lines):
+                lines.insert(angle_style_idx + 1 + i, coeff_line)
+        else:
+            lines += angle_coeff_lines
+        # --- END FINAL PATCH ---
+        # Add minimization step before dynamics in LAMMPS input
+        # Find the index of the line with 'run' and insert minimization before it
+        run_idx = next((i for i, l in enumerate(lines) if l.strip().startswith('run ')), None)
+        if run_idx is not None:
+            lines.insert(run_idx, 'minimize 1.0e-4 1.0e-6 1000 10000')
+        else:
+            lines.append('minimize 1.0e-4 1.0e-6 1000 10000')
+        # Reduce timestep for more stable dynamics
+        for i, line in enumerate(lines):
+            if line.strip().startswith('timestep '):
+                lines[i] = 'timestep 0.5'  # Reduce from 1.0 to 0.5
+                break
+        # Further reduce timestep for maximum stability
+        for i, line in enumerate(lines):
+            if line.strip().startswith('timestep '):
+                lines[i] = 'timestep 0.25'  # Reduce from 0.5 to 0.25
+                break
+        # Add further minimization and short NVT equilibration before production MD in LAMMPS input
+        # Insert after minimization, before main run
+        min_idx = next((i for i, l in enumerate(lines) if l.strip().startswith('minimize ')), None)
+        if min_idx is not None:
+            # Insert NVT equilibration after minimization
+            lines.insert(min_idx + 1, 'fix nvt_eq all nvt temp 300.0 300.0 100.0')
+            lines.insert(min_idx + 2, 'run 2000')
+            lines.insert(min_idx + 3, 'unfix nvt_eq')
         with open(filename, 'w') as f:
             f.write("\n".join(lines))
         print(f"  Realistic LAMMPS input written to {filename}")

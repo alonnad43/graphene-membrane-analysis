@@ -116,7 +116,7 @@ MEMBRANE_TYPES = {
         'water_flux_LMH': FLUX_GO,
         'oil_rejection_pct': REJECTION_GO,
         'youngs_modulus_GPa': YOUNG_MODULUS_GO,
-        'strength': TENSILE_STRENGTH_GO,  # Added for hybrid structure calculations
+        'tensile_strength_MPa': TENSILE_STRENGTH_GO,  # Standardized for all modules
         'thicknesses': [60, 100, 150],
         'pore_sizes': [0.3, 0.7, 1.2, 2.0],
         'flux_map': {60: FLUX_GO, 100: FLUX_GO, 150: FLUX_GO}
@@ -128,7 +128,7 @@ MEMBRANE_TYPES = {
         'water_flux_LMH': FLUX_RGO,
         'oil_rejection_pct': REJECTION_RGO,
         'youngs_modulus_GPa': YOUNG_MODULUS_RGO,
-        'strength': TENSILE_STRENGTH_RGO,  # Added for hybrid structure calculations
+        'tensile_strength_MPa': TENSILE_STRENGTH_RGO,  # Standardized for all modules
         'thicknesses': [60, 80, 100, 150],
         'pore_sizes': [0.3, 0.7, 1.2, 1.5],
         'flux_map': {60: FLUX_RGO, 80: FLUX_RGO, 100: FLUX_RGO, 150: FLUX_RGO}
@@ -140,7 +140,7 @@ MEMBRANE_TYPES = {
         'water_flux_LMH': FLUX_HYBRID,
         'oil_rejection_pct': REJECTION_HYBRID,
         'youngs_modulus_GPa': YOUNG_MODULUS_HYBRID,
-        'strength': (TENSILE_STRENGTH_GO + TENSILE_STRENGTH_RGO) / 2,  # Approximate for hybrid
+        'tensile_strength_MPa': (TENSILE_STRENGTH_GO + TENSILE_STRENGTH_RGO) / 2,  # Standardized for all modules
         'thicknesses': [60, 90, 110, 150],
         'pore_sizes': [0.3, 0.7, 1.2, 1.75],
         'flux_map': {60: FLUX_HYBRID, 90: FLUX_HYBRID, 110: FLUX_HYBRID, 150: FLUX_HYBRID}

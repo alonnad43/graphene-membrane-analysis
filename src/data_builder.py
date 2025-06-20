@@ -10,7 +10,7 @@ Focuses on physical structure generation without chemical reaction modeling.
 import numpy as np
 import os
 import json
-from properties import LAMMPS_PARAMETERS
+from src.properties import LAMMPS_PARAMETERS
 
 class LAMMPSDataBuilder:
     """
@@ -29,7 +29,7 @@ class LAMMPSDataBuilder:
     
     def create_membrane_structure(self, membrane):
         """
-        Create atomic structure for a membrane based on its properties.
+        Create atomic structure for a membrane based on its properties, using advanced structure generation.
         
         Args:
             membrane: Membrane object from Phase 1
@@ -37,12 +37,13 @@ class LAMMPSDataBuilder:
         Returns:
             np.array: Atomic structure [atom_id, type, x, y, z]
         """
+        # Use multilayer if thickness > 1 layer (assume 3.4 Å per layer)
+        n_layers = max(1, int(round(membrane.thickness_nm * 10 / 3.4)))
         nx, ny = 5, 5
-        layer_z = 0.0
-        
-        # Create base graphene structure
-        atoms = self.create_graphene_sheet(nx, ny, layer_z)
-        
+        # Build multilayer graphene/GO
+        atoms = self.create_multilayer_graphene(nx, ny, n_layers=n_layers, interlayer=3.4)
+        # Add edge capping
+        atoms = self.cap_edges_with_hydrogen(atoms)
         # Add functional groups for GO
         if "GO" in membrane.name:
             atoms = self.add_go_functional_groups(atoms, oxidation_ratio=0.2)
@@ -60,9 +61,12 @@ class LAMMPSDataBuilder:
             atoms = self.add_contaminants(atoms, membrane.contaminants)
         
         # Add water layer above membrane
-        atoms_with_water = self.add_water_layer(atoms, water_thickness=15.0)
+        atoms = self.add_water_layer(atoms, water_thickness=15.0)
         
-        return atoms_with_water
+        # Add small random displacement to all atoms
+        atoms = self.randomize_positions(atoms, max_disp=0.05)
+        
+        return atoms
     
     def create_graphene_sheet(self, nx=5, ny=5, layer_z=0.0):
         """
@@ -115,21 +119,28 @@ class LAMMPSDataBuilder:
         n_oxidized = int(n_carbons * oxidation_ratio)
         oxidized_indices = np.random.choice(n_carbons, n_oxidized, replace=False)
         
+        # Smarter placement: only add O/H if no overlap with existing atoms (min_dist = 1.2 Å)
+        min_dist = 1.2
         for idx in oxidized_indices:
             carbon = carbon_atoms[idx]
             cx, cy, cz = carbon[2], carbon[3], carbon[4]
-            
             # Add hydroxyl group (-OH) above carbon
             if np.random.random() < 0.7:  # 70% hydroxyl groups
-                # Oxygen above carbon
-                atoms.append([atom_id, self.atom_types['O'], cx, cy, cz + 1.4])
-                atom_id += 1
-                # Hydrogen above oxygen
-                atoms.append([atom_id, self.atom_types['H'], cx, cy, cz + 2.0])
-                atom_id += 1
+                ox, oy, oz = cx, cy, cz + 1.4
+                hx, hy, hz = cx, cy, cz + 2.0
+                # Check for overlaps before adding O
+                if all(np.linalg.norm(np.array([ox, oy, oz]) - np.array(a[2:5])) >= min_dist for a in atoms):
+                    atoms.append([atom_id, self.atom_types['O'], ox, oy, oz])
+                    atom_id += 1
+                    # Check for overlaps before adding H
+                    if all(np.linalg.norm(np.array([hx, hy, hz]) - np.array(a[2:5])) >= min_dist for a in atoms):
+                        atoms.append([atom_id, self.atom_types['H'], hx, hy, hz])
+                        atom_id += 1
             else:  # 30% epoxy groups (simplified as oxygen bridge)
-                atoms.append([atom_id, self.atom_types['O'], cx + 0.7, cy, cz + 1.2])
-                atom_id += 1
+                ox, oy, oz = cx + 0.7, cy, cz + 1.2
+                if all(np.linalg.norm(np.array([ox, oy, oz]) - np.array(a[2:5])) >= min_dist for a in atoms):
+                    atoms.append([atom_id, self.atom_types['O'], ox, oy, oz])
+                    atom_id += 1
         
         return np.array(atoms)
     
@@ -219,52 +230,112 @@ class LAMMPSDataBuilder:
     
     def add_water_layer(self, membrane_atoms, water_thickness=15.0):
         """
-        Add water molecules above the membrane.
-        
-        Args:
-            membrane_atoms (np.array): Membrane structure
-            water_thickness (float): Thickness of water layer (Angstrom)
-        
-        Returns:
-            np.array: Structure with water
+        Add water molecules above the membrane, avoiding overlaps with membrane and other water atoms.
         """
-        # Get membrane bounds
         x_min, x_max = membrane_atoms[:, 2].min(), membrane_atoms[:, 2].max()
         y_min, y_max = membrane_atoms[:, 3].min(), membrane_atoms[:, 3].max()
         z_max = membrane_atoms[:, 4].max()
-        
-        # Estimate number of water molecules
         area = (x_max - x_min) * (y_max - y_min)
         volume = area * water_thickness
-        n_water = int(volume * LAMMPS_PARAMETERS['water_density'] * 0.033)  # Approximate
-        
+        n_water = int(volume * LAMMPS_PARAMETERS['water_density'] * 0.033)
         water_atoms = []
         atom_id = int(membrane_atoms[:, 0].max()) + 1
-        
-        # Add water molecules randomly in the layer
-        for i in range(min(n_water, 50)):  # Limit for demo
-            x = np.random.uniform(x_min, x_max)
-            y = np.random.uniform(y_min, y_max)
-            z = np.random.uniform(z_max + 3, z_max + water_thickness)
-            
-            # Water oxygen
-            water_atoms.append([atom_id, self.atom_types['OW'], x, y, z])
-            atom_id += 1
-            
-            # Two water hydrogens
-            for j in range(2):
-                hx = x + np.random.uniform(-1, 1)
-                hy = y + np.random.uniform(-1, 1)
-                hz = z + np.random.uniform(-0.5, 0.5)
-                water_atoms.append([atom_id, self.atom_types['HW'], hx, hy, hz])
-                atom_id += 1
-        
-        # Combine membrane and water
+        min_dist = 2.5
+        for i in range(min(n_water, 50)):
+            tries = 0
+            while tries < 20:
+                x = np.random.uniform(x_min, x_max)
+                y = np.random.uniform(y_min, y_max)
+                z = np.random.uniform(z_max + 3, z_max + water_thickness)
+                pos = np.array([x, y, z])
+                # Check distance to all membrane atoms and existing water oxygens
+                if all(np.linalg.norm(pos - a[2:5]) >= min_dist for a in membrane_atoms) and \
+                   all(np.linalg.norm(pos - a[2:5]) >= min_dist for a in water_atoms if a[1] == self.atom_types['OW']):
+                    water_atoms.append([atom_id, self.atom_types['OW'], x, y, z])
+                    atom_id += 1
+                    # Add two hydrogens (randomly placed nearby)
+                    for j in range(2):
+                        tries_h = 0
+                        while tries_h < 10:
+                            hx = x + np.random.uniform(-1, 1)
+                            hy = y + np.random.uniform(-1, 1)
+                            hz = z + np.random.uniform(-0.5, 0.5)
+                            hpos = np.array([hx, hy, hz])
+                            if all(np.linalg.norm(hpos - a[2:5]) >= min_dist for a in membrane_atoms) and \
+                               all(np.linalg.norm(hpos - a[2:5]) >= min_dist for a in water_atoms):
+                                water_atoms.append([atom_id, self.atom_types['HW'], hx, hy, hz])
+                                atom_id += 1
+                                break
+                            tries_h += 1
+                    break
+                tries += 1
         if water_atoms:
             return np.vstack([membrane_atoms, np.array(water_atoms)])
         else:
             return membrane_atoms
     
+    def create_multilayer_graphene(self, nx=5, ny=5, n_layers=2, interlayer=3.4):
+        """
+        Create a multilayer graphene/GO stack with realistic interlayer spacing.
+        Args:
+            nx, ny (int): Number of unit cells per layer
+            n_layers (int): Number of layers
+            interlayer (float): Interlayer distance (Å)
+        Returns:
+            np.array: All atom coordinates
+        """
+        all_atoms = []
+        atom_id = 1
+        for l in range(n_layers):
+            z = l * interlayer
+            layer_atoms = self.create_graphene_sheet(nx, ny, z)
+            # Offset atom IDs for each layer
+            for atom in layer_atoms:
+                all_atoms.append([atom_id, atom[1], atom[2], atom[3], atom[4]])
+                atom_id += 1
+        return np.array(all_atoms)
+
+    def cap_edges_with_hydrogen(self, atoms, bond_cutoff=1.7):
+        """
+        Add hydrogens to edge carbons (carbons with <3 neighbors).
+        Args:
+            atoms (np.array): Atom array
+            bond_cutoff (float): Max C–C bond length
+        Returns:
+            np.array: Atom array with edge hydrogens
+        """
+        atoms = atoms.tolist()
+        carbons = [a for a in atoms if a[1] == self.atom_types['C']]
+        edge_carbons = []
+        for c in carbons:
+            c_id, _, cx, cy, cz = c
+            neighbors = 0
+            for c2 in carbons:
+                if c2[0] != c_id and np.linalg.norm(np.array([cx, cy, cz]) - np.array(c2[2:5])) < bond_cutoff:
+                    neighbors += 1
+            if neighbors < 3:
+                edge_carbons.append(c)
+        atom_id = int(max(a[0] for a in atoms)) + 1
+        for c in edge_carbons:
+            cx, cy, cz = c[2], c[3], c[4]
+            # Place H 1.1 Å above the edge carbon (simple model)
+            atoms.append([atom_id, self.atom_types['H'], cx, cy, cz + 1.1])
+            atom_id += 1
+        return np.array(atoms)
+
+    def randomize_positions(self, atoms, max_disp=0.05):
+        """
+        Add a small random displacement to all atom positions.
+        Args:
+            atoms (np.array): Atom array
+            max_disp (float): Maximum displacement (Å)
+        Returns:
+            np.array: Displaced atom array
+        """
+        atoms = atoms.copy()
+        atoms[:, 2:5] += np.random.uniform(-max_disp, max_disp, atoms[:, 2:5].shape)
+        return atoms
+
     def get_atom_charge(self, atom_type):
         for k, v in self.atom_params.items():
             if v["id"] == atom_type:
@@ -285,7 +356,7 @@ class LAMMPSDataBuilder:
         Also writes Bonds, Angles, and Dihedrals for water and GO molecules.
         """
         # Calculate simulation box
-        margin = 5.0
+        margin = 15.0  # Increased from 10.0 to 15.0 for extra safety
         x_min, x_max = atoms[:, 2].min() - margin, atoms[:, 2].max() + margin
         y_min, y_max = atoms[:, 3].min() - margin, atoms[:, 3].max() + margin
         z_min, z_max = atoms[:, 4].min() - margin, atoms[:, 4].max() + margin
@@ -387,7 +458,7 @@ class LAMMPSDataBuilder:
                                 dihedral_type_id = dihedral_type_map[dihedral_type_key]
                                 dihedrals.append([dihedral_id, dihedral_type_id, int(c1[0]), int(c2[0]), int(c3[0]), int(c4[0])])
                                 dihedral_id += 1
-        # Write header with dihedrals
+        # Write header with correct counts
         with open(filename, 'w') as f:
             f.write("# LAMMPS data file for GO/rGO membrane simulation\n\n")
             f.write(f"{len(atoms)} atoms\n")
@@ -398,9 +469,9 @@ class LAMMPSDataBuilder:
             f.write(f"{len(self.angle_types)} angle types\n")
             f.write(f"{len(dihedrals)} dihedrals\n")
             f.write(f"{len(dihedral_type_map)} dihedral types\n\n")
-            f.write(f"{atoms[:,2].min()-5:.6f} {atoms[:,2].max()+5:.6f} xlo xhi\n")
-            f.write(f"{atoms[:,3].min()-5:.6f} {atoms[:,3].max()+5:.6f} ylo yhi\n")
-            f.write(f"{atoms[:,4].min()-5:.6f} {atoms[:,4].max()+5:.6f} zlo zhi\n\n")
+            f.write(f"{atoms[:,2].min()-margin:.6f} {atoms[:,2].max()+margin:.6f} xlo xhi\n")
+            f.write(f"{atoms[:,3].min()-margin:.6f} {atoms[:,3].max()+margin:.6f} ylo yhi\n")
+            f.write(f"{atoms[:,4].min()-margin:.6f} {atoms[:,4].max()+margin:.6f} zlo zhi\n\n")
             f.write("Masses\n\n")
             for atom_type, params in self.atom_params.items():
                 mass = params["mass"]
@@ -430,3 +501,4 @@ class LAMMPSDataBuilder:
                 f.write("\n# Dihedral type mapping:\n")
                 for k, v in dihedral_type_map.items():
                     f.write(f"# {v}: {k}\n")
+        return

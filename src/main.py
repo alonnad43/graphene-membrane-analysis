@@ -18,16 +18,16 @@ This script orchestrates the complete simulation workflow:
 # 3 → LAMMPS atomistic simulation
 # 4 → contaminant removal & regeneration modeling
 
-from membrane_model import Membrane, generate_membrane_variants_with_variability
-from flux_simulator import simulate_flux_with_variability
-from oil_rejection import simulate_oil_rejection_stochastic
-from plot_utils import (
+from src.membrane_model import Membrane, generate_membrane_variants_with_variability
+from src.flux_simulator import simulate_flux_with_variability
+from src.oil_rejection import simulate_oil_rejection_stochastic
+from src.plot_utils import (
     plot_rejection_summary,
     plot_flux_vs_thickness_at_pressure,
     plot_flux_vs_pore_size_at_pressure
 )
-from properties import MEMBRANE_TYPES, PRESSURE_RANGE, WATER_PROPERTIES
-from hybrid_structure import (
+from src.properties import MEMBRANE_TYPES, PRESSURE_RANGE, WATER_PROPERTIES
+from src.hybrid_structure import (
     run_phase2_analysis,
     create_alternating_structure, 
     create_sandwich_structure, 
@@ -102,7 +102,7 @@ def main():
     validate_forcefield_params()
 
     # --- Output directory structure ---
-    output_base = os.path.join(os.getcwd(), "output")
+    output_base = os.path.join(r"C:\Users\ramaa\Documents\graphene_mebraine\output")
     phase1_dir = os.path.join(output_base, "phase1")
     phase2_dir = os.path.join(output_base, "phase2")
     phase3_dir = os.path.join(output_base, "phase3")
@@ -111,6 +111,15 @@ def main():
     os.makedirs(phase2_dir, exist_ok=True)
     os.makedirs(phase3_dir, exist_ok=True)
     os.makedirs(phase4_dir, exist_ok=True)
+
+    # Plot directories (per phase/type)
+    plots_base = os.path.join(output_base, "plots")
+    summary_dir = os.path.join(plots_base, 'oil_rejection_summary')
+    thickness_dir = os.path.join(plots_base, 'flux_vs_thickness_per_pressure')
+    pore_dir = os.path.join(plots_base, 'flux_vs_pore_size_per_pressure')
+    os.makedirs(summary_dir, exist_ok=True)
+    os.makedirs(thickness_dir, exist_ok=True)
+    os.makedirs(pore_dir, exist_ok=True)
 
     if args.single:
         # Single simulation mode
@@ -133,10 +142,6 @@ def main():
         membranes = generate_membrane_variants()
 
     results = []
-    graphs_base = os.path.join(os.getcwd(), 'graphs')
-    summary_dir = os.path.join(graphs_base, 'oil_rejection_summary')
-    thickness_dir = os.path.join(graphs_base, 'flux_vs_thickness_per_pressure')
-    pore_dir = os.path.join(graphs_base, 'flux_vs_pore_size_per_pressure')
 
     # Simulate flux and rejection at different pressures
     for mem in membranes:
@@ -248,44 +253,53 @@ def main():
         ) for t in thicknesses]
         plot_flux_vs_pore_size_at_pressure(pore_sizes, fluxes_dict, pressure, pore_dir)
     
-    # Phase 2: Hybrid Structure Design (now always runs)
-    print("\nRunning Phase 2 (Hybrid Structure Design) automatically.")
-    run_phase2 = True
-    target_flux = None
-    target_rejection = None
-    # Run Phase 2 analysis
-    phase2_results = run_phase2_analysis(target_flux, target_rejection)
-    # Add Phase 2 results to main results for potential Phase 3 use
-    results.extend([{
-        "material": "Hybrid_Phase2",
-        "membrane_name": r['structure_name'],
-        "pressure_bar": 1.0,  # Standard pressure
-        "thickness_nm": r['thickness_nm'],
-        "pore_size_nm": r['avg_pore_size'],
-        "flux_lmh": r['predicted_flux'],
-        "modulus_GPa": r['weighted_modulus'],
-        "tensile_strength_MPa": r['weighted_strength'],
-        "contact_angle_deg": None,
-        "rejection_percent": r['predicted_rejection'],
-        "performance_score": r['performance_score'],
-        "go_fraction": r['go_fraction'],
-        "total_layers": r['total_layers']        } for r in phase2_results['top_structures']])
-    print(f"\nPhase 2 structures added to results. Total entries: {len(results)}")
-    # Save Phase 2 results
-    try:
-        df2 = pd.DataFrame(phase2_results['top_structures'])
-        excel_path2 = os.path.join(phase2_dir, "simulation_results_phase2.xlsx")
-        df2.to_excel(excel_path2, index=False)
-        print(f"\nPhase 2 results table saved to: {excel_path2}")
-    except Exception:
-        pass
+    # Only run Phase 2 (hybrid structure design) if not in single mode
+    if not args.single:
+        print("\nRunning Phase 2 (Hybrid Structure Design) automatically.")
+        run_phase2 = True
+        target_flux = None
+        target_rejection = None
+        # Run Phase 2 analysis
+        phase2_results = run_phase2_analysis(target_flux, target_rejection)
+        # Add Phase 2 results to main results for potential Phase 3 use
+        results.extend([{
+            "material": "Hybrid_Phase2",
+            "membrane_name": r['structure_name'],
+            "pressure_bar": 1.0,  # Standard pressure
+            "thickness_nm": r['thickness_nm'],
+            "pore_size_nm": r['avg_pore_size'],
+            "flux_lmh": r['predicted_flux'],
+            "modulus_GPa": r['weighted_modulus'],
+            "tensile_strength_MPa": r['tensile_strength_MPa'],
+            "contact_angle_deg": None,
+            "rejection_percent": r['predicted_rejection'],
+            "performance_score": r['performance_score'],
+            "go_fraction": r['go_fraction'],
+            "total_layers": r['total_layers']        } for r in phase2_results['top_structures']])
+        print(f"\nPhase 2 structures added to results. Total entries: {len(results)}")
+        # Save Phase 2 results
+        try:
+            df2 = pd.DataFrame(phase2_results['top_structures'])
+            excel_path2 = os.path.join(phase2_dir, "simulation_results_phase2.xlsx")
+            df2.to_excel(excel_path2, index=False)
+            print(f"\nPhase 2 results table saved to: {excel_path2}")
+        except Exception:
+            pass
+    else:
+        run_phase2 = False
+        phase2_results = None
     # Phase 3: Atomistic LAMMPS Simulations (now always runs for top hybrid structure)
     print("\nRunning Phase 3 (LAMMPS Atomistic Simulations) automatically for top hybrid structure.")
-    from lammps_runner import LAMMPSRunner
-    from unify_results import unify_all_results
+    from src.lammps_runner import LAMMPSRunner
+    from src.unify_results import unify_all_results
     phase3_membrane = None
-    if run_phase2 and phase2_results and phase2_results['top_structures']:
+    if args.single:
+        # In single mode, use the selected membrane for atomistic simulation
+        phase3_membrane = membranes[0]
+        print(f"\nRunning Phase 3 (LAMMPS Atomistic Simulations) for selected membrane: {phase3_membrane.name}")
+    elif run_phase2 and phase2_results and phase2_results['top_structures']:
         top_structure = phase2_results['top_structures'][0]
+        print(f"\nRunning Phase 3 (LAMMPS Atomistic Simulations) automatically for top hybrid structure.")
         print(f"Selected for LAMMPS: {top_structure['structure_name']} (Phase 2)")
         phase3_membrane = Membrane(
             name=top_structure['structure_name'],
@@ -293,7 +307,7 @@ def main():
             thickness_nm=top_structure['thickness_nm'],
             flux_lmh=top_structure['predicted_flux'],
             modulus_GPa=top_structure['weighted_modulus'],
-            tensile_strength_MPa=top_structure['weighted_strength'],
+            tensile_strength_MPa=top_structure['tensile_strength_MPa'],
             contact_angle_deg=90.0,
             rejection_percent=top_structure['predicted_rejection']
         )
@@ -304,7 +318,7 @@ def main():
             print("LAMMPS Simulation Results:")
             print(f"  Water flux: {lammps_results.get('water_flux', 'N/A')} L·m⁻²·h⁻¹")
             print(f"  Young's modulus: {lammps_results.get('youngs_modulus', 'N/A')} GPa")
-            print(f"  Ultimate strength: {lammps_results.get('ultimate_strength', 'N/A')} MPa")
+            print(f"  Ultimate strength: {lammps_results.get('tensile_strength_MPa', 'N/A')} MPa")
         else:
             print("❌ LAMMPS simulation failed or returned no results. Stopping workflow.")
             print(f"Reason: {lammps_results.get('error', 'Unknown error') if lammps_results else 'Unknown error'}")
@@ -314,7 +328,7 @@ def main():
         phase1_path = os.path.join(phase1_dir, "simulation_results_phase1.xlsx")
         unify_all_results(phase1_path=phase1_path, output_dir=phase3_dir)
     else:
-        print("No valid hybrid structure found for LAMMPS simulation. Skipping Phase 3.")
+        print("No valid structure found for LAMMPS simulation. Skipping Phase 3.")
         sys.exit(1)
 
     # Phase 4: Chemical and Biological Simulation (now always runs with default settings)
@@ -369,7 +383,7 @@ def main():
                         "pore_size_nm": MEMBRANE_TYPES.get(membrane_type, {}).get('pore_size_nm', 2.0),
                         "flux_lmh": MEMBRANE_TYPES.get(membrane_type, {}).get('flux', 100),
                         "modulus_GPa": MEMBRANE_TYPES.get(membrane_type, {}).get('modulus', 200),
-                        "tensile_strength_MPa": MEMBRANE_TYPES.get(membrane_type, {}).get('strength', 30),
+                        "tensile_strength_MPa": MEMBRANE_TYPES.get(membrane_type, {}).get('tensile_strength_MPa', 30),
                         "contact_angle_deg": MEMBRANE_TYPES.get(membrane_type, {}).get('contact_angle_deg', 90),
                         "rejection_percent": efficiency,
                         "contaminant_type": contaminant,

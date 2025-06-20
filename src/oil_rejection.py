@@ -9,7 +9,7 @@ References: Schmidt et al. 2023, Activated Carbon Blended with rGO 2021
 
 from math import log, exp
 import numpy as np
-from properties import MEMBRANE_TYPES, OIL_DROPLET_SIZE
+from src.properties import MEMBRANE_TYPES, OIL_DROPLET_SIZE
 
 def simulate_oil_rejection(pore_size_nm, droplet_size_um, contact_angle_deg, alpha=2.5, beta=0.1):
     """

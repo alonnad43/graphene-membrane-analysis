@@ -1,0 +1,23 @@
+# Example: OPLS-AA/GO force field block for reference
+# (Values are for illustration; use literature for production)
+
+"atom_types": {
+  "C": {"mass": 12.011, "charge": 0.20, "sigma": 3.40, "epsilon": 0.066},
+  "O": {"mass": 15.999, "charge": -0.50, "sigma": 3.00, "epsilon": 0.170},
+  "H": {"mass": 1.008, "charge": 0.30, "sigma": 2.50, "epsilon": 0.030},
+  "OW": {"mass": 15.999, "charge": -0.8476, "sigma": 3.1656, "epsilon": 0.1554},
+  "HW": {"mass": 1.008, "charge": 0.4238, "sigma": 1.0, "epsilon": 0.0}
+},
+"bond_types": {
+  "C-C": {"k": 469.0, "r0": 1.42},
+  "C-O": {"k": 450.0, "r0": 1.43},
+  "O-H": {"k": 553.0, "r0": 0.96},
+  "OW-HW": {"k": 450.0, "r0": 0.9572}
+},
+"angle_types": {
+  "C-C-C": {"k": 63.0, "theta0": 120.0},
+  "C-C-O": {"k": 50.0, "theta0": 120.0},
+  "C-O-H": {"k": 35.0, "theta0": 109.5},
+  "HW-OW-HW": {"k": 55.0, "theta0": 109.47}
+}
+# Reference: OPLS-AA, J. Phys. Chem. B 2010, 114, 23, 7830–7843; TIP3P water model.

@@ -41,16 +41,17 @@ def batch_viscosity_calculation(temperatures):
 
 @jit(nopython=True, cache=True)
 def batch_flux_kernel(pore_sizes, thicknesses, pressures, viscosities, 
-                     porosity, tortuosity):
+                     porosity, tortuosity,
+                     nm_to_m, bar_to_pa, ms_to_lmh):
     """
     Ultra-optimized JIT kernel for batch flux calculations.
     
     Uses modified Hagen-Poiseuille equation with vectorized operations.
     """
     # Pre-compute unit conversions
-    pore_radii = pore_sizes * UNIT_CONVERSIONS['nm_to_m'] * 0.5
-    thickness_m = thicknesses * UNIT_CONVERSIONS['nm_to_m']
-    pressure_pa = pressures * UNIT_CONVERSIONS['bar_to_pa']
+    pore_radii = pore_sizes * nm_to_m * 0.5
+    thickness_m = thicknesses * nm_to_m
+    pressure_pa = pressures * bar_to_pa
     
     # Vectorized permeability calculation
     permeability = (porosity * pore_radii**2) / (8 * viscosities * tortuosity)
@@ -59,7 +60,7 @@ def batch_flux_kernel(pore_sizes, thicknesses, pressures, viscosities,
     flux_ms = permeability * pressure_pa / thickness_m
     
     # Convert to LMH
-    return flux_ms * UNIT_CONVERSIONS['ms_to_lmh']
+    return flux_ms * ms_to_lmh
 
 class UltraEfficientFluxSimulator:
     """
@@ -142,7 +143,8 @@ class UltraEfficientFluxSimulator:
         flux_values = batch_flux_kernel(
             P_grid.flatten(), T_grid.flatten(), Pr_grid.flatten(),
             viscosity_values.flatten(), porosity_values.flatten(), 
-            tortuosity_values.flatten()
+            tortuosity_values.flatten(),
+            UNIT_CONVERSIONS['nm_to_m'], UNIT_CONVERSIONS['bar_to_pa'], UNIT_CONVERSIONS['ms_to_lmh']
         )
         
         return flux_values.reshape(P_grid.shape)

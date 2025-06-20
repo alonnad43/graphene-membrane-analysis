@@ -1,0 +1,12 @@
+{
+  "total_pipeline_time": 3.152414083480835,
+  "phase_breakdown": {
+    "plotting": 1.4484775066375732
+  },
+  "total_computations": 0,
+  "overall_computation_rate": 0.0,
+  "estimated_memory_usage_mb": 0.0,
+  "efficiency_score": 0.0,
+  "ultra_modules_used": true,
+  "parallel_execution": true
+}

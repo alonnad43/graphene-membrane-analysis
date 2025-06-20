@@ -28,6 +28,13 @@ The system runs a four-phase workflow:
 
 ---
 
+## 🚀 Ultra-Optimized Pipeline & Output Structure (2025)
+- The simulation pipeline is now fully ultra-optimized, supporting batch simulation, vectorized flux/rejection, and advanced plotting.
+- All results and plots are saved under `output/` with subfolders for each phase and plot type (e.g., `output/phase1/`, `output/plots/oil_rejection_summary/`).
+- The orchestrator and all modules use robust error handling and serialization, with performance summaries saved for each run.
+- All code is modular, uses numpy, pandas, matplotlib, and scipy, and supports CSV/JSON export for all data.
+- The workflow is validated end-to-end and produces publication-quality results and figures.
+
 ## 🗂️ Code and Data Structure
 
 - **`main.py`**: Orchestrates the full workflow, error handling, and result integration.
@@ -43,7 +50,7 @@ The system runs a four-phase workflow:
   - NOM subtypes and interaction parameters
   - Advanced pore-size/defect statistics
   - Explicit validation/field data integration
-- **`output/`, `graphs/`**: Store all simulation results and generated plots.
+- **`output/`**: Stores all simulation results and generated plots, organized by phase and plot type.
 - **`EXPERIMENT_INTEGRATION.md`**: How to use this code with experiments and the larger project.
 - **`CODE_STRUCTURE.md`**: Technical breakdown of each module and file.
 
@@ -53,7 +60,7 @@ The system runs a four-phase workflow:
 - **Phase 3 output:** `output/phase3/` (LAMMPS atomistic simulation results, per-membrane subfolders)
 - **Phase 4 output:** `output/phase4/` (chemical/biological simulation results)
 - **All-phase summary:** `output/simulation_results_all_phases.xlsx`
-- **Plots:** `graphs/` (organized by analysis type)
+- **Plots:** `output/plots/` (organized by analysis type, e.g. `output/plots/oil_rejection_summary/`, `output/plots/flux_vs_thickness_per_pressure/`, etc.)
 - **Data files:** See `forcefield_and_simulation_data.json` for all simulation parameters and force field data.
 - **Experiment integration:** See `EXPERIMENT_INTEGRATION.md` for how to connect code and lab data.
 - **Technical code structure:** See `CODE_STRUCTURE.md` for module and file details.

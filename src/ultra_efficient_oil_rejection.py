@@ -30,7 +30,7 @@ try:
     NUMBA_AVAILABLE = True
     
     @jit(nopython=True, cache=True)
-    def batch_sigmoid_kernel(size_ratios, contact_angles, alpha, beta):
+    def batch_sigmoid_kernel(size_ratios, contact_angles, alpha, beta, baseline_rejection):
         """
         Ultra-optimized JIT kernel for batch sigmoid calculations.
         """
@@ -50,7 +50,7 @@ try:
         # Handle small size ratios with baseline rejection
         rejections = np.where(
             size_ratios <= 1.0,
-            SIGMOID_PARAMS['baseline_rejection'] / 100.0,
+            baseline_rejection / 100.0,
             rejections
         )
         
@@ -59,7 +59,7 @@ try:
 except ImportError:
     NUMBA_AVAILABLE = False
     
-    def batch_sigmoid_kernel(size_ratios, contact_angles, alpha, beta):
+    def batch_sigmoid_kernel(size_ratios, contact_angles, alpha, beta, baseline_rejection, max_rejection=99.0):
         """
         NumPy fallback for sigmoid calculations when Numba not available.
         """
@@ -71,11 +71,11 @@ except ImportError:
         
         rejections = np.where(
             size_ratios <= 1.0,
-            SIGMOID_PARAMS['baseline_rejection'] / 100.0,
+            baseline_rejection / 100.0,
             rejections
         )
         
-        return np.clip(rejections * 100.0, 0.0, SIGMOID_PARAMS['max_rejection'])
+        return np.clip(rejections * 100.0, 0.0, max_rejection)
 
 class UltraEfficientOilRejectionSimulator:
     """
@@ -88,25 +88,22 @@ class UltraEfficientOilRejectionSimulator:
             'beta': SIGMOID_PARAMS['beta_default'],
             'contact_angle': 65.0  # Typical GO contact angle
         }
-        
         # Pre-compile lookup tables for common scenarios
         self._setup_lookup_tables()
-    
+
     def _setup_lookup_tables(self):
         """Setup pre-compiled lookup tables for fast calculations."""
         # Common ranges for interpolation
         size_ratio_range = np.logspace(-1, 3, 200)  # 0.1 to 1000
         contact_angle_range = np.linspace(10, 150, 50)  # 10° to 150°
-        
         # Pre-compute rejection matrix
         SR_grid, CA_grid = np.meshgrid(size_ratio_range, contact_angle_range, indexing='ij')
-        
         rejection_matrix = batch_sigmoid_kernel(
             SR_grid, CA_grid, 
             self.default_params['alpha'], 
-            self.default_params['beta']
+            self.default_params['beta'],
+            SIGMOID_PARAMS['baseline_rejection']
         )
-        
         self.rejection_interpolator = RegularGridInterpolator(
             (size_ratio_range, contact_angle_range), rejection_matrix,
             method='linear', bounds_error=False, fill_value=None
@@ -151,12 +148,10 @@ class UltraEfficientOilRejectionSimulator:
         
         # Batch rejection calculation using optimized kernel
         rejection_values = batch_sigmoid_kernel(
-            size_ratios.flatten(), 
-            contact_angles.flatten(), 
-            alpha, beta
+            size_ratios, contact_angles, alpha, beta, SIGMOID_PARAMS['baseline_rejection']
         )
         
-        return rejection_values.reshape(size_ratios.shape)
+        return rejection_values
     
     def membrane_screening_batch(self, membrane_configs, oil_properties):
         """
@@ -285,7 +280,8 @@ class UltraEfficientOilRejectionSimulator:
                 np.array([size_ratio]), 
                 np.array([contact_angle_deg]),
                 self.default_params['alpha'],
-                self.default_params['beta']
+                self.default_params['beta'],
+                SIGMOID_PARAMS['baseline_rejection']
             )[0]
 
 # Create global instance for efficient reuse

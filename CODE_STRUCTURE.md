@@ -87,6 +87,7 @@ This document provides a comprehensive technical overview of the graphene membra
 - `data/lab_characterization_example.json` – Template for lab/field data
 - `output/phase4_chemistry_*.json` – Simulation results (per run)
 - `output/unified_results_*.csv/.xlsx` – Unified results for all phases
+- `output/plots/` – All generated plots, organized by analysis type (e.g. `output/plots/oil_rejection_summary/`, `output/plots/flux_vs_thickness_per_pressure/`, etc.)
 
 ### Monitoring and Parameter Files
 - `monitoring/chemistry_simulation_params.json`, `monitoring/contaminant_membrane_properties.json`, `monitoring/references.py`, etc.
@@ -133,6 +134,15 @@ This document provides a comprehensive technical overview of the graphene membra
 - All simulation phases and modules read/write to the consolidated JSON and output folders
 - Results are unified and validated against lab/field data
 - All code is modular and ready for extension (add new classes, functions, or data as needed)
+
+---
+
+## Ultra-Optimized Orchestrator & Output (2025)
+- The codebase includes a final ultra-optimized orchestrator supporting batch simulation, vectorized flux/rejection, and advanced plotting.
+- All results and plots are saved under `output/` with subfolders for each phase and plot type (e.g., `output/phase1/`, `output/plots/oil_rejection_summary/`).
+- Robust error handling and serialization are built in, with performance summaries for each run.
+- All modules use numpy, pandas, matplotlib, and scipy, and support CSV/JSON export.
+- The workflow is validated end-to-end and is ready for extension and integration.
 
 ---
 

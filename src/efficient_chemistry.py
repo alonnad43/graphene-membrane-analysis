@@ -171,6 +171,9 @@ class EfficientChemicalEngine:
             print(f"✅ Exported: {filepath}")
 
 
+# Alias for compatibility with main workflow
+EfficientChemistryEngine = EfficientChemicalEngine
+
 def run_efficient_phase4(membrane_types=['GO', 'rGO'], 
                         contaminants=['Pb2+', 'E_coli'],
                         reaction_time=180,

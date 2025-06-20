@@ -138,8 +138,8 @@ class LAMMPSRunner:
         Returns:
             dict: Simulation results and status
         """
-        from data_builder import LAMMPSDataBuilder
-        from input_writer import LAMMPSInputWriter
+        from src.data_builder import LAMMPSDataBuilder
+        from src.input_writer import LAMMPSInputWriter
         import os
         
         sim_name = f"lammps_{membrane.name.replace(' ', '_')}"
@@ -177,7 +177,7 @@ class LAMMPSRunner:
                 print(f"  ✅ Simulation completed successfully")
                 
                 # Parse realistic results from LAMMPS output
-                from output_parser import parse_realistic_lammps_output
+                from src.output_parser import parse_realistic_lammps_output
                 parsed_results = parse_realistic_lammps_output(sim_dir)
                 result.update(parsed_results)
                 

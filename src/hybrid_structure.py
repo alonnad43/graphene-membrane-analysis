@@ -9,7 +9,7 @@ and prepares layer metadata for Phase 3 LAMMPS simulations.
 
 import numpy as np
 import os
-from properties import MEMBRANE_TYPES
+from src.properties import MEMBRANE_TYPES
 
 def compute_interlayer_spacing(layer1, layer2):
     """
@@ -276,10 +276,10 @@ def predict_hybrid_properties(structure):
         - Uses size exclusion + wettability rejection model from oil_rejection.py
         - Incorporates dynamic thickness from interlayer spacing calculations    """
     
-    from flux_simulator import simulate_flux
-    from oil_rejection import simulate_oil_rejection
-    from properties import WATER_PROPERTIES, OIL_DROPLET_SIZE
-    from membrane_model import compute_interface_penalty
+    from src.flux_simulator import simulate_flux
+    from src.properties import WATER_PROPERTIES, OIL_DROPLET_SIZE
+    from src.oil_rejection import simulate_oil_rejection
+    from src.membrane_model import compute_interface_penalty
       # Calculate composition fractions
     if not structure.layers:
         # Handle empty structure
@@ -296,7 +296,7 @@ def predict_hybrid_properties(structure):
             'flux_error': 0,
             'rejection_error': 0,
             'weighted_modulus': 0,
-            'weighted_strength': 0,
+            'tensile_strength_MPa': 0,
             'performance_score': 0,
             'layer_metadata': []
         }
@@ -348,8 +348,8 @@ def predict_hybrid_properties(structure):
     
     weighted_modulus = (go_fraction * go_props['youngs_modulus_GPa'] + 
                        rgo_fraction * rgo_props['youngs_modulus_GPa'])
-    weighted_strength = (go_fraction * go_props['strength'] + 
-                        rgo_fraction * rgo_props['strength'])
+    weighted_tensile_strength = (go_fraction * go_props['tensile_strength_MPa'] + 
+                                rgo_fraction * rgo_props['tensile_strength_MPa'])
       # 7. Interface penalty for hybrid structures
     interface_penalty = compute_interface_penalty(structure.layers)
     predicted_flux *= (1 - interface_penalty)  # Apply penalty to flux
@@ -373,7 +373,7 @@ def predict_hybrid_properties(structure):
         'predicted_rejection': predicted_rejection,
         'flux_error': flux_error,
         'rejection_error': rejection_error,        'weighted_modulus': weighted_modulus,
-        'weighted_strength': weighted_strength,
+        'tensile_strength_MPa': weighted_tensile_strength,
         'interface_penalty': interface_penalty,
         'performance_score': performance_score,
         'layer_metadata': structure.layer_metadata

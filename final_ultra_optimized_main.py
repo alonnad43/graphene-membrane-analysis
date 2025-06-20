@@ -64,7 +64,7 @@ class FinalUltraOptimizedOrchestrator:
     - Advanced scientific visualization
     """
     
-    def __init__(self, output_dir="ultra_optimized_results"):
+    def __init__(self, output_dir=r"C:\Users\ramaa\Documents\graphene_mebraine\output\ultra_optimized_results"):
         self.output_dir = output_dir
         os.makedirs(output_dir, exist_ok=True)
         
@@ -457,22 +457,53 @@ class FinalUltraOptimizedOrchestrator:
         print(f"💾 Results saved to {results_file}")
         print(f"📊 Performance summary saved to {perf_file}")
     
-    def _make_serializable(self, obj):
-        """Convert objects to JSON-serializable format."""
-        if isinstance(obj, dict):
-            return {k: self._make_serializable(v) for k, v in obj.items()}
-        elif isinstance(obj, list):
-            return [self._make_serializable(item) for item in obj]
-        elif isinstance(obj, np.ndarray):
-            return obj.tolist()
-        elif isinstance(obj, (np.integer, np.floating)):
-            return obj.item()
-        elif hasattr(obj, 'to_dict'):
-            return obj.to_dict()
-        elif hasattr(obj, '__dict__'):
-            return self._make_serializable(obj.__dict__)
-        else:
-            return obj
+    def _make_serializable(self, obj, _visited=None, _depth=0, _max_depth=20):
+        """Convert objects to JSON-serializable format, handling cycles, depth, and key types."""
+        import itertools
+        if _visited is None:
+            _visited = set()
+        if id(obj) in _visited:
+            return f"<circular reference: {type(obj).__name__}>"
+        if _depth > _max_depth:
+            return f"<max depth reached: {type(obj).__name__}>"
+        _visited.add(id(obj))
+        try:
+            # Handle known non-serializable types
+            if isinstance(obj, dict):
+                new_dict = {}
+                for k, v in obj.items():
+                    # Convert key to string if not a JSON-serializable type
+                    if not isinstance(k, (str, int, float, bool, type(None))):
+                        k = str(k)
+                    new_dict[k] = self._make_serializable(v, _visited, _depth+1, _max_depth)
+                return new_dict
+            elif isinstance(obj, list):
+                return [self._make_serializable(item, _visited, _depth+1, _max_depth) for item in obj]
+            elif isinstance(obj, tuple):
+                return tuple(self._make_serializable(item, _visited, _depth+1, _max_depth) for item in obj)
+            elif isinstance(obj, np.ndarray):
+                return obj.tolist()
+            elif isinstance(obj, (np.integer, np.floating)):
+                return obj.item()
+            elif hasattr(obj, 'to_dict'):
+                return obj.to_dict()
+            elif hasattr(obj, '__dict__'):
+                return self._make_serializable(obj.__dict__, _visited, _depth+1, _max_depth)
+            elif callable(obj):
+                return f"<function {getattr(obj, '__name__', str(obj))}>"
+            elif isinstance(obj, itertools.count):
+                return f"<itertools.count object: {obj}>"
+            else:
+                # Try to convert to string if not serializable
+                try:
+                    json.dumps(obj)
+                    return obj
+                except Exception:
+                    return str(obj)
+        except Exception as e:
+            return f"<non-serializable: {type(obj).__name__} - {e}>"
+        finally:
+            _visited.discard(id(obj))
     
     def _print_performance_summary(self, metrics):
         """Print comprehensive performance summary."""

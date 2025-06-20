@@ -213,7 +213,20 @@ class UltraEfficientChemicalEngine:
             json.dump(minimal_data, f, indent=2)
         
         print(f"✅ Ultra-fast export: {output_file}")
+    
+    def run_ultra_batch_simulation(self, config):
+        """
+        Wrapper for orchestrator: expects a config dict with keys 'membrane_types', 'contaminants', 'initial_concentrations', etc.
+        """
+        membrane_types = config.get('membrane_types', [])
+        contaminants = config.get('contaminants', [])
+        initial_concentrations = config.get('initial_concentrations', {})
+        reaction_time = config.get('conditions', {}).get('reaction_time', 180)
+        return self.batch_simulate_multiple_membranes(membrane_types, contaminants, initial_concentrations, reaction_time)
 
+
+# Alias for compatibility with main workflow
+UltraEfficientChemistryEngine = UltraEfficientChemicalEngine
 
 def run_ultra_efficient_phase4(membrane_types=['GO', 'rGO', 'hybrid'],
                               contaminants=['Pb2+', 'E_coli'],

@@ -13,7 +13,7 @@ import numpy as np
 def plot_rejection_summary(membrane_types, rejections, output_dir):
     """
     Plot a single summary bar chart of oil rejection for all membrane types.
-    Saves to graphs/oil_rejection_summary/.
+    Saves to output/plots/oil_rejection_summary/.
 
     Args:
         membrane_types (list): List of membrane type names
@@ -51,7 +51,7 @@ def plot_flux_vs_thickness(thicknesses, fluxes_dict):
 def plot_flux_vs_thickness_at_pressure(thicknesses, fluxes_dict, pressure, output_dir):
     """
     Plot flux vs. thickness for all membrane types at a given pressure.
-    Saves to graphs/flux_vs_thickness_per_pressure/.
+    Saves to output/plots/flux_vs_thickness_per_pressure/.
 
     Args:
         thicknesses (array-like): List of thickness values (nm)
@@ -133,7 +133,7 @@ def plot_flux_vs_pore_size_at_pressure(pore_sizes, fluxes_dict, pressure, output
     """
     Plot flux vs. pore size for all membrane types at a given pressure.
     Aggregates flux values by pore size (mean) to ensure x and y match.
-    Saves to graphs/flux_vs_pore_size_per_pressure/.
+    Saves to output/plots/flux_vs_pore_size_per_pressure/.
 
     Args:
         pore_sizes (array-like): List of pore size values (nm)

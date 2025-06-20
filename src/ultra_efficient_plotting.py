@@ -47,7 +47,7 @@ class UltraEfficientPlotter:
     Ultra-efficient plotting class using advanced scientific visualization methods.
     """
     
-    def __init__(self, output_dir="graphs/ultra_efficient"):
+    def __init__(self, output_dir=r"C:\Users\ramaa\Documents\graphene_mebraine\output\plots\ultra_efficient"):
         self.output_dir = output_dir
         os.makedirs(output_dir, exist_ok=True)
         
@@ -475,7 +475,7 @@ class UltraEfficientPlotter:
         return fig
 
 # Create global instance for efficient reuse
-ULTRA_PLOTTER = UltraEfficientPlotter()
+ULTRA_PLOTTER = UltraEfficientPlotter(output_dir=r"C:\Users\ramaa\Documents\graphene_mebraine\output\plots\ultra_efficient")
 
 def plot_chemistry_results_ultra_fast(results_list, save_plots=True):
     """
